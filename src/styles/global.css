@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+:root {
+  --color-hunter-green: #111a10;
+  --color-green-kelp: #1e3a1e;
+  --color-killarney: #3d6b4a;
+  --color-oxley: #7ba08a;
+  --color-pale-leaf: #b8ceb8;
+  --color-sundance: #c8a55a;
+  --color-cement: #8a7060;
+  --color-white-linen: #faf6ef;
+  --color-linen: #fdfaf5;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+}
+
+html {
+  background: var(--color-hunter-green);
+  color: var(--color-linen);
+  font-family: var(--font-sans);
+}
+
+body {
+  margin: 0;
+}
