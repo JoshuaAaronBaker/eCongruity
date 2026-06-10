@@ -1,4 +1,4 @@
-Status: ready-for-agent
+Status: complete
 Title: Build Home Page Positioning and CTA
 
 ## Parent
@@ -11,13 +11,13 @@ Build a focused Home page that introduces eCongruity as a Strategic Innovation S
 
 ## Acceptance criteria
 
-- [ ] The first viewport clearly communicates eCongruity as a Strategic Innovation Studio.
-- [ ] The page uses people, process, and technology language without positioning eCongruity as a generic agency or software shop.
-- [ ] Nature Meets Innovation appears as a brand metaphor without implying environmental consulting.
-- [ ] A testimonial proof area appears directly after the hero content.
-- [ ] The Home page links visitors to Approach, Capabilities, About, and Contact.
-- [ ] The primary CTA leads to the Contact page.
-- [ ] The page is responsive and readable on mobile and desktop.
+- [x] The first viewport clearly communicates eCongruity as a Strategic Innovation Studio.
+- [x] The page uses people, process, and technology language without positioning eCongruity as a generic agency or software shop.
+- [x] Nature Meets Innovation appears as a brand metaphor without implying environmental consulting.
+- [x] A testimonial proof area appears directly after the hero content.
+- [x] The Home page links visitors to Approach, Capabilities, About, and Contact.
+- [x] The primary CTA leads to the Contact page.
+- [x] The page is responsive and readable on mobile and desktop.
 
 ## Blocked by
 

@@ -157,7 +157,7 @@ textarea {
   }
 
   .home-hero {
-    @apply py-20 md:py-24;
+    @apply py-10 md:py-12;
   }
 
   .home-hero__grid {
@@ -170,20 +170,43 @@ textarea {
     font-family: var(--font-serif);
   }
 
+  .home-hero h1 {
+    @apply max-w-[10ch] text-[clamp(3.25rem,6vw,4.8rem)];
+  }
+
   .home-hero__lead {
-    @apply mt-6 max-w-[720px] text-[clamp(1.35rem,3vw,2rem)] leading-snug text-[var(--color-white-linen)];
+    @apply mt-5 max-w-[720px] text-[clamp(1.25rem,2vw,1.6rem)] leading-snug text-[var(--color-white-linen)];
   }
 
   .home-hero__copy,
+  .home-hero__metaphor,
+  .home-hero__panel p,
   .page-hero p,
   .section-header p,
   .split-section p,
-  .contact-grid p {
+  .contact-grid p,
+  .closing-cta p {
     @apply max-w-[690px] text-[1.05rem] leading-7 text-inherit;
   }
 
+  .home-hero__metaphor {
+    @apply mt-5 border-l-4 border-[var(--color-sundance)] pl-4 text-[var(--color-pale-leaf)];
+  }
+
+  .home-hero__panel {
+    @apply hidden gap-5 rounded-lg border border-[rgb(184_206_184_/_0.28)] bg-[rgb(250_246_239_/_0.06)] p-4 md:grid;
+  }
+
+  .home-hero__panel-label {
+    @apply m-0 text-sm font-bold uppercase text-[var(--color-sundance)];
+  }
+
+  .home-hero__panel p:last-child {
+    @apply m-0 text-[var(--color-pale-leaf)];
+  }
+
   .system-field {
-    @apply relative grid aspect-square min-h-72 overflow-hidden rounded-lg border border-[rgb(184_206_184_/_0.28)];
+    @apply relative mx-auto grid aspect-square min-h-72 w-full max-w-80 overflow-hidden rounded-lg border border-[rgb(184_206_184_/_0.28)];
   }
 
   .system-field::before,
@@ -240,21 +263,35 @@ textarea {
     @apply bg-[var(--color-stone)];
   }
 
+  .section-band--green {
+    @apply bg-[var(--color-green-kelp)] text-[var(--color-linen)];
+  }
+
   .section-header {
     @apply mb-8;
   }
 
+  .section-header--with-action {
+    @apply grid items-end gap-5 md:grid-cols-[minmax(0,1fr)_auto];
+  }
+
   .section-header h2,
   .split-section h2,
-  .contact-grid h2 {
+  .contact-grid h2,
+  .closing-cta h2 {
     @apply m-0 max-w-[780px] text-[clamp(2rem,4vw,3.6rem)] font-medium leading-none;
     font-family: var(--font-serif);
   }
 
   .section-header p,
   .split-section p,
-  .contact-grid p {
+  .contact-grid p,
+  .closing-cta p {
     @apply text-[var(--color-cement)];
+  }
+
+  .section-band--green .section-header p {
+    @apply text-[var(--color-pale-leaf)];
   }
 
   .card-grid {
@@ -315,6 +352,51 @@ textarea {
   .process-list span {
     @apply text-3xl text-[var(--color-sundance)];
     font-family: var(--font-serif);
+  }
+
+  .innovation-list {
+    @apply m-0 grid list-none gap-3 p-0 md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .innovation-list li {
+    @apply grid min-h-56 content-start gap-3 rounded-lg border border-[rgb(184_206_184_/_0.22)] bg-[rgb(250_246_239_/_0.06)] p-5;
+  }
+
+  .innovation-list span {
+    @apply text-3xl text-[var(--color-sundance)];
+    font-family: var(--font-serif);
+  }
+
+  .innovation-list h3 {
+    @apply m-0 text-xl text-[var(--color-white-linen)];
+  }
+
+  .innovation-list p {
+    @apply m-0 leading-relaxed text-[var(--color-pale-leaf)];
+  }
+
+  .home-path-grid {
+    @apply grid gap-4 md:grid-cols-2 lg:grid-cols-4;
+  }
+
+  .home-path-card {
+    @apply grid min-h-72 content-between gap-5 rounded-lg border border-[rgb(138_112_96_/_0.24)] bg-[var(--color-white-linen)] p-5 shadow-[0_10px_30px_rgb(17_26_16_/_0.06)] transition-colors hover:border-[var(--color-sundance)] hover:bg-[var(--color-linen)];
+  }
+
+  .home-path-card h3 {
+    @apply m-0 text-xl;
+  }
+
+  .home-path-card p {
+    @apply m-0 leading-relaxed text-[var(--color-cement)];
+  }
+
+  .home-path-card span {
+    @apply text-sm font-bold uppercase text-[var(--color-killarney)];
+  }
+
+  .closing-cta {
+    @apply grid items-center gap-6 md:grid-cols-[minmax(0,1fr)_auto];
   }
 
   .founder-card {

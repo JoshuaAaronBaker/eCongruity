@@ -8,6 +8,18 @@ export type Capability = {
   summary: string;
 };
 
+export type HomePath = {
+  title: string;
+  summary: string;
+  href: string;
+  label: string;
+};
+
+export type ProcessStep = {
+  title: string;
+  summary: string;
+};
+
 export type Testimonial = {
   quote: string;
   attribution: string;
@@ -79,6 +91,76 @@ export const capabilities: Capability[] = [
     title: "Innovation-as-a-service",
     summary:
       "Bring a flexible working group to stalled ideas that need strategy and execution momentum.",
+  },
+];
+
+export const featuredCapabilities: Capability[] = [
+  capabilities[0],
+  capabilities[5],
+  capabilities[7],
+];
+
+export const agileInnovationSteps: ProcessStep[] = [
+  {
+    title: "Problem",
+    summary:
+      "Clarify the operational or growth challenge before prescribing a tool, platform, or plan.",
+  },
+  {
+    title: "Ideation",
+    summary:
+      "Reframe assumptions and shape a practical direction around the organization's real constraints.",
+  },
+  {
+    title: "Collaboration",
+    summary:
+      "Align the Working Group so decisions, implementation needs, and lived process knowledge stay connected.",
+  },
+  {
+    title: "Solution",
+    summary:
+      "Carry the selected path into a Tailored Solution through strategy, coordination, and hands-on implementation.",
+  },
+  {
+    title: "Iteration",
+    summary:
+      "Use feedback and learning to refine the work before it hardens into a way of operating.",
+  },
+  {
+    title: "Growth",
+    summary:
+      "Leave the organization with a clearer foundation for durable business change after launch.",
+  },
+];
+
+export const homePaths: HomePath[] = [
+  {
+    title: "Approach",
+    summary:
+      "See how Agile Innovation moves from problem definition through collaboration, solution delivery, and growth.",
+    href: "/approach/",
+    label: "Explore Approach",
+  },
+  {
+    title: "Capabilities",
+    summary:
+      "Review example capabilities that can be shaped into a Tailored Solution, not selected as fixed packages.",
+    href: "/capabilities/",
+    label: "View Capabilities",
+  },
+  {
+    title: "About",
+    summary:
+      "Understand the founder-led judgment behind eCongruity's strategy-to-implementation work.",
+    href: "/about/",
+    label: "Meet eCongruity",
+  },
+  {
+    title: "Contact",
+    summary:
+      "Start with the challenge you are trying to solve. Timeline and cost come later, as part of strategy.",
+    href: "/contact/",
+    label: "Start the Conversation",
   },
 ];
 
