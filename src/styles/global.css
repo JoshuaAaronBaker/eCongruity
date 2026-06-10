@@ -430,6 +430,36 @@ textarea {
     @apply m-0 leading-relaxed text-[var(--color-cement)];
   }
 
+  .signal-list {
+    @apply grid gap-3;
+  }
+
+  .signal-list p {
+    @apply m-0 rounded-lg border border-[rgb(138_112_96_/_0.24)] bg-[var(--color-white-linen)] p-4 shadow-[0_10px_30px_rgb(17_26_16_/_0.06)];
+  }
+
+  .tailored-grid {
+    @apply grid gap-4 md:grid-cols-3;
+  }
+
+  .tailored-card {
+    @apply grid min-h-72 content-start gap-4 rounded-lg border border-[rgb(184_206_184_/_0.22)] bg-[rgb(250_246_239_/_0.06)] p-5;
+  }
+
+  .tailored-card span {
+    @apply text-4xl text-[var(--color-sundance)];
+    font-family: var(--font-serif);
+  }
+
+  .tailored-card h3 {
+    @apply m-0 text-2xl text-[var(--color-white-linen)];
+    font-family: var(--font-serif);
+  }
+
+  .tailored-card p {
+    @apply m-0 leading-relaxed text-[var(--color-pale-leaf)];
+  }
+
   .home-path-grid {
     @apply grid gap-4 md:grid-cols-2 lg:grid-cols-4;
   }
