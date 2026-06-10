@@ -375,6 +375,61 @@ textarea {
     @apply m-0 leading-relaxed text-[var(--color-pale-leaf)];
   }
 
+  .innovation-list--light li {
+    @apply border-[rgb(138_112_96_/_0.24)] bg-[var(--color-white-linen)] shadow-[0_10px_30px_rgb(17_26_16_/_0.06)];
+  }
+
+  .innovation-list--light h3 {
+    @apply text-[var(--color-hunter-green)];
+  }
+
+  .innovation-list--light p {
+    @apply text-[var(--color-cement)];
+  }
+
+  .approach-path {
+    @apply m-0 grid list-none gap-4 p-0 md:grid-cols-3;
+  }
+
+  .approach-path li {
+    @apply relative grid min-h-80 content-start gap-4 rounded-lg border border-[rgb(184_206_184_/_0.22)] bg-[rgb(250_246_239_/_0.06)] p-5;
+  }
+
+  .approach-path li::after {
+    content: "";
+    @apply absolute bottom-5 left-5 right-5 h-px bg-[rgb(200_165_90_/_0.45)];
+  }
+
+  .approach-path span {
+    @apply text-4xl text-[var(--color-sundance)];
+    font-family: var(--font-serif);
+  }
+
+  .approach-path h3 {
+    @apply m-0 text-2xl text-[var(--color-white-linen)];
+    font-family: var(--font-serif);
+  }
+
+  .approach-path p {
+    @apply m-0 pb-8 leading-relaxed text-[var(--color-pale-leaf)];
+  }
+
+  .working-group-grid {
+    @apply grid gap-4 md:grid-cols-2;
+  }
+
+  .working-group-card {
+    @apply grid gap-3 rounded-lg border border-[rgb(138_112_96_/_0.24)] bg-[var(--color-white-linen)] p-5 shadow-[0_10px_30px_rgb(17_26_16_/_0.06)];
+  }
+
+  .working-group-card h3 {
+    @apply m-0 text-xl;
+  }
+
+  .working-group-card p {
+    @apply m-0 leading-relaxed text-[var(--color-cement)];
+  }
+
   .home-path-grid {
     @apply grid gap-4 md:grid-cols-2 lg:grid-cols-4;
   }

@@ -20,6 +20,11 @@ export type ProcessStep = {
   summary: string;
 };
 
+export type ApproachItem = {
+  title: string;
+  summary: string;
+};
+
 export type Testimonial = {
   quote: string;
   attribution: string;
@@ -130,6 +135,70 @@ export const agileInnovationSteps: ProcessStep[] = [
     title: "Growth",
     summary:
       "Leave the organization with a clearer foundation for durable business change after launch.",
+  },
+];
+
+export const approachComplexitySignals: ApproachItem[] = [
+  {
+    title: "Unclear processes",
+    summary:
+      "The work depends on informal knowledge, duplicated effort, or handoffs that are hard to see until something breaks.",
+  },
+  {
+    title: "Disconnected systems",
+    summary:
+      "Teams are moving between tools, spreadsheets, and platforms without a shared operating picture.",
+  },
+  {
+    title: "Underused technology",
+    summary:
+      "Existing tools have potential, but the organization needs a clearer strategy for adoption, configuration, or replacement.",
+  },
+  {
+    title: "Stalled ideas",
+    summary:
+      "A promising initiative has enough support to matter, but not enough structure to move from concept to execution.",
+  },
+];
+
+export const engagementModel: ApproachItem[] = [
+  {
+    title: "Clarify the challenge",
+    summary:
+      "Start by defining the operational or growth complexity in plain business terms before recommending a tool, platform, or workflow.",
+  },
+  {
+    title: "Design the path",
+    summary:
+      "Shape a practical solution direction around the organization's needs, constraints, decision points, and people closest to the work.",
+  },
+  {
+    title: "Carry it into implementation",
+    summary:
+      "Provide hands-on implementation where it matters, coordinating the work through launch without becoming detached development capacity.",
+  },
+];
+
+export const workingGroupMembers: ApproachItem[] = [
+  {
+    title: "Client decision-makers",
+    summary:
+      "Leaders who can connect the work to business direction, priorities, and constraints.",
+  },
+  {
+    title: "People closest to the work",
+    summary:
+      "Operators, team leads, or subject-matter experts who understand the real process and daily friction.",
+  },
+  {
+    title: "eCongruity strategists and implementers",
+    summary:
+      "Guides who keep strategy, coordination, and hands-on execution connected as one engagement.",
+  },
+  {
+    title: "Outside specialists or vendors",
+    summary:
+      "Additional expertise brought in when the solution path calls for it, not as a fixed bench.",
   },
 ];
 
