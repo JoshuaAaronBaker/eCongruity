@@ -3,6 +3,30 @@ import ButtonLink from "../components/ButtonLink.astro";
 import PageHero from "../components/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { capabilities, site } from "../content/site";
+
+const capabilitySignals = [
+  "A process depends on manual handoffs, duplicate entry, or knowledge held by only a few people.",
+  "A digital tool, CMS, learning platform, or mobile experience needs to fit the way the organization actually works.",
+  "An idea has strategic support but needs the right Working Group, delivery path, and implementation momentum.",
+];
+
+const tailoredPrinciples = [
+  {
+    title: "Start with the operating context",
+    summary:
+      "The work begins by clarifying the organization's needs, constraints, decision points, and people closest to the challenge.",
+  },
+  {
+    title: "Shape the right mix",
+    summary:
+      "Capabilities can combine across workflow, systems, content, learning, mobile, process, and innovation work when the challenge calls for it.",
+  },
+  {
+    title: "Carry the path into use",
+    summary:
+      "Strategy stays connected to Hands-On Implementation so the Tailored Solution can move toward durable business change.",
+  },
+];
 ---
 
 <BaseLayout
@@ -11,8 +35,8 @@ import { capabilities, site } from "../content/site";
 >
   <PageHero
     eyebrow="Capabilities"
-    title="Examples of work that can become a tailored solution."
-    summary="Capabilities are starting points for shaping the right mix around an organization's needs, constraints, and situation."
+    title="Examples of work shaped around your situation."
+    summary="Capabilities are starting points. eCongruity combines strategy, people, process, and technology around the organization's needs, constraints, and situation."
   >
     <div class="button-row">
       <ButtonLink href="/approach/" variant="secondary">See the Approach</ButtonLink>
@@ -20,11 +44,30 @@ import { capabilities, site } from "../content/site";
     </div>
   </PageHero>
 
-  <section class="section-band section-band--linen" aria-labelledby="capabilities-heading">
+  <section class="section-band section-band--linen" aria-labelledby="recognize-heading">
+    <div class="site-container split-section">
+      <div>
+        <p class="eyebrow">Where This Fits</p>
+        <h2 id="recognize-heading">Look for the places where momentum keeps getting stuck.</h2>
+      </div>
+      <div class="signal-list" role="list">
+        {
+          capabilitySignals.map((signal) => (
+            <p role="listitem">{signal}</p>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-band section-band--stone" aria-labelledby="capabilities-heading">
     <div class="site-container">
       <div class="section-header">
         <p class="eyebrow">Possible Work</p>
-        <h2 id="capabilities-heading">Equal-weight examples, not fixed packages.</h2>
+        <h2 id="capabilities-heading">Equal-weight examples, not preset choices.</h2>
+        <p>
+          Each area represents a kind of work eCongruity can bring into a Strategy-to-Implementation Engagement when it helps create a Clear Path to Executable Growth.
+        </p>
       </div>
       <div class="card-grid card-grid--four">
         {
@@ -35,6 +78,45 @@ import { capabilities, site } from "../content/site";
             </article>
           ))
         }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-band section-band--green" aria-labelledby="tailored-heading">
+    <div class="site-container">
+      <div class="section-header">
+        <p class="eyebrow">Tailored Solution</p>
+        <h2 id="tailored-heading">The answer is designed around the organization, not selected from a shelf.</h2>
+        <p>
+          Operational and Growth Complexity rarely sits in one neat category. eCongruity helps leaders connect the relevant capability areas into a practical solution path that can be implemented and maintained.
+        </p>
+      </div>
+      <div class="tailored-grid">
+        {
+          tailoredPrinciples.map((principle, index) => (
+            <article class="tailored-card">
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{principle.title}</h3>
+              <p>{principle.summary}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-band section-band--linen" aria-labelledby="next-heading">
+    <div class="site-container closing-cta">
+      <div>
+        <p class="eyebrow">Next Step</p>
+        <h2 id="next-heading">See how the work moves, then start with the challenge.</h2>
+        <p>
+          Explore the engagement model behind the work, or share what feels unclear, disconnected, stalled, or ready to grow.
+        </p>
+      </div>
+      <div class="button-row">
+        <ButtonLink href="/approach/" variant="secondary">Explore Approach</ButtonLink>
+        <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
       </div>
     </div>
   </section>

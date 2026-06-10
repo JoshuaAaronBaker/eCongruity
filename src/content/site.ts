@@ -213,7 +213,7 @@ export const homePaths: HomePath[] = [
   {
     title: "Capabilities",
     summary:
-      "Review example capabilities that can be shaped into a Tailored Solution, not selected as fixed packages.",
+      "Review example capabilities that can be shaped into a Tailored Solution, not selected as preset choices.",
     href: "/capabilities/",
     label: "View Capabilities",
   },
