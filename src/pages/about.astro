@@ -12,33 +12,86 @@ import { founders, site } from "../content/site";
   <PageHero
     eyebrow="About"
     title="Founder-led judgment for strategy and implementation."
-    summary="Prospective clients should understand who guides the work, what kind of judgment they bring, and why they are credible partners for complex challenges."
+    summary="eCongruity is guided by people who keep business judgment, Working Group alignment, and hands-on implementation connected through complex client work."
   >
     <div class="button-row">
       <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
     </div>
   </PageHero>
 
+  <section class="section-band section-band--stone" aria-labelledby="credibility-heading">
+    <div class="site-container split-section">
+      <div>
+        <p class="eyebrow">Founder-Led</p>
+        <h2 id="credibility-heading">Practical judgment for the full path from strategy to implementation.</h2>
+      </div>
+      <div>
+        <p>
+          eCongruity is built for Organizational Leaders who need more than advice and more than detached execution. The work starts by clarifying the operational or growth challenge, then shaping a Tailored Solution that can be carried into the real operating context.
+        </p>
+        <p>
+          Founder-led means the judgment behind the engagement stays close to the work: problem definition, Working Group alignment, solution design, and hands-on implementation remain part of one guided conversation.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="section-band section-band--linen" aria-labelledby="founders-heading">
     <div class="site-container">
       <div class="section-header">
         <p class="eyebrow">Founder Bios</p>
-        <h2 id="founders-heading">Structured, replaceable founder information.</h2>
+        <h2 id="founders-heading">Credibility profiles that are easy to replace.</h2>
+        <p>
+          Each bio slot is structured around professional judgment, relevant experience, and the person's role in guiding client work. The portraits are intentionally compact so the people feel present without overpowering the content.
+        </p>
       </div>
       <div class="card-grid card-grid--two">
         {
           founders.map((founder) => (
             <article class="founder-card">
-              <div class="founder-card__image" aria-hidden="true"></div>
-              <div>
-                <h3>{founder.name}</h3>
-                <p class="content-card__meta">{founder.role}</p>
+              <div class="founder-card__header">
+                {
+                  founder.imageSrc ? (
+                    <img
+                      class="founder-card__image"
+                      src={founder.imageSrc}
+                      alt={founder.imageAlt ?? `${founder.name}, ${founder.role}`}
+                      loading="lazy"
+                      width="96"
+                      height="96"
+                    />
+                  ) : (
+                    <div class="founder-card__image" aria-hidden="true"></div>
+                  )
+                }
+                <div>
+                  <h3>{founder.name}</h3>
+                  <p class="content-card__meta">{founder.role}</p>
+                </div>
+              </div>
+              <div class="founder-card__body">
                 <p>{founder.bio}</p>
                 <p>{founder.localTexture}</p>
               </div>
             </article>
           ))
         }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-band section-band--stone" aria-labelledby="about-proof-heading">
+    <div class="site-container closing-cta">
+      <div>
+        <p class="eyebrow">Client Stories</p>
+        <h2 id="about-proof-heading">See how the positioning is supported by proof.</h2>
+        <p>
+          Client stories are the preferred proof format for eCongruity: short snapshots that show leaders moving from unclear complexity toward implemented, maintainable change.
+        </p>
+      </div>
+      <div class="button-row button-row--compact">
+        <ButtonLink href="/#proof-heading" variant="secondary">View Home Page Proof</ButtonLink>
+        <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
       </div>
     </div>
   </section>

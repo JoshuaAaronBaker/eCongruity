@@ -36,6 +36,8 @@ export type Founder = {
   role: string;
   bio: string;
   localTexture: string;
+  imageSrc?: string;
+  imageAlt?: string;
 };
 
 export const site = {
@@ -256,11 +258,69 @@ export const testimonials: Testimonial[] = [
 
 export const founders: Founder[] = [
   {
-    name: "Founder bio placeholder",
+    name: "Founder/team bio placeholder 01",
     role: "Founder-led strategy and implementation",
     bio:
       "A concise credibility profile will describe the judgment, experience, and role behind eCongruity's strategy-to-implementation work.",
     localTexture:
       "Replaceable local texture can be added once approved founder details are available.",
+    imageSrc: "/images/team/team-member-01.png",
+    imageAlt:
+      "Portrait for Founder/team bio placeholder 01, Founder-led strategy and implementation.",
+  },
+  {
+    name: "Founder/team bio placeholder 02",
+    role: "Operational and growth complexity guide",
+    bio:
+      "A concise credibility profile will describe how this person helps leaders clarify complex challenges and shape practical solution paths.",
+    localTexture:
+      "Replaceable local texture can be added once approved team details are available.",
+    imageSrc: "/images/team/team-member-02.png",
+    imageAlt:
+      "Portrait for Founder/team bio placeholder 02, Operational and growth complexity guide.",
+  },
+  {
+    name: "Founder/team bio placeholder 03",
+    role: "Strategy-to-implementation guide",
+    bio:
+      "A concise credibility profile will describe the relevant experience and judgment this person brings to guided client work.",
+    localTexture:
+      "Replaceable local texture can be added once approved team details are available.",
+    imageSrc: "/images/team/team-member-03.png",
+    imageAlt:
+      "Portrait for Founder/team bio placeholder 03, Strategy-to-implementation guide.",
+  },
+  {
+    name: "Founder/team bio placeholder 04",
+    role: "Hands-on implementation lead",
+    bio:
+      "A concise credibility profile will describe how this person connects practical execution with the broader strategy behind the engagement.",
+    localTexture:
+      "Replaceable local texture can be added once approved team details are available.",
+    imageSrc: "/images/team/team-member-04.png",
+    imageAlt:
+      "Portrait for Founder/team bio placeholder 04, Hands-on implementation lead.",
+  },
+  {
+    name: "Founder/team bio placeholder 05",
+    role: "Working Group alignment guide",
+    bio:
+      "A concise credibility profile will describe how this person keeps client decision-makers and people closest to the work connected.",
+    localTexture:
+      "Replaceable local texture can be added once approved team details are available.",
+    imageSrc: "/images/team/team-member-05.png",
+    imageAlt:
+      "Portrait for Founder/team bio placeholder 05, Working Group alignment guide.",
+  },
+  {
+    name: "Founder/team bio placeholder 06",
+    role: "Tailored solution advisor",
+    bio:
+      "A concise credibility profile will describe the judgment this person brings to shaping solutions around each organization's context.",
+    localTexture:
+      "Replaceable local texture can be added once approved team details are available.",
+    imageSrc: "/images/team/team-member-06.png",
+    imageAlt:
+      "Portrait for Founder/team bio placeholder 06, Tailored solution advisor.",
   },
 ];
