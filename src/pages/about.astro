@@ -1,0 +1,45 @@
+---
+import ButtonLink from "../components/ButtonLink.astro";
+import PageHero from "../components/PageHero.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { founders, site } from "../content/site";
+---
+
+<BaseLayout
+  title="About"
+  description="Founder-led credibility for eCongruity strategy-to-implementation engagements."
+>
+  <PageHero
+    eyebrow="About"
+    title="Founder-led judgment for strategy and implementation."
+    summary="Prospective clients should understand who guides the work, what kind of judgment they bring, and why they are credible partners for complex challenges."
+  >
+    <div class="button-row">
+      <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
+    </div>
+  </PageHero>
+
+  <section class="section-band section-band--linen" aria-labelledby="founders-heading">
+    <div class="site-container">
+      <div class="section-header">
+        <p class="eyebrow">Founder Bios</p>
+        <h2 id="founders-heading">Structured, replaceable founder information.</h2>
+      </div>
+      <div class="card-grid card-grid--two">
+        {
+          founders.map((founder) => (
+            <article class="founder-card">
+              <div class="founder-card__image" aria-hidden="true"></div>
+              <div>
+                <h3>{founder.name}</h3>
+                <p class="content-card__meta">{founder.role}</p>
+                <p>{founder.bio}</p>
+                <p>{founder.localTexture}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
