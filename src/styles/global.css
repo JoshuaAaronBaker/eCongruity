@@ -447,6 +447,86 @@ textarea {
     @apply m-0 rounded-lg border border-[rgb(138_112_96_/_0.24)] bg-[var(--color-white-linen)] p-4 shadow-[0_10px_30px_rgb(17_26_16_/_0.06)];
   }
 
+  .about-mission {
+    @apply grid items-start gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(18rem,1.1fr)];
+  }
+
+  .about-mission h2,
+  .about-story h2 {
+    @apply m-0 max-w-[11ch] text-[clamp(2.5rem,5vw,4.6rem)] font-medium leading-none;
+    font-family: var(--font-serif);
+  }
+
+  .about-mission p,
+  .about-story p {
+    @apply max-w-[640px] text-[1.05rem] leading-7;
+  }
+
+  .mission-proof {
+    @apply grid gap-8;
+  }
+
+  .mission-proof blockquote {
+    @apply m-0 border-l-2 border-[var(--color-sundance)] py-2 pl-6 text-[clamp(1.7rem,3vw,2.35rem)] leading-snug text-[var(--color-green-kelp)];
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+
+  .stat-grid {
+    @apply m-0 grid grid-cols-2 border-y border-[rgb(138_112_96_/_0.18)];
+  }
+
+  .stat-grid div {
+    @apply grid min-h-32 place-items-center border-[rgb(138_112_96_/_0.18)] p-5 text-center odd:border-r;
+  }
+
+  .stat-grid div:nth-child(-n + 2) {
+    @apply border-b;
+  }
+
+  .stat-grid dt {
+    @apply text-4xl text-[var(--color-green-kelp)];
+    font-family: var(--font-serif);
+  }
+
+  .stat-grid dd {
+    @apply m-0 text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-cement)];
+  }
+
+  .about-story {
+    @apply grid items-start gap-12 md:grid-cols-[minmax(0,0.9fr)_minmax(18rem,1fr)];
+  }
+
+  .about-story h2 {
+    @apply text-[var(--color-linen)];
+  }
+
+  .story-timeline {
+    @apply relative m-0 grid list-none gap-8 border-l border-[rgb(200_165_90_/_0.35)] p-0 pl-8;
+  }
+
+  .story-timeline li {
+    @apply relative;
+  }
+
+  .story-timeline li::before {
+    content: "";
+    @apply absolute -left-[2.15rem] top-1.5 h-2 w-2 rounded-full bg-[var(--color-sundance)];
+  }
+
+  .story-timeline__year {
+    @apply m-0 text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-sundance)]!;
+  }
+
+  .story-timeline h3 {
+    @apply my-2 text-xl font-medium text-[var(--color-linen)];
+    font-family: var(--font-serif);
+  }
+
+  .story-timeline p {
+    @apply m-0 max-w-none text-[var(--color-pale-leaf)];
+  }
+
   .tailored-grid {
     @apply grid gap-4 md:grid-cols-3;
   }
@@ -515,6 +595,14 @@ textarea {
 
   .founder-card__body p:first-child {
     @apply mt-0;
+  }
+
+  .team-grid {
+    @apply grid gap-4 md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .team-grid .founder-card {
+    @apply min-h-36;
   }
 
   .contact-form {

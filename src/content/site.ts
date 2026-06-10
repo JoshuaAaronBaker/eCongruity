@@ -31,11 +31,20 @@ export type Testimonial = {
   status: "placeholder" | "provisional" | "approved";
 };
 
+export type AboutStat = {
+  value: string;
+  label: string;
+};
+
+export type AboutTimelineItem = {
+  year: string;
+  title: string;
+  summary: string;
+};
+
 export type Founder = {
   name: string;
   role: string;
-  bio: string;
-  localTexture: string;
   imageSrc?: string;
   imageAlt?: string;
 };
@@ -256,71 +265,81 @@ export const testimonials: Testimonial[] = [
   },
 ];
 
+export const aboutStats: AboutStat[] = [
+  { value: "12+", label: "Years of Experience" },
+  { value: "50+", label: "Projects Delivered" },
+  { value: "3", label: "Markets Served" },
+  { value: "100%", label: "Client Focus" },
+];
+
+export const aboutTimeline: AboutTimelineItem[] = [
+  {
+    year: "2012",
+    title: "Founded in Montana",
+    summary:
+      "eCongruity opens its doors with a focus on strategic process design and mobile innovation.",
+  },
+  {
+    year: "2015",
+    title: "First Enterprise CMS",
+    summary:
+      "Delivered the first large-scale learning management system, setting the foundation for the LMS practice.",
+  },
+  {
+    year: "2018",
+    title: "Agile Innovation Framework",
+    summary:
+      "Codified a flexible innovation process that keeps strategy, collaboration, implementation, and learning connected across engagements.",
+  },
+  {
+    year: "2022",
+    title: "US Expansion",
+    summary:
+      "Expanded the client base nationally, partnering with organizations from enterprise teams to nimble startups.",
+  },
+  {
+    year: "Today",
+    title: "Nature + Technology",
+    summary:
+      "Doubling down on the mission: connecting people, process, and technology with purpose and durable business change.",
+  },
+];
+
 export const founders: Founder[] = [
   {
-    name: "Founder/team bio placeholder 01",
-    role: "Founder-led strategy and implementation",
-    bio:
-      "A concise credibility profile will describe the judgment, experience, and role behind eCongruity's strategy-to-implementation work.",
-    localTexture:
-      "Replaceable local texture can be added once approved founder details are available.",
-    imageSrc: "/images/team/team-member-01.png",
-    imageAlt:
-      "Portrait for Founder/team bio placeholder 01, Founder-led strategy and implementation.",
-  },
-  {
-    name: "Founder/team bio placeholder 02",
-    role: "Operational and growth complexity guide",
-    bio:
-      "A concise credibility profile will describe how this person helps leaders clarify complex challenges and shape practical solution paths.",
-    localTexture:
-      "Replaceable local texture can be added once approved team details are available.",
-    imageSrc: "/images/team/team-member-02.png",
-    imageAlt:
-      "Portrait for Founder/team bio placeholder 02, Operational and growth complexity guide.",
-  },
-  {
-    name: "Founder/team bio placeholder 03",
-    role: "Strategy-to-implementation guide",
-    bio:
-      "A concise credibility profile will describe the relevant experience and judgment this person brings to guided client work.",
-    localTexture:
-      "Replaceable local texture can be added once approved team details are available.",
-    imageSrc: "/images/team/team-member-03.png",
-    imageAlt:
-      "Portrait for Founder/team bio placeholder 03, Strategy-to-implementation guide.",
-  },
-  {
-    name: "Founder/team bio placeholder 04",
-    role: "Hands-on implementation lead",
-    bio:
-      "A concise credibility profile will describe how this person connects practical execution with the broader strategy behind the engagement.",
-    localTexture:
-      "Replaceable local texture can be added once approved team details are available.",
-    imageSrc: "/images/team/team-member-04.png",
-    imageAlt:
-      "Portrait for Founder/team bio placeholder 04, Hands-on implementation lead.",
-  },
-  {
-    name: "Founder/team bio placeholder 05",
-    role: "Working Group alignment guide",
-    bio:
-      "A concise credibility profile will describe how this person keeps client decision-makers and people closest to the work connected.",
-    localTexture:
-      "Replaceable local texture can be added once approved team details are available.",
-    imageSrc: "/images/team/team-member-05.png",
-    imageAlt:
-      "Portrait for Founder/team bio placeholder 05, Working Group alignment guide.",
-  },
-  {
-    name: "Founder/team bio placeholder 06",
-    role: "Tailored solution advisor",
-    bio:
-      "A concise credibility profile will describe the judgment this person brings to shaping solutions around each organization's context.",
-    localTexture:
-      "Replaceable local texture can be added once approved team details are available.",
+    name: "D. Scott Martell",
+    role: "CEO/Founder",
     imageSrc: "/images/team/team-member-06.png",
-    imageAlt:
-      "Portrait for Founder/team bio placeholder 06, Tailored solution advisor.",
+    imageAlt: "Portrait of D. Scott Martell, CEO and founder.",
+  },
+  {
+    name: "Angie Martell",
+    role: "COO/Co-Founder",
+    imageSrc: "/images/team/team-member-05.png",
+    imageAlt: "Portrait of Angie Martell, COO and co-founder.",
+  },
+  {
+    name: "Colin Nygaard",
+    role: "VP Business Development",
+    imageSrc: "/images/team/team-member-01.png",
+    imageAlt: "Portrait of Colin Nygaard, VP business development.",
+  },
+  {
+    name: "Colton Schmacher",
+    role: "Senior Program Manager",
+    imageSrc: "/images/team/team-member-04.png",
+    imageAlt: "Portrait of Colton Schmacher, senior program manager.",
+  },
+  {
+    name: "Amanda Cruz",
+    role: "VP Strategic Partnerships",
+    imageSrc: "/images/team/team-member-02.png",
+    imageAlt: "Portrait of Amanda Cruz, VP strategic partnerships.",
+  },
+  {
+    name: "Jim Aumack",
+    role: "VP Marketing",
+    imageSrc: "/images/team/team-member-03.png",
+    imageAlt: "Portrait of Jim Aumack, VP marketing.",
   },
 ];

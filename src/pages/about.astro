@@ -2,7 +2,7 @@
 import ButtonLink from "../components/ButtonLink.astro";
 import PageHero from "../components/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { founders, site } from "../content/site";
+import { aboutStats, aboutTimeline, founders, site } from "../content/site";
 ---
 
 <BaseLayout
@@ -19,33 +19,77 @@ import { founders, site } from "../content/site";
     </div>
   </PageHero>
 
-  <section class="section-band section-band--stone" aria-labelledby="credibility-heading">
-    <div class="site-container split-section">
+  <section class="section-band section-band--linen" aria-labelledby="mission-heading">
+    <div class="site-container about-mission">
       <div>
-        <p class="eyebrow">Founder-Led</p>
-        <h2 id="credibility-heading">Practical judgment for the full path from strategy to implementation.</h2>
-      </div>
-      <div>
+        <p class="eyebrow">Our Mission</p>
+        <h2 id="mission-heading">Simplifying the complex. Amplifying what matters.</h2>
         <p>
-          eCongruity is built for Organizational Leaders who need more than advice and more than detached execution. The work starts by clarifying the operational or growth challenge, then shaping a Tailored Solution that can be carried into the real operating context.
+          eCongruity was founded on a simple belief: the right technology, applied with the right strategy, can transform how organizations operate and grow.
         </p>
         <p>
-          Founder-led means the judgment behind the engagement stays close to the work: problem definition, Working Group alignment, solution design, and hands-on implementation remain part of one guided conversation.
+          We partner with leaders who are ready to think differently, move decisively, and build something that lasts. Our work sits at the intersection of strategy, technology, and human potential.
         </p>
       </div>
+      <div class="mission-proof" aria-label="eCongruity mission proof">
+        <blockquote>
+          "Innovation isn't about technology. It's about people who refuse to accept that things can't be done better."
+        </blockquote>
+        <dl class="stat-grid">
+          {
+            aboutStats.map((stat) => (
+              <div>
+                <dt>{stat.value}</dt>
+                <dd>{stat.label}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-band section-band--green" aria-labelledby="story-heading">
+    <div class="site-container about-story">
+      <div>
+        <p class="eyebrow">Our Story</p>
+        <h2 id="story-heading">Where we come from.</h2>
+        <p>
+          eCongruity was born out of a frustration with how organizations approached change: reactively, in silos, and without a clear path forward.
+        </p>
+        <p>
+          Founded in Livingston, Montana, we brought together strategists, technologists, and process designers with one goal: to help organizations find their clearest path forward, faster.
+        </p>
+        <p>
+          Today we work with clients across the US, from enterprise organizations to nimble startups, bringing the same rigor and creativity to every engagement.
+        </p>
+      </div>
+      <ol class="story-timeline">
+        {
+          aboutTimeline.map((item) => (
+            <li>
+              <p class="story-timeline__year">{item.year}</p>
+              <h3>{item.title}</h3>
+              <p>{item.summary}</p>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </section>
 
   <section class="section-band section-band--linen" aria-labelledby="founders-heading">
     <div class="site-container">
-      <div class="section-header">
-        <p class="eyebrow">Founder Bios</p>
-        <h2 id="founders-heading">Credibility profiles that are easy to replace.</h2>
+      <div class="section-header section-header--with-action">
+        <div>
+          <p class="eyebrow">Our Team</p>
+          <h2 id="founders-heading">The people behind the work.</h2>
+        </div>
         <p>
-          Each bio slot is structured around professional judgment, relevant experience, and the person's role in guiding client work. The portraits are intentionally compact so the people feel present without overpowering the content.
+          Small by design, intentional by nature. We bring together strategists, technologists, and creative thinkers united by one belief: the best solutions grow at the intersection of people and purpose.
         </p>
       </div>
-      <div class="card-grid card-grid--two">
+      <div class="team-grid">
         {
           founders.map((founder) => (
             <article class="founder-card">
@@ -68,10 +112,6 @@ import { founders, site } from "../content/site";
                   <h3>{founder.name}</h3>
                   <p class="content-card__meta">{founder.role}</p>
                 </div>
-              </div>
-              <div class="founder-card__body">
-                <p>{founder.bio}</p>
-                <p>{founder.localTexture}</p>
               </div>
             </article>
           ))
