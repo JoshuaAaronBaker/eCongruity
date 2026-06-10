@@ -1,0 +1,29 @@
+---
+import ButtonLink from "./ButtonLink.astro";
+import { navItems, site } from "../content/site";
+---
+
+<footer class="site-footer">
+  <div class="site-container site-footer__grid">
+    <div>
+      <p class="eyebrow">{site.category}</p>
+      <h2 class="site-footer__heading">{site.name}</h2>
+      <p class="site-footer__copy">{site.positioning}</p>
+      <p class="site-footer__copy">{site.outcome}</p>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="Footer navigation">
+      {
+        navItems.map((item) => (
+          <a href={item.href}>{item.label}</a>
+        ))
+      }
+    </nav>
+
+    <div class="site-footer__contact">
+      <p class="site-footer__label">Contact</p>
+      <p>Business and direct contact details to be confirmed.</p>
+      <ButtonLink href="/contact/" variant="secondary">{site.contactCta}</ButtonLink>
+    </div>
+  </div>
+</footer>

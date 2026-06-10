@@ -1,15 +1,71 @@
 ---
-import "../styles/global.css";
+import ButtonLink from "../components/ButtonLink.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site, testimonials } from "../content/site";
 ---
 
-<main class="min-h-screen bg-[var(--color-hunter-green)] px-6 py-16 text-[var(--color-linen)]">
-  <p class="mb-4 text-sm uppercase tracking-[0.3em] text-[var(--color-sundance)]">
-    Strategic Innovation Studio
-  </p>
-  <h1 class="max-w-4xl font-serif text-5xl leading-tight md:text-7xl">
-    eCongruity
-  </h1>
-  <p class="mt-6 max-w-2xl text-lg leading-8 text-[var(--color-pale-leaf)]">
-    Connecting people, process, and technology for real-time business.
-  </p>
-</main>
+<BaseLayout
+  title={site.name}
+  description="eCongruity is a Strategic Innovation Studio connecting people, process, and technology for real-time business."
+>
+  <section class="home-hero">
+    <div class="site-container home-hero__grid">
+      <div>
+        <p class="eyebrow">{site.category}</p>
+        <h1>{site.name}</h1>
+        <p class="home-hero__lead">
+          {site.positioning}
+        </p>
+        <p class="home-hero__copy">
+          eCongruity helps Organizational Leaders simplify operational and growth complexity through tailored strategy-to-implementation engagements.
+        </p>
+        <div class="button-row">
+          <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
+          <ButtonLink href="/approach/" variant="secondary">Explore the Approach</ButtonLink>
+        </div>
+      </div>
+      <div class="system-field" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-band section-band--linen" aria-labelledby="proof-heading">
+    <div class="site-container">
+      <div class="section-header">
+        <p class="eyebrow">Client Stories</p>
+        <h2 id="proof-heading">Proof stays close to the positioning.</h2>
+        <p>
+          Testimonials are structured as replaceable client stories and are not a standalone page.
+        </p>
+      </div>
+      <div class="card-grid card-grid--three">
+        {
+          testimonials.map((testimonial) => (
+            <article class="content-card">
+              <p class="content-card__quote">"{testimonial.quote}"</p>
+              <p class="content-card__meta">
+                {testimonial.attribution} · {testimonial.status}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-band section-band--stone" aria-labelledby="path-heading">
+    <div class="site-container split-section">
+      <div>
+        <p class="eyebrow">Clear Path to Executable Growth</p>
+        <h2 id="path-heading">Strategy and implementation belong in the same conversation.</h2>
+      </div>
+      <p>
+        Future homepage slices will expand this foundation with operational complexity framing, capability previews, founder-led credibility, and a closing call to action.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

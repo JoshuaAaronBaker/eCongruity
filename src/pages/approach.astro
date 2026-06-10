@@ -1,0 +1,50 @@
+---
+import ButtonLink from "../components/ButtonLink.astro";
+import PageHero from "../components/PageHero.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../content/site";
+
+const processSteps = [
+  "Problem",
+  "Ideation",
+  "Collaboration",
+  "Solution",
+  "Iteration",
+  "Growth",
+];
+---
+
+<BaseLayout
+  title="Approach"
+  description="The eCongruity approach moves from problem definition through hands-on implementation."
+>
+  <PageHero
+    eyebrow="Approach"
+    title="A strategy-to-implementation engagement model."
+    summary="eCongruity clarifies the challenge, designs a practical solution path, and helps carry that path into execution."
+  >
+    <div class="button-row">
+      <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
+      <ButtonLink href="/capabilities/" variant="secondary">Explore Capabilities</ButtonLink>
+    </div>
+  </PageHero>
+
+  <section class="section-band section-band--linen" aria-labelledby="process-heading">
+    <div class="site-container">
+      <div class="section-header">
+        <p class="eyebrow">Agile Innovation</p>
+        <h2 id="process-heading">A flexible path for complex work.</h2>
+      </div>
+      <ol class="process-list">
+        {
+          processSteps.map((step, index) => (
+            <li>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              {step}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+</BaseLayout>

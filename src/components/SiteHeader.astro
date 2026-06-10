@@ -1,0 +1,66 @@
+---
+import { Menu } from "@lucide/astro";
+import ButtonLink from "./ButtonLink.astro";
+import { navItems, site } from "../content/site";
+
+const normalizePath = (path: string) =>
+  path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path;
+
+const currentPath = normalizePath(Astro.url.pathname);
+
+const isActive = (href: string) => {
+  const normalizedHref = normalizePath(href);
+  return normalizedHref === "/"
+    ? currentPath === "/"
+    : currentPath === normalizedHref;
+};
+---
+
+<header class="site-header">
+  <div class="site-container site-header__inner">
+    <a class="brand-link" href="/" aria-label="eCongruity home">
+      <span class="brand-link__name">{site.name}</span>
+      <span class="brand-link__category">{site.category}</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class:list={["nav-link", isActive(item.href) && "nav-link--active"]}
+            aria-current={isActive(item.href) ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="desktop-cta">
+      <ButtonLink href="/contact/" variant="primary">{site.contactCta}</ButtonLink>
+    </div>
+
+    <details class="mobile-nav">
+      <summary aria-label="Open navigation">
+        <Menu size={22} aria-hidden="true" />
+      </summary>
+      <nav class="mobile-nav__panel" aria-label="Mobile navigation">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              class:list={["mobile-nav__link", isActive(item.href) && "mobile-nav__link--active"]}
+              aria-current={isActive(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+        <ButtonLink href="/contact/" variant="primary" class="mobile-nav__cta">
+          {site.contactCta}
+        </ButtonLink>
+      </nav>
+    </details>
+  </div>
+</header>

@@ -1,0 +1,56 @@
+---
+import ButtonLink from "../components/ButtonLink.astro";
+import PageHero from "../components/PageHero.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../content/site";
+---
+
+<BaseLayout
+  title="Contact"
+  description="Start a conversation with eCongruity about the challenge you are trying to solve."
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Start the conversation around the challenge."
+    summary="The first step is a simple inquiry, not a quote request. eCongruity owns timeline and cost estimation as part of strategy and planning."
+  />
+
+  <section class="section-band section-band--linen" aria-labelledby="contact-form-heading">
+    <div class="site-container contact-grid">
+      <div>
+        <p class="eyebrow">{site.contactCta}</p>
+        <h2 id="contact-form-heading">Tell us what you are trying to solve.</h2>
+        <p>
+          This static form markup is ready for future hosting integration without requiring a custom backend today.
+        </p>
+      </div>
+
+      <form class="contact-form" name="start-the-conversation" method="post">
+        <label>
+          Name
+          <input type="text" name="name" autocomplete="name" required />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" autocomplete="email" required />
+        </label>
+        <label>
+          Organization
+          <input type="text" name="organization" autocomplete="organization" required />
+        </label>
+        <label>
+          Role or title
+          <input type="text" name="role" autocomplete="organization-title" required />
+        </label>
+        <label>
+          What are you trying to solve?
+          <textarea name="challenge" rows="6" required></textarea>
+        </label>
+        <ButtonLink href="/" variant="secondary">Return Home</ButtonLink>
+        <button class="button-link button-link--primary" type="submit">
+          {site.contactCta}
+        </button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>

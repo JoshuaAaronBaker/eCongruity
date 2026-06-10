@@ -1,0 +1,41 @@
+---
+import ButtonLink from "../components/ButtonLink.astro";
+import PageHero from "../components/PageHero.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { capabilities, site } from "../content/site";
+---
+
+<BaseLayout
+  title="Capabilities"
+  description="Examples of eCongruity capabilities that can be shaped into tailored solutions."
+>
+  <PageHero
+    eyebrow="Capabilities"
+    title="Examples of work that can become a tailored solution."
+    summary="Capabilities are starting points for shaping the right mix around an organization's needs, constraints, and situation."
+  >
+    <div class="button-row">
+      <ButtonLink href="/approach/" variant="secondary">See the Approach</ButtonLink>
+      <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
+    </div>
+  </PageHero>
+
+  <section class="section-band section-band--linen" aria-labelledby="capabilities-heading">
+    <div class="site-container">
+      <div class="section-header">
+        <p class="eyebrow">Possible Work</p>
+        <h2 id="capabilities-heading">Equal-weight examples, not fixed packages.</h2>
+      </div>
+      <div class="card-grid card-grid--four">
+        {
+          capabilities.map((capability) => (
+            <article class="content-card">
+              <h3>{capability.title}</h3>
+              <p>{capability.summary}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
