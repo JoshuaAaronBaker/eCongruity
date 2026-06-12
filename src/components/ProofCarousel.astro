@@ -1,0 +1,166 @@
+---
+import { ChevronLeft, ChevronRight } from "@lucide/astro";
+import ButtonLink from "./ButtonLink.astro";
+import type { Testimonial } from "../content/site";
+
+type Props = {
+  testimonials: Testimonial[];
+};
+
+const { testimonials } = Astro.props;
+---
+
+<section class="section-band section-band--linen proof-section" aria-labelledby="proof-heading">
+  <div class="site-container">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Client Voices</p>
+        <h2 id="proof-heading">Trusted by leaders who think differently.</h2>
+      </div>
+    </div>
+
+    <div
+      class="proof-carousel"
+      data-proof-carousel
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Client story proof"
+    >
+      <div class="proof-carousel__viewport" data-proof-viewport>
+        <div class="proof-carousel__container">
+          {
+            testimonials.map((testimonial, index) => (
+              <article
+                class="proof-slide"
+                data-proof-slide
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${index + 1} of ${testimonials.length}`}
+              >
+                <span class="proof-slide__mark" aria-hidden="true">"</span>
+                <blockquote>
+                  <p>"{testimonial.quote}"</p>
+                </blockquote>
+                <footer>
+                  <span class="proof-slide__initials" aria-hidden="true">{testimonial.initials}</span>
+                  <p class="proof-slide__name">{testimonial.name}</p>
+                  <p class="proof-slide__meta">
+                    {testimonial.role}, {testimonial.organization}
+                  </p>
+                </footer>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="proof-carousel__controls" aria-label="Client story controls">
+        <button class="proof-carousel__button" type="button" data-proof-prev aria-label="Previous client story">
+          <ChevronLeft size={16} aria-hidden="true" />
+        </button>
+        <div class="proof-carousel__dots" aria-label="Select a client story">
+          {
+            testimonials.map((_, index) => (
+              <button
+                class="proof-carousel__dot"
+                type="button"
+                data-proof-dot
+                aria-label={`Show client story ${index + 1}`}
+                aria-current={index === 0 ? "true" : undefined}
+              />
+            ))
+          }
+        </div>
+        <button class="proof-carousel__button" type="button" data-proof-next aria-label="Next client story">
+          <ChevronRight size={16} aria-hidden="true" />
+        </button>
+      </div>
+      <ButtonLink href="/contact/" variant="secondary" class="proof-carousel__cta">Start with Your Challenge</ButtonLink>
+    </div>
+  </div>
+</section>
+
+<script>
+  import EmblaCarousel from "embla-carousel";
+
+  const carouselNodes = document.querySelectorAll<HTMLElement>("[data-proof-carousel]");
+
+  carouselNodes.forEach((carouselNode) => {
+    const viewportNode = carouselNode.querySelector<HTMLElement>("[data-proof-viewport]");
+    const prevButton = carouselNode.querySelector<HTMLButtonElement>("[data-proof-prev]");
+    const nextButton = carouselNode.querySelector<HTMLButtonElement>("[data-proof-next]");
+    const dotButtons = Array.from(carouselNode.querySelectorAll<HTMLButtonElement>("[data-proof-dot]"));
+    const slideNodes = Array.from(carouselNode.querySelectorAll<HTMLElement>("[data-proof-slide]"));
+
+    if (!viewportNode || !prevButton || !nextButton || dotButtons.length === 0) {
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const embla = EmblaCarousel(viewportNode, {
+      align: "start",
+      containScroll: "trimSnaps",
+      duration: prefersReducedMotion ? 0 : 24,
+      loop: true,
+    });
+    let autoplay: number | undefined;
+
+    const restartAutoplay = () => {
+      if (prefersReducedMotion) {
+        return;
+      }
+
+      window.clearInterval(autoplay);
+      autoplay = window.setInterval(() => {
+        embla.scrollNext();
+      }, 5000);
+    };
+
+    const updateCarouselState = () => {
+      const selectedIndex = embla.selectedScrollSnap();
+
+      prevButton.disabled = !embla.canScrollPrev();
+      nextButton.disabled = !embla.canScrollNext();
+
+      dotButtons.forEach((button, index) => {
+        if (index === selectedIndex) {
+          button.setAttribute("aria-current", "true");
+        } else {
+          button.removeAttribute("aria-current");
+        }
+      });
+
+      slideNodes.forEach((slide, index) => {
+        slide.toggleAttribute("inert", index !== selectedIndex);
+        slide.setAttribute("aria-hidden", String(index !== selectedIndex));
+      });
+    };
+
+    prevButton.addEventListener("click", () => {
+      embla.scrollPrev();
+      restartAutoplay();
+    });
+    nextButton.addEventListener("click", () => {
+      embla.scrollNext();
+      restartAutoplay();
+    });
+    dotButtons.forEach((button, index) => {
+      button.addEventListener("click", () => {
+        embla.scrollTo(index);
+        restartAutoplay();
+      });
+      button.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          embla.scrollTo(index);
+          restartAutoplay();
+        }
+      });
+    });
+
+    embla.on("select", updateCarouselState);
+    embla.on("reInit", updateCarouselState);
+    updateCarouselState();
+    restartAutoplay();
+  });
+</script>

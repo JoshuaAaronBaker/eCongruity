@@ -345,6 +345,106 @@ textarea {
     @apply text-sm font-bold text-[var(--color-killarney)]!;
   }
 
+  .proof-section {
+    @apply border-b border-[rgb(138_112_96_/_0.12)] py-10 md:py-12;
+  }
+
+  .proof-section .section-header {
+    @apply mx-auto mb-5 grid max-w-[760px] justify-items-center text-center;
+  }
+
+  .proof-section .eyebrow {
+    @apply inline-block max-w-none text-center text-[var(--color-sundance)];
+  }
+
+  .proof-section .section-header h2 {
+    @apply mx-auto max-w-[18ch] text-[clamp(1.9rem,3.4vw,2.9rem)] leading-[1.06];
+  }
+
+  .proof-carousel {
+    @apply mx-auto grid max-w-[720px] justify-items-center gap-4;
+  }
+
+  .proof-carousel__viewport {
+    @apply overflow-hidden bg-transparent;
+  }
+
+  .proof-carousel__container {
+    @apply flex;
+  }
+
+  .proof-slide {
+    @apply grid min-w-0 flex-[0_0_100%] content-start justify-items-center gap-3 px-2 py-2 text-center md:px-8;
+  }
+
+  .proof-slide__mark {
+    @apply h-7 text-4xl leading-none text-[var(--color-sundance)];
+    font-family: var(--font-serif);
+  }
+
+  .proof-slide blockquote {
+    @apply m-0;
+  }
+
+  .proof-slide blockquote p {
+    @apply m-0 max-w-[660px] text-[clamp(1.2rem,2vw,1.55rem)] italic leading-relaxed text-[var(--color-green-kelp)];
+    font-family: var(--font-serif);
+  }
+
+  .proof-slide footer {
+    @apply mt-1 grid justify-items-center gap-1;
+  }
+
+  .proof-slide footer::before {
+    content: "";
+    @apply mb-3 h-px w-8 bg-[rgb(200_165_90_/_0.45)];
+  }
+
+  .proof-slide__initials {
+    @apply grid h-11 w-11 place-items-center rounded-full bg-[var(--color-hunter-green)] text-xs font-bold text-[var(--color-sundance)];
+  }
+
+  .proof-slide__name {
+    @apply mb-0 mt-3 text-sm font-bold text-[var(--color-green-kelp)];
+  }
+
+  .proof-slide__meta {
+    @apply m-0 text-xs leading-relaxed text-[var(--color-cement)];
+  }
+
+  .proof-carousel__controls {
+    @apply mx-auto flex items-center justify-center gap-4;
+  }
+
+  .proof-carousel__cta {
+    @apply mt-1;
+  }
+
+  .proof-carousel__button {
+    @apply inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[rgb(138_112_96_/_0.24)] bg-transparent text-[var(--color-green-kelp)] transition-colors hover:border-[var(--color-sundance)] hover:bg-[rgb(200_165_90_/_0.08)];
+  }
+
+  .proof-carousel__dots {
+    @apply flex min-h-9 items-center justify-center gap-1.5;
+  }
+
+  .proof-carousel__dot {
+    @apply grid h-4 w-4 cursor-pointer place-items-center rounded-full border border-transparent bg-transparent p-0 transition-colors;
+  }
+
+  .proof-carousel__dot::before {
+    content: "";
+    @apply h-1.5 w-1.5 rounded-full bg-[rgb(138_112_96_/_0.34)];
+  }
+
+  .proof-carousel__dot[aria-current="true"] {
+    @apply border-[rgb(200_165_90_/_0.35)];
+  }
+
+  .proof-carousel__dot[aria-current="true"]::before {
+    @apply bg-[var(--color-sundance)];
+  }
+
   .split-section,
   .contact-grid {
     @apply grid gap-8 md:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)];

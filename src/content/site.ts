@@ -27,8 +27,12 @@ export type ApproachItem = {
 
 export type Testimonial = {
   quote: string;
-  attribution: string;
+  name: string;
+  initials: string;
+  role: string;
+  organization: string;
   status: "placeholder" | "provisional" | "approved";
+  note: string;
 };
 
 export type AboutStat = {
@@ -247,21 +251,33 @@ export const homePaths: HomePath[] = [
 export const testimonials: Testimonial[] = [
   {
     quote:
-      "eCongruity helped us move from a fuzzy operational challenge to an implemented path our team could actually use.",
-    attribution: "Client story placeholder",
-    status: "placeholder",
+      "I have a passion for finding innovative ways to use technology. Working with eCongruity as a strategic partner has created a path forward to new markets.",
+    name: "Paul Nutting",
+    initials: "PN",
+    role: "Founder",
+    organization: "Tap Cloud",
+    status: "provisional",
+    note: "Named Tap Cloud testimonial. Keep provisional until approved for publication.",
   },
   {
     quote:
-      "The work connected business judgment with hands-on implementation, which kept the solution grounded.",
-    attribution: "Client story placeholder",
-    status: "placeholder",
+      "Streamlining our processes and developing our online learning management system enabled us to more effectively deliver an immersive digital experience.",
+    name: "Jere Stocks",
+    initials: "JS",
+    role: "President",
+    organization: "LMI North America",
+    status: "provisional",
+    note: "Named testimonial. Keep provisional until approved for publication.",
   },
   {
     quote:
-      "They brought structure to a cross-functional problem without forcing us into a rigid process.",
-    attribution: "Client story placeholder",
-    status: "placeholder",
+      "Working with a team that is passionate about their work like eCongruity made this process so easy. The development went much faster than I anticipated.",
+    name: "Beth Miller",
+    initials: "BM",
+    role: "Director of Performance Nutrition",
+    organization: "UCLA",
+    status: "provisional",
+    note: "Named testimonial. Keep provisional until approved for publication.",
   },
 ];
 

@@ -1,5 +1,6 @@
 ---
 import ButtonLink from "../components/ButtonLink.astro";
+import ProofCarousel from "../components/ProofCarousel.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   agileInnovationSteps,
@@ -48,29 +49,7 @@ import {
     </div>
   </section>
 
-  <section class="section-band section-band--linen" aria-labelledby="proof-heading">
-    <div class="site-container">
-      <div class="section-header">
-        <p class="eyebrow">Client Stories</p>
-        <h2 id="proof-heading">Proof stays close to the positioning.</h2>
-        <p>
-          Client stories show eCongruity helping leaders move from unclear complexity toward implemented, maintainable change.
-        </p>
-      </div>
-      <div class="card-grid card-grid--three">
-        {
-          testimonials.map((testimonial) => (
-            <article class="content-card">
-              <p class="content-card__quote">"{testimonial.quote}"</p>
-              <p class="content-card__meta">
-                {testimonial.attribution} · {testimonial.status}
-              </p>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+  <ProofCarousel testimonials={testimonials} />
 
   <section class="section-band section-band--stone" aria-labelledby="work-heading">
     <div class="site-container split-section">
