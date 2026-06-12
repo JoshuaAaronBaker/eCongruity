@@ -15,6 +15,17 @@ export type HomePath = {
   label: string;
 };
 
+export type HomeDiagnostic = {
+  signal: string;
+  firstMove: string;
+};
+
+export type ClientStory = {
+  context: string;
+  action: string;
+  outcome: string;
+};
+
 export type ProcessStep = {
   title: string;
   summary: string;
@@ -33,6 +44,7 @@ export type Testimonial = {
   organization: string;
   status: "placeholder" | "provisional" | "approved";
   note: string;
+  story?: ClientStory;
 };
 
 export type AboutStat = {
@@ -120,31 +132,49 @@ export const featuredCapabilities: Capability[] = [
   capabilities[7],
 ];
 
+export const homeDiagnostics: HomeDiagnostic[] = [
+  {
+    signal: "Teams keep routing work through side spreadsheets, duplicate entry, and informal handoffs.",
+    firstMove:
+      "Map the real operating path, name the friction points, and decide what should be automated, simplified, or governed.",
+  },
+  {
+    signal: "A promising initiative has sponsor support but no clear route from idea to implementation.",
+    firstMove:
+      "Shape the Working Group, decision points, and first executable slice so momentum has somewhere concrete to go.",
+  },
+  {
+    signal: "Technology is already in place, but adoption, configuration, or ownership keeps stalling.",
+    firstMove:
+      "Clarify the business job, align the people closest to the work, and tune the tool around how the organization operates.",
+  },
+];
+
 export const agileInnovationSteps: ProcessStep[] = [
   {
     title: "Problem",
     summary:
-      "Clarify the operational or growth challenge before prescribing a tool, platform, or plan.",
+      "Name the operational or growth challenge in plain business terms before choosing a tool, platform, or plan.",
   },
   {
     title: "Ideation",
     summary:
-      "Reframe assumptions and shape a practical direction around the organization's real constraints.",
+      "Reframe assumptions and shape a practical direction around the organization's constraints, capacity, and goals.",
   },
   {
     title: "Collaboration",
     summary:
-      "Align the Working Group so decisions, implementation needs, and lived process knowledge stay connected.",
+      "Bring the Working Group into the same picture so decisions, implementation needs, and lived process knowledge stay connected.",
   },
   {
     title: "Solution",
     summary:
-      "Carry the selected path into a Tailored Solution through strategy, coordination, and hands-on implementation.",
+      "Turn the selected path into a Tailored Solution through strategy, coordination, and hands-on implementation.",
   },
   {
     title: "Iteration",
     summary:
-      "Use feedback and learning to refine the work before it hardens into a way of operating.",
+      "Use feedback and learning to refine the work before it becomes the new way of operating.",
   },
   {
     title: "Growth",
@@ -157,7 +187,7 @@ export const approachComplexitySignals: ApproachItem[] = [
   {
     title: "Unclear processes",
     summary:
-      "The work depends on informal knowledge, duplicated effort, or handoffs that are hard to see until something breaks.",
+      "Work depends on informal knowledge, duplicated effort, or handoffs that are hard to see until something breaks.",
   },
   {
     title: "Disconnected systems",
@@ -180,17 +210,35 @@ export const engagementModel: ApproachItem[] = [
   {
     title: "Clarify the challenge",
     summary:
-      "Start by defining the operational or growth complexity in plain business terms before recommending a tool, platform, or workflow.",
+      "Define the operating conditions, decision points, constraints, and friction before recommending a tool, platform, or workflow.",
   },
   {
     title: "Design the path",
     summary:
-      "Shape a practical solution direction around the organization's needs, constraints, decision points, and people closest to the work.",
+      "Shape a practical solution direction around the organization's needs and the people closest to the work.",
   },
   {
     title: "Carry it into implementation",
     summary:
-      "Provide hands-on implementation where it matters, coordinating the work through launch without becoming detached development capacity.",
+      "Coordinate and build where it matters, carrying the work through launch without becoming detached development capacity.",
+  },
+];
+
+export const challengeMapOutputs: ApproachItem[] = [
+  {
+    title: "Operating map",
+    summary:
+      "The real path of the work, including handoffs, tools, ownership, constraints, and points of friction.",
+  },
+  {
+    title: "Working group shape",
+    summary:
+      "The decision-makers, operators, implementers, and specialists needed for the challenge at hand.",
+  },
+  {
+    title: "First executable slice",
+    summary:
+      "A practical starting move that can be built, configured, coordinated, or tested without losing the larger strategy.",
   },
 ];
 
@@ -198,7 +246,7 @@ export const workingGroupMembers: ApproachItem[] = [
   {
     title: "Client decision-makers",
     summary:
-      "Leaders who can connect the work to business direction, priorities, and constraints.",
+      "Leaders who connect the work to business direction, priorities, constraints, and tradeoffs.",
   },
   {
     title: "People closest to the work",
@@ -251,33 +299,51 @@ export const homePaths: HomePath[] = [
 export const testimonials: Testimonial[] = [
   {
     quote:
-      "I have a passion for finding innovative ways to use technology. Working with eCongruity as a strategic partner has created a path forward to new markets.",
+      "Working with eCongruity as a strategic partner created a path forward to new markets.",
     name: "Paul Nutting",
     initials: "PN",
     role: "Founder",
     organization: "Tap Cloud",
     status: "provisional",
     note: "Named Tap Cloud testimonial. Keep provisional until approved for publication.",
+    story: {
+      context: "A founder needed a practical path from technical possibility to market expansion.",
+      action:
+        "eCongruity worked as a strategic partner, connecting product direction with implementation judgment.",
+      outcome: "The work created a clearer path toward new markets.",
+    },
   },
   {
     quote:
-      "Streamlining our processes and developing our online learning management system enabled us to more effectively deliver an immersive digital experience.",
+      "eCongruity helped us streamline process and deliver a more effective immersive digital experience.",
     name: "Jere Stocks",
     initials: "JS",
     role: "President",
     organization: "LMI North America",
     status: "provisional",
     note: "Named testimonial. Keep provisional until approved for publication.",
+    story: {
+      context: "Process and learning delivery needed to work together instead of living as separate efforts.",
+      action:
+        "eCongruity streamlined operational process and helped develop the online learning management system.",
+      outcome: "The organization could deliver a more effective immersive digital experience.",
+    },
   },
   {
     quote:
-      "Working with a team that is passionate about their work like eCongruity made this process so easy. The development went much faster than I anticipated.",
+      "The process was easy, and development moved much faster than I anticipated.",
     name: "Beth Miller",
     initials: "BM",
     role: "Director of Performance Nutrition",
     organization: "UCLA",
     status: "provisional",
     note: "Named testimonial. Keep provisional until approved for publication.",
+    story: {
+      context: "A performance nutrition team needed development support without losing momentum.",
+      action:
+        "eCongruity kept the process moving with hands-on implementation and responsive collaboration.",
+      outcome: "The development process moved faster than expected.",
+    },
   },
 ];
 
