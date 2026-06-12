@@ -24,6 +24,8 @@
   --type-lead: clamp(1.02rem, 1.4vw, 1.15rem);
   --type-copy: 0.98rem;
   --type-small-copy: 0.95rem;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-press: cubic-bezier(0.25, 0.46, 0.2, 1);
 }
 
 @media (min-width: 768px) {
@@ -134,12 +136,32 @@ textarea {
   }
 
   .desktop-cta .button-link {
-    @apply min-h-10 border-[var(--color-sundance)] px-7 text-[0.7rem] tracking-[0.2em] text-[var(--color-sundance)] hover:bg-[rgb(200_165_90_/_0.1)] hover:text-[var(--color-linen)];
+    @apply min-h-10 border-[var(--color-sundance)] px-7 text-[0.7rem] tracking-[0.2em] text-[var(--color-sundance)];
   }
 
   .nav-link,
   .mobile-nav__link {
-    @apply inline-flex min-h-8 rounded-none px-3 py-2 text-[0.72rem] uppercase tracking-[0.22em] text-[var(--color-pale-leaf)] transition-[color,transform] duration-200 ease-out hover:-translate-y-0.5 hover:text-[var(--color-sundance)] active:translate-y-0;
+    @apply relative inline-flex min-h-8 rounded-none px-3 py-2 text-[0.72rem] uppercase tracking-[0.22em] text-[var(--color-pale-leaf)] transition-[color,transform] duration-300 hover:text-[var(--color-sundance)] active:scale-[0.98];
+    transition-timing-function: var(--ease-out-soft);
+  }
+
+  .nav-link::after,
+  .mobile-nav__link::after {
+    content: "";
+    @apply pointer-events-none absolute bottom-1 left-3 right-3 h-px origin-left scale-x-0 bg-[var(--color-sundance)] transition-transform duration-300;
+    transition-timing-function: var(--ease-out-soft);
+  }
+
+  .nav-link:hover,
+  .mobile-nav__link:hover {
+    transform: translateY(-1px);
+  }
+
+  .nav-link:hover::after,
+  .nav-link--active::after,
+  .mobile-nav__link:hover::after,
+  .mobile-nav__link--active::after {
+    @apply scale-x-100;
   }
 
   .nav-link--active,
@@ -157,7 +179,12 @@ textarea {
   }
 
   .mobile-nav summary {
-    @apply relative z-30 inline-flex h-12 w-14 cursor-pointer list-none items-center justify-center rounded-none border-0 bg-transparent p-0 text-[var(--color-linen)] transition-[color,transform] duration-200 ease-out hover:-translate-y-0.5 hover:text-[var(--color-sundance)] active:translate-y-0;
+    @apply relative z-30 inline-flex h-12 w-14 cursor-pointer list-none items-center justify-center rounded-none border-0 bg-transparent p-0 text-[var(--color-linen)] transition-[color,transform] duration-300 hover:text-[var(--color-sundance)] active:scale-95;
+    transition-timing-function: var(--ease-out-soft);
+  }
+
+  .mobile-nav summary:hover {
+    transform: translateY(-1px) scale(1.03);
   }
 
   .mobile-nav[open] summary {
@@ -178,13 +205,13 @@ textarea {
     @apply min-h-13 items-center justify-between rounded-lg px-4 py-3 text-base font-bold;
   }
 
-  .mobile-nav__panel .mobile-nav__link::after {
+  .mobile-nav__panel .mobile-nav__link::before {
     content: "";
     @apply h-2 w-2 rounded-full bg-transparent transition-colors duration-200;
   }
 
-  .mobile-nav__panel .mobile-nav__link:hover::after,
-  .mobile-nav__panel .mobile-nav__link--active::after {
+  .mobile-nav__panel .mobile-nav__link:hover::before,
+  .mobile-nav__panel .mobile-nav__link--active::before {
     @apply bg-[var(--color-sundance)];
   }
 
@@ -205,43 +232,86 @@ textarea {
   }
 
   .button-link {
-    @apply relative inline-flex min-h-9 cursor-pointer items-center justify-center overflow-hidden rounded-none border border-transparent px-5 py-2.5 text-[0.68rem] font-bold uppercase leading-none tracking-[0.12em] transition-[background-color,border-color,color,transform] duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0;
+    --button-bg: transparent;
+    --button-fg: currentColor;
+    --button-border: transparent;
+    --button-hover-bg: rgb(200 165 90 / 0.16);
+    --button-hover-fg: var(--color-white-linen);
+    --button-highlight: var(--color-sundance);
+    @apply relative isolate inline-flex min-h-9 cursor-pointer items-center justify-center overflow-hidden rounded-none border px-5 py-2.5 text-[0.68rem] font-bold uppercase leading-none tracking-[0.12em];
+    background:
+      linear-gradient(90deg, var(--button-hover-bg), var(--button-hover-bg)) left / 0% 100% no-repeat,
+      var(--button-bg);
+    border-color: var(--button-border);
+    color: var(--button-fg);
+    transform: translateY(0) scale(1);
+    transition:
+      background-size 420ms var(--ease-out-soft),
+      border-color 260ms var(--ease-out-soft),
+      box-shadow 260ms var(--ease-out-soft),
+      color 220ms var(--ease-out-soft),
+      transform 260ms var(--ease-press);
   }
 
   .button-link::after {
     content: "";
-    @apply pointer-events-none absolute inset-x-3 top-1 h-px bg-[rgb(255_255_255_/_0.35)] opacity-0 transition-opacity duration-200;
+    @apply pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left bg-[var(--button-highlight)] transition-transform duration-300;
+    transform: scaleX(0);
+    transition-timing-function: var(--ease-out-soft);
   }
 
-  .button-link:hover::after {
-    @apply opacity-100;
+  .button-link:hover,
+  .button-link:focus-visible {
+    background-size: 100% 100%, auto;
+    border-color: var(--button-highlight);
+    color: var(--button-hover-fg);
+    transform: translateY(-2px) scale(1.015);
+    box-shadow: 0 7px 14px rgb(15 27 16 / 0.12);
+    outline: none !important;
+  }
+
+  .button-link:focus-visible {
+    box-shadow:
+      0 0 0 2px rgb(202 166 79 / 0.42),
+      0 7px 14px rgb(15 27 16 / 0.12);
+  }
+
+  .button-link:hover::after,
+  .button-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .button-link:active {
+    background-size: 100% 100%, auto;
+    transform: translateY(0) scale(0.985);
+    transition-duration: 120ms;
   }
 
   .button-link--primary {
-    @apply bg-[var(--color-oxley)] text-[var(--color-hunter-green)];
-    background-color: var(--color-oxley);
+    --button-bg: var(--color-oxley);
+    --button-fg: var(--color-hunter-green);
+    --button-border: rgb(141 172 152 / 0.68);
+    --button-hover-bg: var(--color-pale-leaf);
+    --button-hover-fg: var(--color-hunter-green);
+    --button-highlight: var(--color-sundance);
     color: var(--color-hunter-green) !important;
   }
 
   .button-link--primary:hover {
-    background-color: var(--color-pale-leaf);
-    border-color: rgb(250 246 239 / 0.34);
-  }
-
-  .button-link--primary:active {
-    transform: translateY(0);
+    color: var(--color-hunter-green) !important;
   }
 
   .button-link--secondary {
-    @apply border-current bg-transparent text-inherit;
-    background-color: transparent;
+    --button-bg: transparent;
+    --button-fg: inherit;
+    --button-border: currentColor;
+    --button-hover-bg: rgb(200 165 90 / 0.14);
+    --button-hover-fg: var(--color-white-linen);
+    --button-highlight: var(--color-sundance);
     color: inherit;
-    box-shadow: inset 0 0 0 0 rgb(200 165 90 / 0);
   }
 
   .button-link--secondary:hover {
-    background-color: rgb(200 165 90 / 0.12);
-    border-color: var(--color-sundance);
     color: var(--color-white-linen);
   }
 
@@ -890,12 +960,14 @@ textarea {
   }
 
   .expertise-dots button {
-    @apply h-2 w-2 cursor-pointer rounded-full border-0 bg-[rgb(184_206_184_/_0.28)] p-0 transition-[background-color,transform] duration-200 ease-out;
+    @apply h-2 w-2 cursor-pointer rounded-full border-0 bg-[rgb(184_206_184_/_0.28)] p-0 transition-[background-color,box-shadow,transform] duration-300;
+    transition-timing-function: var(--ease-press);
   }
 
   .expertise-dots button:hover,
   .expertise-dots button:focus-visible {
-    @apply bg-[var(--color-pale-leaf)];
+    @apply bg-[var(--color-pale-leaf)] shadow-[0_0_0_5px_rgb(189_207_189_/_0.1)];
+    transform: scale(1.35);
   }
 
   .expertise-dots button[aria-current="true"] {
@@ -1033,7 +1105,21 @@ textarea {
   }
 
   .proof-carousel__button {
-    @apply inline-flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[rgb(95_75_64_/_0.18)] bg-transparent text-[var(--color-green-kelp)] transition-[background-color,border-color,color,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-[var(--color-sundance)] hover:bg-[rgb(200_165_90_/_0.12)] active:translate-y-0;
+    @apply inline-flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[rgb(95_75_64_/_0.18)] bg-transparent text-[var(--color-green-kelp)] transition-[background-color,border-color,box-shadow,color,transform] duration-300 active:scale-95;
+    transition-timing-function: var(--ease-out-soft);
+  }
+
+  .proof-carousel__button:hover,
+  .proof-carousel__button:focus-visible {
+    @apply border-[var(--color-sundance)] bg-[var(--color-hunter-green)] text-[var(--color-sundance)] shadow-[0_7px_14px_rgb(15_27_16_/_0.14)];
+    transform: translateY(-2px) scale(1.04);
+    outline: none !important;
+  }
+
+  .proof-carousel__button:focus-visible {
+    box-shadow:
+      0 0 0 3px rgb(202 166 79 / 0.22),
+      0 7px 14px rgb(15 27 16 / 0.14);
   }
 
   .proof-carousel__dots {
@@ -1041,12 +1127,31 @@ textarea {
   }
 
   .proof-carousel__dot {
-    @apply grid h-6 w-6 cursor-pointer place-items-center rounded-full border border-transparent bg-transparent p-0 transition-[background-color,border-color,transform] duration-200 ease-out hover:scale-110 active:scale-100;
+    @apply grid h-6 w-6 cursor-pointer place-items-center rounded-full border border-transparent bg-transparent p-0 transition-[background-color,border-color,transform] duration-300 active:scale-95;
+    transition-timing-function: var(--ease-press);
   }
 
   .proof-carousel__dot::before {
     content: "";
-    @apply h-2 w-2 rounded-full bg-[rgb(95_75_64_/_0.28)];
+    @apply h-2 w-2 rounded-full bg-[rgb(95_75_64_/_0.28)] transition-[background-color,box-shadow,transform] duration-300;
+    transition-timing-function: var(--ease-press);
+  }
+
+  .proof-carousel__dot:hover,
+  .proof-carousel__dot:focus-visible {
+    @apply border-[rgb(200_165_90_/_0.28)];
+    transform: scale(1.08);
+    outline: none !important;
+  }
+
+  .proof-carousel__dot:focus-visible {
+    box-shadow: 0 0 0 3px rgb(200 165 90 / 0.16);
+  }
+
+  .proof-carousel__dot:hover::before,
+  .proof-carousel__dot:focus-visible::before {
+    @apply bg-[var(--color-sundance)] shadow-[0_0_0_5px_rgb(200_165_90_/_0.12)];
+    transform: scale(1.12);
   }
 
   .proof-carousel__dot[aria-current="true"] {
@@ -1055,6 +1160,7 @@ textarea {
 
   .proof-carousel__dot[aria-current="true"]::before {
     @apply bg-[var(--color-sundance)];
+    transform: scale(1.18);
   }
 
   .split-section,
@@ -2235,7 +2341,17 @@ textarea {
   }
 
   .about-closing__home-link {
-    @apply border-0 border-b border-[rgb(200_165_90_/_0.45)] bg-transparent px-0 text-[var(--color-pale-leaf)] hover:border-[var(--color-sundance)] hover:bg-transparent hover:text-[var(--color-sundance)];
+    @apply border-0 border-b border-[rgb(200_165_90_/_0.45)] px-0 text-[var(--color-pale-leaf)];
+    --button-hover-bg: transparent;
+    --button-hover-fg: var(--color-sundance);
+    --button-highlight: var(--color-sundance);
+    box-shadow: none;
+  }
+
+  .about-closing__home-link:hover,
+  .about-closing__home-link:focus-visible {
+    box-shadow: none;
+    transform: translateY(-1px);
   }
 
   .contact-form {
@@ -2293,7 +2409,11 @@ textarea {
   }
 
   .contact-form button {
-    @apply mt-1 justify-self-start border-[var(--color-sundance)] bg-transparent px-9 text-[var(--color-sundance)] hover:bg-[rgb(200_165_90_/_0.1)] hover:text-[var(--color-sundance)] md:col-span-2;
+    @apply mt-1 justify-self-start px-9 text-[var(--color-sundance)] md:col-span-2;
+    --button-border: var(--color-sundance);
+    --button-hover-bg: rgb(200 165 90 / 0.16);
+    --button-hover-fg: var(--color-white-linen);
+    --button-highlight: var(--color-sundance);
   }
 
   .contact-form__continue span {
