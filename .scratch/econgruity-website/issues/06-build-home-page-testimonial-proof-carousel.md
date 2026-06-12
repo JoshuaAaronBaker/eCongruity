@@ -1,4 +1,4 @@
-Status: ready-for-agent
+Status: complete
 Title: Build Home Page Testimonial Proof Carousel
 
 ## Parent
@@ -11,13 +11,13 @@ Build a testimonial proof carousel directly beneath the Home page hero. The caro
 
 ## Acceptance criteria
 
-- [ ] The Home page includes the testimonial proof carousel directly after the hero content.
-- [ ] The carousel supports three testimonials or short proof statements.
-- [ ] The available Tap Cloud testimonial can be represented as provisional placeholder content.
-- [ ] Placeholder stories are easy to replace with approved names, roles, organizations, and wording.
-- [ ] The proof area avoids calling the content case studies unless real case-study material is provided.
-- [ ] Carousel interaction is accessible by keyboard and respects reduced-motion settings.
-- [ ] The proof area includes or sits near a clear path to Contact.
+- [x] The Home page includes the testimonial proof carousel directly after the hero content.
+- [x] The carousel supports three testimonials or short proof statements.
+- [x] The available Tap Cloud testimonial can be represented as provisional placeholder content.
+- [x] Placeholder stories are easy to replace with approved names, roles, organizations, and wording.
+- [x] The proof area avoids calling the content case studies unless real case-study material is provided.
+- [x] Carousel interaction is accessible by keyboard and respects reduced-motion settings.
+- [x] The proof area includes or sits near a clear path to Contact.
 
 ## Blocked by
 
