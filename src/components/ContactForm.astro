@@ -29,6 +29,7 @@ const fields = [
     name: "role",
     type: "text",
     autocomplete: "organization-title",
+    required: false,
   },
 ] satisfies {
   id: string;
@@ -36,6 +37,7 @@ const fields = [
   name: string;
   type: "text" | "email";
   autocomplete: string;
+  required?: boolean;
 }[];
 ---
 
@@ -47,9 +49,6 @@ const fields = [
   netlify-honeypot="company-website"
 >
   <input type="hidden" name="form-name" value="start-the-conversation" />
-  <p class="contact-form__required" id="contact-required-note">
-    All fields are required so the first conversation has enough context.
-  </p>
   <p class="contact-form__honeypot">
     <label>
       Company website
@@ -60,32 +59,25 @@ const fields = [
   {
     fields.map((field) => (
       <div class="contact-form__field">
-        <label for={field.id}>
-          {field.label}
-          <span aria-hidden="true">Required</span>
-        </label>
+        <label for={field.id}>{field.label}</label>
         <input
           id={field.id}
           type={field.type}
           name={field.name}
           autocomplete={field.autocomplete}
-          aria-describedby="contact-required-note"
-          required
+          required={field.required ?? true}
         />
       </div>
     ))
   }
 
   <div class="contact-form__field">
-    <label for="contact-challenge">
-      What are you trying to solve?
-      <span aria-hidden="true">Required</span>
-    </label>
+    <label for="contact-challenge">What are you trying to solve?</label>
     <textarea
       id="contact-challenge"
       name="challenge"
       rows="6"
-      aria-describedby="contact-challenge-help contact-required-note"
+      aria-describedby="contact-challenge-help"
       required
     ></textarea>
     <p id="contact-challenge-help">
