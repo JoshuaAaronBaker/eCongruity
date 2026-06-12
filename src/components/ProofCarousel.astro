@@ -33,6 +33,7 @@ const { testimonials } = Astro.props;
               <article
                 class="proof-slide"
                 data-proof-slide
+                data-proof-active={index === 0 ? true : undefined}
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${testimonials.length}`}
@@ -43,10 +44,12 @@ const { testimonials } = Astro.props;
                 </blockquote>
                 <footer>
                   <span class="proof-slide__initials" aria-hidden="true">{testimonial.initials}</span>
-                  <p class="proof-slide__name">{testimonial.name}</p>
-                  <p class="proof-slide__meta">
-                    {testimonial.role}, {testimonial.organization}
-                  </p>
+                  <div>
+                    <p class="proof-slide__name">{testimonial.name}</p>
+                    <p class="proof-slide__meta">
+                      {testimonial.role}, {testimonial.organization}
+                    </p>
+                  </div>
                 </footer>
               </article>
             ))
@@ -99,8 +102,7 @@ const { testimonials } = Astro.props;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const embla = EmblaCarousel(viewportNode, {
       align: "start",
-      containScroll: "trimSnaps",
-      duration: prefersReducedMotion ? 0 : 24,
+      duration: prefersReducedMotion ? 0 : 30,
       loop: true,
     });
     let autoplay: number | undefined;
@@ -113,14 +115,14 @@ const { testimonials } = Astro.props;
       window.clearInterval(autoplay);
       autoplay = window.setInterval(() => {
         embla.scrollNext();
-      }, 5000);
+      }, 6500);
     };
 
-    const updateCarouselState = () => {
+    const updateControlsState = () => {
       const selectedIndex = embla.selectedScrollSnap();
 
-      prevButton.disabled = !embla.canScrollPrev();
-      nextButton.disabled = !embla.canScrollNext();
+      prevButton.disabled = false;
+      nextButton.disabled = false;
 
       dotButtons.forEach((button, index) => {
         if (index === selectedIndex) {
@@ -129,10 +131,17 @@ const { testimonials } = Astro.props;
           button.removeAttribute("aria-current");
         }
       });
+    };
+
+    const updateSlideState = () => {
+      const selectedIndex = embla.selectedScrollSnap();
 
       slideNodes.forEach((slide, index) => {
-        slide.toggleAttribute("inert", index !== selectedIndex);
-        slide.setAttribute("aria-hidden", String(index !== selectedIndex));
+        const isSelected = index === selectedIndex;
+
+        slide.toggleAttribute("inert", !isSelected);
+        slide.setAttribute("aria-hidden", String(!isSelected));
+        slide.toggleAttribute("data-proof-active", isSelected);
       });
     };
 
@@ -158,9 +167,16 @@ const { testimonials } = Astro.props;
       });
     });
 
-    embla.on("select", updateCarouselState);
-    embla.on("reInit", updateCarouselState);
-    updateCarouselState();
+    embla.on("select", () => {
+      updateControlsState();
+      updateSlideState();
+    });
+    embla.on("reInit", () => {
+      updateControlsState();
+      updateSlideState();
+    });
+    updateControlsState();
+    updateSlideState();
     restartAutoplay();
   });
 </script>

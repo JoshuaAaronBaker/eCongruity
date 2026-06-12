@@ -4,8 +4,8 @@ const pages = [
   {
     name: "Home",
     path: "/",
-    heading: "Strategic Innovation Studio.",
-    content: "Connecting people, process, and technology",
+    heading: "Make the messy work executable.",
+    content: "turn unclear processes, disconnected systems, and stalled ideas",
   },
   {
     name: "Approach",

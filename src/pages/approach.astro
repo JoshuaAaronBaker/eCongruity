@@ -4,6 +4,7 @@ import PageHero from "../components/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   agileInnovationSteps,
+  challengeMapOutputs,
   approachComplexitySignals,
   engagementModel,
   site,
@@ -18,7 +19,7 @@ import {
   <PageHero
     eyebrow="Approach"
     title="From complex challenge to implemented solution."
-    summary="A Strategy-to-Implementation Engagement gives Organizational Leaders a guided way to clarify the challenge, shape the right path, and carry that path into hands-on execution."
+    summary="A Strategy-to-Implementation Engagement gives Organizational Leaders a guided way to make the challenge visible, align the right people, and carry a practical path into execution."
   >
     <div class="button-row">
       <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
@@ -34,10 +35,10 @@ import {
       </div>
       <div>
         <p>
-          eCongruity helps leaders name the real conditions slowing progress: unclear processes, disconnected systems, underused technology, stalled ideas, and cross-functional misalignment.
+          eCongruity starts by naming the real conditions slowing progress: unclear processes, disconnected systems, underused technology, stalled ideas, and cross-functional misalignment.
         </p>
         <p>
-          The work begins there because durable business change depends on understanding the operating context before choosing the implementation path.
+          That operating context becomes the starting point for the Challenge Map: a shared picture of what is happening now, who needs to be involved, and what can move first.
         </p>
       </div>
     </div>
@@ -64,34 +65,49 @@ import {
 
   <section class="section-band section-band--green" aria-labelledby="engagement-heading">
     <div class="site-container">
-      <div class="section-header">
+      <div class="section-header section-header--spine">
         <p class="eyebrow">Strategy-to-Implementation Engagement</p>
-        <h2 id="engagement-heading">Strategy and execution stay connected.</h2>
+        <h2 id="engagement-heading">The Challenge Map keeps strategy and execution connected.</h2>
         <p>
-          eCongruity does not hand off an abstract plan and disappear. When the chosen path requires it, the engagement includes strategic hands-on implementation: building, configuring, coordinating, or leading the work through launch.
+          eCongruity does not hand off an abstract plan and disappear. The Challenge Map becomes the shared reference for where to focus, who to involve, and which first executable slice can move the work through launch.
         </p>
       </div>
-      <ol class="approach-path">
-        {
-          engagementModel.map((item, index) => (
-            <li>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <h3>{item.title}</h3>
-              <p>{item.summary}</p>
-            </li>
-          ))
-        }
-      </ol>
+      <div class="challenge-map">
+        <ol class="approach-path">
+          {
+            engagementModel.map((item, index) => (
+              <li>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <h3>{item.title}</h3>
+                <p>{item.summary}</p>
+              </li>
+            ))
+          }
+        </ol>
+        <aside class="challenge-map__outputs" aria-label="Challenge Map outputs">
+          <p class="challenge-map__label">What the map makes visible</p>
+          <div>
+            {
+              challengeMapOutputs.map((item) => (
+                <article>
+                  <h3>{item.title}</h3>
+                  <p>{item.summary}</p>
+                </article>
+              ))
+            }
+          </div>
+        </aside>
+      </div>
     </div>
   </section>
 
   <section class="section-band section-band--linen" aria-labelledby="process-heading">
     <div class="site-container">
-      <div class="section-header">
-        <p class="eyebrow">Agile Innovation</p>
-        <h2 id="process-heading">A flexible process for durable business change.</h2>
+      <div class="section-header section-header--narrow">
+        <p class="eyebrow">How the Map Moves</p>
+        <h2 id="process-heading">Agile Innovation gives the work a flexible cadence.</h2>
         <p>
-          The model is repeatable without being rigid. It keeps the Working Group moving through problem definition, reframing, collaboration, delivery, learning, and growth.
+          The model is repeatable without becoming rigid. It keeps the Working Group moving through problem definition, reframing, collaboration, delivery, learning, and growth while the Challenge Map stays current.
         </p>
       </div>
       <ol class="innovation-list innovation-list--light">
@@ -110,11 +126,13 @@ import {
 
   <section class="section-band section-band--stone" aria-labelledby="working-group-heading">
     <div class="site-container">
-      <div class="section-header">
-        <p class="eyebrow">Working Group</p>
-        <h2 id="working-group-heading">The right people around the challenge.</h2>
+      <div class="section-header section-header--with-note">
+        <div>
+          <p class="eyebrow">Working Group</p>
+          <h2 id="working-group-heading">The right people around the challenge.</h2>
+        </div>
         <p>
-          A Tailored Solution needs more than one viewpoint. eCongruity helps assemble the necessary mix of decision authority, lived process knowledge, strategic guidance, implementation capacity, and outside expertise when the work calls for it.
+          A Tailored Solution needs more than one viewpoint. eCongruity helps assemble the mix of decision authority, lived process knowledge, strategic guidance, implementation capacity, and outside expertise the map calls for.
         </p>
       </div>
       <div class="working-group-grid">
@@ -136,7 +154,7 @@ import {
         <p class="eyebrow">Clear Path to Executable Growth</p>
         <h2 id="outcome-heading">Start with the challenge. Build toward change that lasts.</h2>
         <p>
-          The first conversation is not a quote request. It is a way to understand what feels unclear, disconnected, stalled, or ready to grow so the right strategy and implementation path can emerge.
+          The first conversation is not a quote request. It is a working conversation about what feels unclear, disconnected, stalled, or ready to grow. Bring the challenge; eCongruity will help identify the first questions, the right people, and the path worth mapping.
         </p>
       </div>
       <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
