@@ -1,0 +1,91 @@
+---
+import { site } from "../content/site";
+
+const fields = [
+  {
+    id: "contact-name",
+    label: "Name",
+    name: "name",
+    type: "text",
+    autocomplete: "name",
+  },
+  {
+    id: "contact-email",
+    label: "Email",
+    name: "email",
+    type: "email",
+    autocomplete: "email",
+  },
+  {
+    id: "contact-organization",
+    label: "Organization",
+    name: "organization",
+    type: "text",
+    autocomplete: "organization",
+  },
+  {
+    id: "contact-role",
+    label: "Role or title",
+    name: "role",
+    type: "text",
+    autocomplete: "organization-title",
+    required: false,
+  },
+] satisfies {
+  id: string;
+  label: string;
+  name: string;
+  type: "text" | "email";
+  autocomplete: string;
+  required?: boolean;
+}[];
+---
+
+<form
+  class="contact-form"
+  name="start-the-conversation"
+  method="post"
+  data-netlify="true"
+  netlify-honeypot="company-website"
+>
+  <input type="hidden" name="form-name" value="start-the-conversation" />
+  <p class="contact-form__honeypot">
+    <label>
+      Company website
+      <input name="company-website" tabindex="-1" autocomplete="off" />
+    </label>
+  </p>
+
+  {
+    fields.map((field) => (
+      <div class="contact-form__field">
+        <label for={field.id}>{field.label}</label>
+        <input
+          id={field.id}
+          type={field.type}
+          name={field.name}
+          autocomplete={field.autocomplete}
+          required={field.required ?? true}
+        />
+      </div>
+    ))
+  }
+
+  <div class="contact-form__field">
+    <label for="contact-challenge">What are you trying to solve?</label>
+    <textarea
+      id="contact-challenge"
+      name="challenge"
+      rows="6"
+      aria-describedby="contact-challenge-help"
+      required
+    ></textarea>
+    <p id="contact-challenge-help">
+      Share the friction, opportunity, unclear process, disconnected system, or stalled idea that brought you here.
+    </p>
+  </div>
+
+  <button class="button-link button-link--primary" type="submit">
+    {site.contactCta}
+  </button>
+</form>

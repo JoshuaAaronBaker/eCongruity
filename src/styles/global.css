@@ -450,6 +450,73 @@ textarea {
     @apply grid gap-8 md:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)];
   }
 
+  .contact-panel {
+    @apply bg-[var(--color-hunter-green)] py-16 text-[var(--color-linen)] md:py-24;
+  }
+
+  .contact-grid--feature {
+    @apply min-h-[calc(100vh-76px)] items-center gap-12 lg:grid-cols-[minmax(0,0.78fr)_minmax(26rem,1fr)];
+  }
+
+  .contact-intro {
+    @apply grid content-start gap-5 lg:self-start lg:pt-14;
+  }
+
+  .contact-intro h1 {
+    @apply m-0 max-w-[10ch] text-[clamp(3rem,7vw,5.8rem)] font-medium leading-[0.94] text-[var(--color-white-linen)];
+    font-family: var(--font-serif);
+  }
+
+  .contact-intro h1 span {
+    @apply block italic text-[var(--color-oxley)];
+  }
+
+  .contact-intro > p:not(.eyebrow) {
+    @apply max-w-[23rem] text-[1rem] leading-7 text-[var(--color-pale-leaf)];
+  }
+
+  .contact-intro::after {
+    content: "";
+    @apply mt-2 h-px w-24 bg-[var(--color-sundance)];
+  }
+
+  .contact-note {
+    @apply mt-2 rounded-lg border border-[rgb(138_112_96_/_0.24)] bg-[var(--color-paper)] p-5;
+  }
+
+  .contact-note h3 {
+    @apply m-0 text-xl;
+  }
+
+  .contact-note p {
+    @apply mb-0 mt-3 text-[var(--color-cement)];
+  }
+
+  .contact-next-steps {
+    @apply order-last m-0 mt-2 grid gap-4;
+  }
+
+  .contact-next-steps div {
+    @apply grid gap-1;
+  }
+
+  .contact-next-steps dt {
+    @apply text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-sundance)];
+  }
+
+  .contact-next-steps dd {
+    @apply m-0 max-w-[25rem] text-sm leading-6 text-[var(--color-pale-leaf)];
+  }
+
+  .contact-form-wrap {
+    @apply grid gap-7;
+  }
+
+  .contact-form-wrap h2 {
+    @apply m-0 max-w-[15ch] text-[clamp(1.9rem,3.6vw,2.9rem)] font-medium leading-tight text-[var(--color-pale-leaf)];
+    font-family: var(--font-serif);
+  }
+
   .process-list {
     @apply m-0 grid list-none gap-3 p-0 md:grid-cols-3;
   }
@@ -706,20 +773,36 @@ textarea {
   }
 
   .contact-form {
-    @apply grid gap-4 rounded-lg border border-[rgb(138_112_96_/_0.24)] bg-[var(--color-white-linen)] p-5 shadow-2xl;
+    @apply grid gap-5 bg-transparent p-0;
   }
 
-  .contact-form label {
-    @apply grid gap-2 font-bold text-[var(--color-hunter-green)];
+  .contact-form__honeypot {
+    @apply hidden;
+  }
+
+  .contact-form__field {
+    @apply grid gap-2;
+  }
+
+  .contact-form__field label {
+    @apply text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-oxley)];
   }
 
   .contact-form input,
   .contact-form textarea {
-    @apply min-h-11 rounded-md border border-[rgb(138_112_96_/_0.45)] bg-[var(--color-linen)] p-3 text-[var(--color-hunter-green)];
+    @apply min-h-12 rounded-none border-0 border-b-[0.5px] border-[rgb(184_206_184_/_0.34)] bg-transparent px-0 py-3 text-[var(--color-linen)] transition-colors focus:border-[var(--color-sundance)];
   }
 
   .contact-form textarea {
-    @apply min-h-40 resize-y;
+    @apply min-h-40 resize-y rounded-md border-[0.5px] border-[rgb(184_206_184_/_0.42)] px-3 py-3;
+  }
+
+  .contact-form__field p {
+    @apply m-0 text-sm leading-6 text-[var(--color-pale-leaf)];
+  }
+
+  .contact-form button {
+    @apply mt-2 justify-self-start border-[var(--color-sundance)] bg-transparent px-8 text-[var(--color-sundance)] hover:bg-[rgb(200_165_90_/_0.12)];
   }
 
   .site-footer {
