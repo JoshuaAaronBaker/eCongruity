@@ -1,5 +1,5 @@
 ---
-import ButtonLink from "../components/ButtonLink.astro";
+import ContactForm from "../components/ContactForm.astro";
 import PageHero from "../components/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { site } from "../content/site";
@@ -12,45 +12,26 @@ import { site } from "../content/site";
   <PageHero
     eyebrow="Contact"
     title="Start the conversation around the challenge."
-    summary="The first step is a simple inquiry, not a quote request. eCongruity owns timeline and cost estimation as part of strategy and planning."
+    summary="The first step is a simple inquiry, not a quote request. Share what feels unclear, disconnected, stalled, or ready to grow."
   />
 
   <section class="section-band section-band--linen" aria-labelledby="contact-form-heading">
     <div class="site-container contact-grid">
-      <div>
+      <div class="contact-intro">
         <p class="eyebrow">{site.contactCta}</p>
         <h2 id="contact-form-heading">Tell us what you are trying to solve.</h2>
         <p>
-          This static form markup is ready for future hosting integration without requiring a custom backend today.
+          Use the form to describe the challenge in plain business terms. eCongruity will help determine the right strategy, working group, implementation path, timeline, and cost through the planning conversation.
         </p>
+        <div class="contact-note" aria-labelledby="contact-note-heading">
+          <h3 id="contact-note-heading">What this form will not ask for</h3>
+          <p>
+            You do not need to estimate budget or timeline before the work is understood. The first conversation stays focused on the challenge and the operating context around it.
+          </p>
+        </div>
       </div>
 
-      <form class="contact-form" name="start-the-conversation" method="post">
-        <label>
-          Name
-          <input type="text" name="name" autocomplete="name" required />
-        </label>
-        <label>
-          Email
-          <input type="email" name="email" autocomplete="email" required />
-        </label>
-        <label>
-          Organization
-          <input type="text" name="organization" autocomplete="organization" required />
-        </label>
-        <label>
-          Role or title
-          <input type="text" name="role" autocomplete="organization-title" required />
-        </label>
-        <label>
-          What are you trying to solve?
-          <textarea name="challenge" rows="6" required></textarea>
-        </label>
-        <ButtonLink href="/" variant="secondary">Return Home</ButtonLink>
-        <button class="button-link button-link--primary" type="submit">
-          {site.contactCta}
-        </button>
-      </form>
+      <ContactForm />
     </div>
   </section>
 </BaseLayout>

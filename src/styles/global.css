@@ -450,6 +450,22 @@ textarea {
     @apply grid gap-8 md:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)];
   }
 
+  .contact-intro {
+    @apply grid content-start gap-5;
+  }
+
+  .contact-note {
+    @apply mt-2 rounded-lg border border-[rgb(138_112_96_/_0.24)] bg-[var(--color-paper)] p-5;
+  }
+
+  .contact-note h3 {
+    @apply m-0 text-xl;
+  }
+
+  .contact-note p {
+    @apply mb-0 mt-3 text-[var(--color-cement)];
+  }
+
   .process-list {
     @apply m-0 grid list-none gap-3 p-0 md:grid-cols-3;
   }
@@ -709,8 +725,24 @@ textarea {
     @apply grid gap-4 rounded-lg border border-[rgb(138_112_96_/_0.24)] bg-[var(--color-white-linen)] p-5 shadow-2xl;
   }
 
-  .contact-form label {
-    @apply grid gap-2 font-bold text-[var(--color-hunter-green)];
+  .contact-form__required {
+    @apply m-0 rounded-md bg-[rgb(200_165_90_/_0.14)] px-3 py-2 text-sm font-bold text-[var(--color-green-kelp)];
+  }
+
+  .contact-form__honeypot {
+    @apply hidden;
+  }
+
+  .contact-form__field {
+    @apply grid gap-2;
+  }
+
+  .contact-form__field label {
+    @apply flex flex-wrap items-center gap-2 font-bold text-[var(--color-hunter-green)];
+  }
+
+  .contact-form__field label span {
+    @apply rounded-full border border-[rgb(200_165_90_/_0.35)] px-2 py-0.5 text-[0.72rem] font-bold uppercase text-[var(--color-cement)];
   }
 
   .contact-form input,
@@ -720,6 +752,14 @@ textarea {
 
   .contact-form textarea {
     @apply min-h-40 resize-y;
+  }
+
+  .contact-form__field p {
+    @apply m-0 text-sm leading-6 text-[var(--color-cement)];
+  }
+
+  .contact-form button {
+    @apply mt-2 justify-self-start;
   }
 
   .site-footer {
