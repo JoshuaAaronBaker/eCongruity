@@ -17,23 +17,30 @@ import {
   description="The eCongruity approach moves from problem definition through hands-on implementation."
 >
   <PageHero
+    class="approach-hero"
     eyebrow="Approach"
     title="From complex challenge to implemented solution."
     summary="A Strategy-to-Implementation Engagement gives Organizational Leaders a guided way to make the challenge visible, align the right people, and carry a practical path into execution."
   >
+    <span slot="title">From challenge to <em>clear change.</em></span>
+    <span slot="summary">
+      A Strategy-to-Implementation Engagement gives leaders a guided way to make the challenge visible, align the right people, and carry a practical path into execution.
+    </span>
+    <div class="approach-hero__orbit" aria-hidden="true"></div>
+    <div class="approach-hero__scroll" aria-hidden="true">Scroll</div>
     <div class="button-row">
       <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
       <ButtonLink href="/capabilities/" variant="secondary">Explore Capabilities</ButtonLink>
     </div>
   </PageHero>
 
-  <section class="section-band section-band--linen" aria-labelledby="complexity-heading">
-    <div class="site-container split-section">
-      <div>
+  <section class="section-band section-band--linen approach-complexity-section" aria-labelledby="complexity-heading">
+    <div class="site-container approach-complexity">
+      <div class="approach-complexity__intro">
         <p class="eyebrow">Operational and Growth Complexity</p>
         <h2 id="complexity-heading">Make the messy parts specific enough to work on.</h2>
       </div>
-      <div>
+      <div class="approach-complexity__copy">
         <p>
           eCongruity starts by naming the real conditions slowing progress: unclear processes, disconnected systems, underused technology, stalled ideas, and cross-functional misalignment.
         </p>
@@ -44,16 +51,20 @@ import {
     </div>
   </section>
 
-  <section class="section-band section-band--stone" aria-labelledby="signals-heading">
-    <div class="site-container">
-      <div class="section-header">
+  <section class="section-band section-band--forest approach-signals-section" aria-labelledby="signals-heading">
+    <div class="site-container approach-signals">
+      <div class="approach-signals__header">
         <p class="eyebrow">What It Can Look Like</p>
         <h2 id="signals-heading">Recognizable signals inside complex work.</h2>
+        <p>
+          These are the moments when the work needs a clearer operating picture before another platform, initiative, or process decision gets added.
+        </p>
       </div>
-      <div class="card-grid card-grid--four">
+      <div class="approach-signal-grid">
         {
-          approachComplexitySignals.map((signal) => (
-            <article class="content-card">
+          approachComplexitySignals.map((signal, index) => (
+            <article>
+              <span>{String(index + 1).padStart(2, "0")}</span>
               <h3>{signal.title}</h3>
               <p>{signal.summary}</p>
             </article>
@@ -63,29 +74,29 @@ import {
     </div>
   </section>
 
-  <section class="section-band section-band--green" aria-labelledby="engagement-heading">
-    <div class="site-container">
-      <div class="section-header section-header--spine">
+  <section class="section-band section-band--linen approach-map-section" aria-labelledby="engagement-heading">
+    <div class="site-container approach-map">
+      <div class="approach-map__header">
         <p class="eyebrow">Strategy-to-Implementation Engagement</p>
         <h2 id="engagement-heading">The Challenge Map keeps strategy and execution connected.</h2>
         <p>
           eCongruity does not hand off an abstract plan and disappear. The Challenge Map becomes the shared reference for where to focus, who to involve, and which first executable slice can move the work through launch.
         </p>
       </div>
-      <div class="challenge-map">
-        <ol class="approach-path">
+      <div class="approach-map__body">
+        <ol class="approach-map-path">
           {
             engagementModel.map((item, index) => (
               <li>
-                <span>{String(index + 1).padStart(2, "0")}</span>
+                <span>{String(index + 1)}</span>
                 <h3>{item.title}</h3>
                 <p>{item.summary}</p>
               </li>
             ))
           }
         </ol>
-        <aside class="challenge-map__outputs" aria-label="Challenge Map outputs">
-          <p class="challenge-map__label">What the map makes visible</p>
+        <aside class="approach-map__outputs" aria-label="Challenge Map outputs">
+          <p>What the map makes visible</p>
           <div>
             {
               challengeMapOutputs.map((item) => (
@@ -101,16 +112,16 @@ import {
     </div>
   </section>
 
-  <section class="section-band section-band--linen" aria-labelledby="process-heading">
-    <div class="site-container">
-      <div class="section-header section-header--narrow">
+  <section class="section-band section-band--forest approach-process-section" aria-labelledby="process-heading">
+    <div class="site-container approach-process">
+      <div class="approach-process__header">
         <p class="eyebrow">How the Map Moves</p>
         <h2 id="process-heading">Agile Innovation gives the work a flexible cadence.</h2>
         <p>
           The model is repeatable without becoming rigid. It keeps the Working Group moving through problem definition, reframing, collaboration, delivery, learning, and growth while the Challenge Map stays current.
         </p>
       </div>
-      <ol class="innovation-list innovation-list--light">
+      <ol class="innovation-list">
         {
           agileInnovationSteps.map((step, index) => (
             <li>
@@ -124,9 +135,9 @@ import {
     </div>
   </section>
 
-  <section class="section-band section-band--stone" aria-labelledby="working-group-heading">
-    <div class="site-container">
-      <div class="section-header section-header--with-note">
+  <section class="section-band section-band--linen approach-working-section" aria-labelledby="working-group-heading">
+    <div class="site-container approach-working">
+      <div class="approach-working__header">
         <div>
           <p class="eyebrow">Working Group</p>
           <h2 id="working-group-heading">The right people around the challenge.</h2>
@@ -135,10 +146,10 @@ import {
           A Tailored Solution needs more than one viewpoint. eCongruity helps assemble the mix of decision authority, lived process knowledge, strategic guidance, implementation capacity, and outside expertise the map calls for.
         </p>
       </div>
-      <div class="working-group-grid">
+      <div class="approach-working-grid">
         {
           workingGroupMembers.map((member) => (
-            <article class="working-group-card">
+            <article>
               <h3>{member.title}</h3>
               <p>{member.summary}</p>
             </article>
@@ -148,8 +159,8 @@ import {
     </div>
   </section>
 
-  <section class="section-band section-band--linen" aria-labelledby="outcome-heading">
-    <div class="site-container closing-cta">
+  <section class="section-band section-band--green about-closing-section" aria-labelledby="outcome-heading">
+    <div class="site-container about-closing">
       <div>
         <p class="eyebrow">Clear Path to Executable Growth</p>
         <h2 id="outcome-heading">Start with the challenge. Build toward change that lasts.</h2>

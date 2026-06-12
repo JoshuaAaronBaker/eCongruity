@@ -3,6 +3,39 @@ import ButtonLink from "../components/ButtonLink.astro";
 import PageHero from "../components/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { aboutStats, aboutTimeline, founders, site } from "../content/site";
+
+const values = [
+  {
+    title: "Clarity over complexity",
+    summary:
+      "We believe the best solutions are the ones people can actually understand and act on. We cut through noise to find the signal.",
+  },
+  {
+    title: "People first",
+    summary:
+      "Technology is a tool. People are the point. Every system we design, every process we improve, starts and ends with the humans who use it.",
+  },
+  {
+    title: "Purposeful innovation",
+    summary:
+      "We don't innovate for innovation's sake. Every new approach, every technology choice, must serve a clear and meaningful purpose.",
+  },
+  {
+    title: "Radical honesty",
+    summary:
+      "We tell you what you need to hear, not just what you want to hear. Trust is built on candor, and we guard that trust fiercely.",
+  },
+  {
+    title: "Continuous learning",
+    summary:
+      "The landscape changes constantly. We stay curious, stay humble, and build feedback loops into everything - including ourselves.",
+  },
+  {
+    title: "Responsible growth",
+    summary:
+      "Growth without intention is just noise. We help organizations scale in ways that are sustainable, equitable, and genuinely impactful.",
+  },
+];
 ---
 
 <BaseLayout
@@ -10,16 +43,20 @@ import { aboutStats, aboutTimeline, founders, site } from "../content/site";
   description="Founder-led credibility for eCongruity strategy-to-implementation engagements."
 >
   <PageHero
-    eyebrow="About"
+    class="about-hero"
+    eyebrow="About eCongruity"
     title="Founder-led judgment for strategy and implementation."
     summary="eCongruity is guided by people who keep business judgment, Working Group alignment, and hands-on implementation connected through complex client work."
   >
-    <div class="button-row">
-      <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
-    </div>
+    <span slot="title">Built on purpose. <em>Driven by people.</em></span>
+    <span slot="summary">
+      We are a strategic innovation studio connecting people, process, and technology — with intention, clarity, and a deep respect for the environments we operate in.
+    </span>
+    <div class="about-hero__orbit" aria-hidden="true"></div>
+    <div class="about-hero__scroll" aria-hidden="true">Scroll</div>
   </PageHero>
 
-  <section class="section-band section-band--linen" aria-labelledby="mission-heading">
+  <section class="section-band section-band--linen about-mission-section" aria-labelledby="mission-heading">
     <div class="site-container about-mission">
       <div>
         <p class="eyebrow">Our Mission</p>
@@ -49,7 +86,7 @@ import { aboutStats, aboutTimeline, founders, site } from "../content/site";
     </div>
   </section>
 
-  <section class="section-band section-band--green" aria-labelledby="story-heading">
+  <section class="section-band section-band--forest about-story-section" aria-labelledby="story-heading">
     <div class="site-container about-story">
       <div>
         <p class="eyebrow">Our Story</p>
@@ -78,8 +115,8 @@ import { aboutStats, aboutTimeline, founders, site } from "../content/site";
     </div>
   </section>
 
-  <section class="section-band section-band--linen" aria-labelledby="founders-heading">
-    <div class="site-container">
+  <section class="section-band section-band--linen about-team-section" aria-labelledby="founders-heading">
+    <div class="site-container about-team">
       <div class="section-header section-header--with-action">
         <div>
           <p class="eyebrow">Our Team</p>
@@ -93,26 +130,42 @@ import { aboutStats, aboutTimeline, founders, site } from "../content/site";
         {
           founders.map((founder) => (
             <article class="founder-card">
-              <div class="founder-card__header">
-                {
-                  founder.imageSrc ? (
-                    <img
-                      class="founder-card__image"
-                      src={founder.imageSrc}
-                      alt={founder.imageAlt ?? `${founder.name}, ${founder.role}`}
-                      loading="lazy"
-                      width="96"
-                      height="96"
-                    />
-                  ) : (
-                    <div class="founder-card__image" aria-hidden="true"></div>
-                  )
-                }
-                <div>
-                  <h3>{founder.name}</h3>
-                  <p class="content-card__meta">{founder.role}</p>
-                </div>
-              </div>
+              <button
+                class="founder-card__button"
+                type="button"
+                aria-label={`Read ${founder.name}'s quote`}
+                data-team-card
+              >
+                <span class="founder-card__inner">
+                  <span class="founder-card__face founder-card__face--front" aria-hidden="true">
+                    {
+                      founder.imageSrc ? (
+                        <img
+                          class="founder-card__image"
+                          src={founder.imageSrc}
+                          alt=""
+                          loading="lazy"
+                          width="520"
+                          height="520"
+                        />
+                      ) : (
+                        <span class="founder-card__image" aria-hidden="true"></span>
+                      )
+                    }
+                    <span class="founder-card__caption">
+                      <span class="founder-card__name">{founder.name}</span>
+                      <span class="content-card__meta">{founder.role}</span>
+                    </span>
+                  </span>
+                  <span class="founder-card__face founder-card__face--back" aria-hidden="true">
+                    <span class="founder-card__quote-mark">"</span>
+                    <span class="founder-card__quote">{founder.quote}</span>
+                    <span class="founder-card__divider"></span>
+                    <span class="founder-card__name">{founder.name}</span>
+                    <span class="content-card__meta">{founder.role}</span>
+                  </span>
+                </span>
+              </button>
             </article>
           ))
         }
@@ -120,19 +173,60 @@ import { aboutStats, aboutTimeline, founders, site } from "../content/site";
     </div>
   </section>
 
-  <section class="section-band section-band--stone" aria-labelledby="about-proof-heading">
-    <div class="site-container closing-cta">
-      <div>
-        <p class="eyebrow">Client Stories</p>
-        <h2 id="about-proof-heading">See how the positioning is supported by proof.</h2>
+  <section class="section-band section-band--forest about-values-section" aria-labelledby="values-heading">
+    <div class="site-container about-values">
+      <div class="about-values__header">
+        <p class="eyebrow">Our Values</p>
+        <h2 id="values-heading">What guides every decision we make.</h2>
         <p>
-          Client stories are the preferred proof format for eCongruity: short snapshots that show leaders moving from unclear complexity toward implemented, maintainable change.
+          Our values aren't a poster on the wall. They are the operating principles that shape how we work, how we think, and how we show up for our clients.
+        </p>
+      </div>
+      <ol class="values-grid">
+        {
+          values.map((value, index) => (
+            <li>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{value.title}</h3>
+              <p>{value.summary}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section-band section-band--green about-closing-section" aria-labelledby="about-cta-heading">
+    <div class="site-container about-closing">
+      <div>
+        <p class="eyebrow">Work With Us</p>
+        <h2 id="about-cta-heading">Ready to build something that lasts?</h2>
+        <p>
+          Whether you're navigating a strategic challenge or launching something entirely new - we're ready to build with you.
         </p>
       </div>
       <div class="button-row button-row--compact">
-        <ButtonLink href="/#proof-heading" variant="secondary">View Home Page Proof</ButtonLink>
         <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
+        <ButtonLink href="/" variant="secondary" class="about-closing__home-link">Back to Home</ButtonLink>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const teamCards = document.querySelectorAll<HTMLButtonElement>("[data-team-card]");
+
+  teamCards.forEach((card) => {
+    const setFlipped = (flipped: boolean) => {
+      card.toggleAttribute("data-flipped", flipped);
+      card.setAttribute("aria-pressed", String(flipped));
+    };
+
+    card.setAttribute("aria-pressed", "false");
+    card.addEventListener("pointerenter", () => setFlipped(true));
+    card.addEventListener("pointerleave", () => setFlipped(false));
+    card.addEventListener("focus", () => setFlipped(true));
+    card.addEventListener("blur", () => setFlipped(false));
+    card.addEventListener("click", () => setFlipped(!card.hasAttribute("data-flipped")));
+  });
+</script>

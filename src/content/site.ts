@@ -61,6 +61,7 @@ export type AboutTimelineItem = {
 export type Founder = {
   name: string;
   role: string;
+  quote: string;
   imageSrc?: string;
   imageAlt?: string;
 };
@@ -391,36 +392,46 @@ export const founders: Founder[] = [
   {
     name: "D. Scott Martell",
     role: "CEO/Founder",
+    quote:
+      "You cannot discover new oceans unless you have the courage to lose sight of the shore. (Anonymous)",
     imageSrc: "/images/team/team-member-06.png",
     imageAlt: "Portrait of D. Scott Martell, CEO and founder.",
   },
   {
     name: "Angie Martell",
     role: "COO/Co-Founder",
+    quote: "A well designed process makes the right thing the easy thing.",
     imageSrc: "/images/team/team-member-05.png",
     imageAlt: "Portrait of Angie Martell, COO and co-founder.",
   },
   {
     name: "Colin Nygaard",
     role: "VP Business Development",
+    quote:
+      "Like water shaping stone, great process design leaves everything better than it found it.",
     imageSrc: "/images/team/team-member-01.png",
     imageAlt: "Portrait of Colin Nygaard, VP business development.",
   },
   {
     name: "Colton Schmacher",
     role: "Senior Program Manager",
+    quote:
+      "A forest thrives because every element supports the others. Great client work is no different.",
     imageSrc: "/images/team/team-member-04.png",
     imageAlt: "Portrait of Colton Schmacher, senior program manager.",
   },
   {
     name: "Amanda Cruz",
     role: "VP Strategic Partnerships",
+    quote: "Trusting the path, building with purpose, and connecting with heart.",
     imageSrc: "/images/team/team-member-02.png",
     imageAlt: "Portrait of Amanda Cruz, VP strategic partnerships.",
   },
   {
     name: "Jim Aumack",
     role: "VP Marketing",
+    quote:
+      "Data reveals the invisible currents, the patterns that guide sustainable growth.",
     imageSrc: "/images/team/team-member-03.png",
     imageAlt: "Portrait of Jim Aumack, VP marketing.",
   },

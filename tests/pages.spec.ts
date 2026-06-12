@@ -4,36 +4,52 @@ const pages = [
   {
     name: "Home",
     path: "/",
-    heading: "Make the messy work executable.",
-    content: "turn unclear processes, disconnected systems, and stalled ideas",
+    heading: "Where Nature Meets Innovation",
+    content: "Connecting people, process, and technology for real-time business",
   },
   {
     name: "Approach",
     path: "/approach/",
-    heading: "From complex challenge to implemented solution.",
+    heading: "From challenge to clear change.",
     content: "Strategy-to-Implementation Engagement",
   },
   {
     name: "Capabilities",
     path: "/capabilities/",
-    heading: "Examples of work shaped around your situation.",
+    heading: "The right tools for the right moment.",
     content: "Equal-weight examples, not preset choices.",
   },
   {
     name: "About",
     path: "/about/",
-    heading: "Founder-led judgment for strategy and implementation.",
-    content: "The people behind the work.",
+    heading: "Built on purpose. Driven by people.",
+    content: "connecting people, process, and technology",
   },
   {
     name: "Contact",
     path: "/contact/",
-    heading: "Start with the challenge, then build together.",
-    content: "Tell us what you are trying to solve.",
+    heading: "Let's build something together.",
+    content: "Tell us about your project",
   },
 ];
 
-const navItems = pages.map(({ name, path }) => ({ name, path }));
+const navItems = [
+  {
+    name: "Approach",
+    path: "/approach/",
+    heading: "From challenge to clear change.",
+  },
+  {
+    name: "About",
+    path: "/about/",
+    heading: "Built on purpose. Driven by people.",
+  },
+  {
+    name: "Contact",
+    path: "/contact/",
+    heading: "Let's build something together.",
+  },
+];
 
 const expectCoreLandmarks = async (page: Page) => {
   await expect(page.getByRole("banner")).toBeVisible();
@@ -97,9 +113,7 @@ test.describe("navigation", () => {
     for (const item of navItems) {
       await nav.getByRole("link", { name: item.name }).click();
       await expect(page).toHaveURL(item.path);
-      await expect(page.getByRole("heading", { level: 1 })).toContainText(
-        pages.find((sitePage) => sitePage.name === item.name)!.heading,
-      );
+      await expect(page.getByRole("heading", { name: item.heading })).toBeVisible();
     }
   });
 
@@ -111,15 +125,13 @@ test.describe("navigation", () => {
       await page.getByLabel("Open navigation").click();
       await primaryNav(page).getByRole("link", { name: item.name }).click();
       await expect(page).toHaveURL(item.path);
-      await expect(page.getByRole("heading", { level: 1 })).toContainText(
-        pages.find((sitePage) => sitePage.name === item.name)!.heading,
-      );
+      await expect(page.getByRole("heading", { name: item.heading })).toBeVisible();
     }
   });
 });
 
 test.describe("home proof carousel", () => {
-  test("appears directly after the hero and supports keyboard controls", async ({ page }) => {
+  test("appears after the process section and supports keyboard controls", async ({ page }) => {
     await page.goto("/");
 
     const proofSection = page.getByRole("region", { name: "Client story proof" });
@@ -133,6 +145,18 @@ test.describe("home proof carousel", () => {
     );
     expect(sectionOrder[0]).toMatchObject({ className: expect.stringContaining("home-hero") });
     expect(sectionOrder[1]).toMatchObject({
+      className: expect.stringContaining("section-band--linen"),
+      heading: "We simplify the complex & create a clear path forward.",
+    });
+    expect(sectionOrder[2]).toMatchObject({
+      className: expect.stringContaining("expertise-section"),
+      heading: "The right tools. The right time. The right team.",
+    });
+    expect(sectionOrder[3]).toMatchObject({
+      className: expect.stringContaining("section-band--forest"),
+      heading: "Agile Innovation — from challenge to change.",
+    });
+    expect(sectionOrder[4]).toMatchObject({
       className: expect.stringContaining("proof-section"),
       heading: "Trusted by leaders who think differently.",
     });
@@ -148,18 +172,18 @@ test.describe("home proof carousel", () => {
 });
 
 test.describe("contact form", () => {
-  test("contains the agreed fields and omits budget and timeline", async ({ page }) => {
+  test("contains the approved first-step fields and omits budget and timeline", async ({ page }) => {
     await page.goto("/contact/");
 
-    await expect(page.getByLabel("Name")).toBeVisible();
-    await expect(page.getByLabel("Email")).toBeVisible();
-    await expect(page.getByLabel("Organization")).toBeVisible();
-    await expect(page.getByLabel("Role or title")).toBeVisible();
-    await expect(page.getByLabel("What are you trying to solve?")).toBeVisible();
+    await expect(page.getByLabel("First Name")).toBeVisible();
+    await expect(page.getByLabel("Last Name")).toBeVisible();
+    await expect(page.getByLabel("Email Address")).toBeVisible();
+    await expect(page.getByLabel("Company / Organization")).toBeVisible();
+    await expect(page.getByLabel("What problem are you facing?")).toBeVisible();
 
     await expect(page.getByLabel(/budget/i)).toHaveCount(0);
     await expect(page.getByLabel(/timeline/i)).toHaveCount(0);
-    await expect(page.getByText(/quote request/i)).toBeVisible();
+    await expect(page.getByRole("button", { name: "Continue" })).toBeVisible();
   });
 });
 

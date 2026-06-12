@@ -3,16 +3,17 @@ type Props = {
   eyebrow: string;
   title: string;
   summary: string;
+  class?: string;
 };
 
-const { eyebrow, title, summary } = Astro.props;
+const { eyebrow, title, summary, class: className = "" } = Astro.props;
 ---
 
-<section class="page-hero">
+<section class:list={["page-hero", className]}>
   <div class="site-container page-hero__inner">
     <p class="eyebrow">{eyebrow}</p>
-    <h1>{title}</h1>
-    <p>{summary}</p>
+    <h1><slot name="title">{title}</slot></h1>
+    <p><slot name="summary">{summary}</slot></p>
     <slot />
   </div>
 </section>

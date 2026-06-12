@@ -1,10 +1,17 @@
 ---
 import { Menu } from "@lucide/astro";
 import ButtonLink from "./ButtonLink.astro";
-import { navItems, site } from "../content/site";
+
+const headerNavItems = [
+  { label: "Approach", href: "/approach/" },
+  { label: "About", href: "/about/" },
+  { label: "Contact", href: "/contact/" },
+];
 
 const normalizePath = (path: string) =>
-  path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path;
+  path.split("#")[0] !== "/" && path.split("#")[0].endsWith("/")
+    ? path.split("#")[0].slice(0, -1)
+    : path.split("#")[0];
 
 const currentPath = normalizePath(Astro.url.pathname);
 
@@ -19,13 +26,19 @@ const isActive = (href: string) => {
 <header class="site-header">
   <div class="site-container site-header__inner">
     <a class="brand-link" href="/" aria-label="eCongruity home">
-      <span class="brand-link__name">{site.name}</span>
-      <span class="brand-link__category">{site.category}</span>
+      <img
+        class="brand-link__logo"
+        src="/images/brand/econgruity-logo.png"
+        alt=""
+        width="1657"
+        height="390"
+        decoding="async"
+      />
     </a>
 
     <nav class="desktop-nav" aria-label="Primary navigation">
       {
-        navItems.map((item) => (
+        headerNavItems.map((item) => (
           <a
             href={item.href}
             class:list={["nav-link", isActive(item.href) && "nav-link--active"]}
@@ -38,17 +51,16 @@ const isActive = (href: string) => {
     </nav>
 
     <div class="desktop-cta">
-      <ButtonLink href="/contact/" variant="primary">{site.contactCta}</ButtonLink>
+      <ButtonLink href="/contact/" variant="secondary">Start a Project</ButtonLink>
     </div>
 
     <details class="mobile-nav">
       <summary aria-label="Open navigation">
-        <span>Menu</span>
-        <Menu size={22} aria-hidden="true" />
+        <Menu size={34} stroke-width={2.8} aria-hidden="true" />
       </summary>
       <nav class="mobile-nav__panel" aria-label="Mobile navigation">
         {
-          navItems.map((item) => (
+          headerNavItems.map((item) => (
             <a
               href={item.href}
               class:list={["mobile-nav__link", isActive(item.href) && "mobile-nav__link--active"]}
@@ -59,9 +71,22 @@ const isActive = (href: string) => {
           ))
         }
         <ButtonLink href="/contact/" variant="primary" class="mobile-nav__cta">
-          {site.contactCta}
+          Start a Project
         </ButtonLink>
       </nav>
     </details>
   </div>
 </header>
+
+<script>
+  const siteHeader = document.querySelector<HTMLElement>(".site-header");
+
+  if (siteHeader) {
+    const updateHeaderState = () => {
+      siteHeader.toggleAttribute("data-scrolled", window.scrollY > 12);
+    };
+
+    updateHeaderState();
+    window.addEventListener("scroll", updateHeaderState, { passive: true });
+  }
+</script>

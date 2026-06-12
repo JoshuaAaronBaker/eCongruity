@@ -1,35 +1,34 @@
 ---
-import { site } from "../content/site";
-
 const fields = [
   {
-    id: "contact-name",
-    label: "Name",
-    name: "name",
+    id: "contact-first-name",
+    label: "First Name",
+    name: "first-name",
     type: "text",
-    autocomplete: "name",
+    autocomplete: "given-name",
+    group: "half",
+  },
+  {
+    id: "contact-last-name",
+    label: "Last Name",
+    name: "last-name",
+    type: "text",
+    autocomplete: "family-name",
+    group: "half",
   },
   {
     id: "contact-email",
-    label: "Email",
+    label: "Email Address",
     name: "email",
     type: "email",
     autocomplete: "email",
   },
   {
     id: "contact-organization",
-    label: "Organization",
+    label: "Company / Organization",
     name: "organization",
     type: "text",
     autocomplete: "organization",
-  },
-  {
-    id: "contact-role",
-    label: "Role or title",
-    name: "role",
-    type: "text",
-    autocomplete: "organization-title",
-    required: false,
   },
 ] satisfies {
   id: string;
@@ -37,7 +36,7 @@ const fields = [
   name: string;
   type: "text" | "email";
   autocomplete: string;
-  required?: boolean;
+  group?: "half";
 }[];
 ---
 
@@ -58,34 +57,30 @@ const fields = [
 
   {
     fields.map((field) => (
-      <div class="contact-form__field">
+      <div class:list={["contact-form__field", field.group === "half" && "contact-form__field--half"]}>
         <label for={field.id}>{field.label}</label>
         <input
           id={field.id}
           type={field.type}
           name={field.name}
           autocomplete={field.autocomplete}
-          required={field.required ?? true}
+          required
         />
       </div>
     ))
   }
 
   <div class="contact-form__field">
-    <label for="contact-challenge">What are you trying to solve?</label>
+    <label for="contact-problem">What problem are you facing?</label>
     <textarea
-      id="contact-challenge"
-      name="challenge"
-      rows="6"
-      aria-describedby="contact-challenge-help"
+      id="contact-problem"
+      name="problem"
       required
+      rows="5"
     ></textarea>
-    <p id="contact-challenge-help">
-      Share the friction, opportunity, unclear process, disconnected system, or stalled idea that brought you here.
-    </p>
   </div>
 
-  <button class="button-link button-link--primary" type="submit">
-    {site.contactCta}
+  <button class="button-link button-link--secondary contact-form__continue" type="submit">
+    Continue <span aria-hidden="true">→</span>
   </button>
 </form>

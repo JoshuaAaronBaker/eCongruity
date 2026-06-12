@@ -1,29 +1,21 @@
 ---
-import ButtonLink from "./ButtonLink.astro";
-import { navItems, site } from "../content/site";
+import { site } from "../content/site";
 ---
 
 <footer class="site-footer">
-  <div class="site-container site-footer__grid">
-    <div>
-      <p class="eyebrow">{site.category}</p>
-      <h2 class="site-footer__heading">{site.name}</h2>
-      <p class="site-footer__copy">{site.positioning}</p>
-      <p class="site-footer__copy">{site.outcome}</p>
-    </div>
-
-    <nav class="site-footer__nav" aria-label="Footer navigation">
-      {
-        navItems.map((item) => (
-          <a href={item.href}>{item.label}</a>
-        ))
-      }
-    </nav>
-
-    <div class="site-footer__contact">
-      <p class="site-footer__label">Contact</p>
-      <p>Bring the challenge that feels unclear, disconnected, stalled, or ready to grow.</p>
-      <ButtonLink href="/contact/" variant="secondary">{site.contactCta}</ButtonLink>
-    </div>
-  </div>
+  <nav class="site-container site-footer__grid" aria-label="Footer navigation">
+    <a class="site-footer__brand" href="/" aria-label="eCongruity home">
+      <img
+        src="/images/brand/econgruity-logo.png"
+        alt=""
+        width="1657"
+        height="390"
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+    <p>{site.positioning}</p>
+    <address>45 Business Park Road, Unit #C — Livingston, MT 59047</address>
+    <p>© 2025 eCongruity. All Rights Reserved.</p>
+  </nav>
 </footer>

@@ -1,6 +1,5 @@
 ---
 import { ChevronLeft, ChevronRight } from "@lucide/astro";
-import ButtonLink from "./ButtonLink.astro";
 import type { Testimonial } from "../content/site";
 
 type Props = {
@@ -43,6 +42,7 @@ const { testimonials } = Astro.props;
                   <p>"{testimonial.quote}"</p>
                 </blockquote>
                 <footer>
+                  <span class="proof-slide__divider" aria-hidden="true"></span>
                   <span class="proof-slide__initials" aria-hidden="true">{testimonial.initials}</span>
                   <div>
                     <p class="proof-slide__name">{testimonial.name}</p>
@@ -78,7 +78,6 @@ const { testimonials } = Astro.props;
           <ChevronRight size={16} aria-hidden="true" />
         </button>
       </div>
-      <ButtonLink href="/contact/" variant="secondary" class="proof-carousel__cta">Start with Your Challenge</ButtonLink>
     </div>
   </div>
 </section>
