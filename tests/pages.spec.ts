@@ -130,6 +130,48 @@ test.describe("navigation", () => {
   });
 });
 
+test.describe("home hero mountain background", () => {
+  test("renders decorative mountain image and WebGL canvas without changing hero accessibility", async ({
+    page,
+  }) => {
+    await page.goto("/");
+
+    const hero = page.locator(".home-hero");
+    await expect(hero).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Where Nature Meets Innovation" })).toBeVisible();
+
+    const image = hero.locator(".home-hero__mountain-image");
+    await expect(image).toHaveAttribute("alt", "");
+    await expect(image).toHaveAttribute("aria-hidden", "true");
+    await expect(image).toHaveAttribute("src", "/images/brand/hero-mountain-range.png");
+
+    const canvas = hero.locator("canvas[data-mountain-webgl]");
+    await expect(canvas).toHaveAttribute("aria-hidden", "true");
+
+    const isMobileViewport = (page.viewportSize()?.width ?? 0) < 768;
+
+    if (isMobileViewport) {
+      await expect(hero).toHaveAttribute("data-mountain-motion", "disabled");
+      await expect(canvas).toHaveAttribute("hidden", "");
+      return;
+    }
+
+    await expect(hero).toHaveAttribute("data-mountain-motion", "active");
+
+    const canvasState = await canvas.evaluate((node: HTMLCanvasElement) => ({
+      hasWebglDataAttribute: node.hasAttribute("data-mountain-webgl"),
+      width: node.width,
+      height: node.height,
+      role: node.getAttribute("role"),
+    }));
+
+    expect(canvasState.hasWebglDataAttribute).toBe(true);
+    expect(canvasState.width).toBeGreaterThan(0);
+    expect(canvasState.height).toBeGreaterThan(0);
+    expect(canvasState.role).toBeNull();
+  });
+});
+
 test.describe("home proof carousel", () => {
   test("appears after the process section and supports keyboard controls", async ({ page }) => {
     await page.goto("/");
@@ -213,6 +255,29 @@ test.describe("accessibility behavior", () => {
     await page.waitForTimeout(5200);
     await expect(page.getByRole("button", { name: "Show client story 1" })).toHaveAttribute(
       "aria-current",
+      "true",
+    );
+
+    await context.close();
+  });
+
+  test("reduced motion disables the animated hero mountain renderer", async ({
+    browser,
+  }) => {
+    const context = await browser.newContext({
+      baseURL: "http://127.0.0.1:4321",
+      reducedMotion: "reduce",
+    });
+    const page = await context.newPage();
+
+    await page.goto("/");
+
+    const hero = page.locator(".home-hero");
+    const expectedMotionState = (page.viewportSize()?.width ?? 0) < 768 ? "disabled" : "reduced";
+
+    await expect(hero).toHaveAttribute("data-mountain-motion", expectedMotionState);
+    await expect(hero.locator("canvas[data-mountain-webgl]")).toHaveAttribute(
+      "aria-hidden",
       "true",
     );
 
