@@ -1,0 +1,15 @@
+---
+import { ChevronDown } from "@lucide/astro";
+
+type Props = {
+  href: string;
+  label: string;
+  slot?: string;
+};
+
+const { href, label, slot } = Astro.props;
+---
+
+<a class="hero-scroll-button" href={href} aria-label={label} slot={slot}>
+  <ChevronDown size={24} stroke-width={2.4} aria-hidden="true" />
+</a>

@@ -1,5 +1,6 @@
 ---
 import ButtonLink from "../components/ButtonLink.astro";
+import HeroScrollButton from "../components/HeroScrollButton.astro";
 import PageHero from "../components/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
@@ -22,12 +23,16 @@ import {
     title="From complex challenge to implemented solution."
     summary="A Strategy-to-Implementation Engagement gives Organizational Leaders a guided way to make the challenge visible, align the right people, and carry a practical path into execution."
   >
-    <span slot="title">From challenge to <em>clear change.</em></span>
+    <span slot="title">From challenge <span class="text-nowrap">to <em>clear change.</em></span></span>
     <span slot="summary">
       A Strategy-to-Implementation Engagement gives leaders a guided way to make the challenge visible, align the right people, and carry a practical path into execution.
     </span>
     <div class="approach-hero__orbit" aria-hidden="true"></div>
-    <div class="approach-hero__scroll" aria-hidden="true">Scroll</div>
+    <HeroScrollButton
+      slot="after"
+      href="#complexity-heading"
+      label="Scroll to Operational and Growth Complexity"
+    />
     <div class="button-row">
       <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
       <ButtonLink href="/capabilities/" variant="secondary">Explore Capabilities</ButtonLink>

@@ -51,6 +51,15 @@ const navItems = [
   },
 ];
 
+const mobileNavItems = [
+  {
+    name: "Home",
+    path: "/",
+    heading: "Where Nature Meets Innovation",
+  },
+  ...navItems,
+];
+
 const expectCoreLandmarks = async (page: Page) => {
   await expect(page.getByRole("banner")).toBeVisible();
   await expect(page.getByRole("main")).toBeVisible();
@@ -120,13 +129,45 @@ test.describe("navigation", () => {
   test("mobile navigation reaches every top-level page", async ({ page, isMobile }) => {
     test.skip(!isMobile, "Covered by the desktop navigation test.");
 
-    for (const item of navItems) {
+    for (const item of mobileNavItems) {
       await page.goto("/");
       await page.getByLabel("Open navigation").click();
       await primaryNav(page).getByRole("link", { name: item.name }).click();
       await expect(page).toHaveURL(item.path);
       await expect(page.getByRole("heading", { name: item.heading })).toBeVisible();
     }
+  });
+
+  test("mobile navigation drawer remains usable after scrolling", async ({ page, isMobile }) => {
+    test.skip(!isMobile, "Mobile drawer behavior.");
+
+    await page.goto("/");
+    await page.evaluate(() => window.scrollTo(0, 720));
+    await expect(page.locator(".site-header")).toHaveAttribute("data-scrolled", "");
+
+    await page.getByLabel("Open navigation").click();
+    await expect(page.locator(".site-header")).toHaveAttribute("data-mobile-nav-open", "");
+
+    const drawerMetrics = await page.locator(".mobile-nav__panel").evaluate((panel) => {
+      const rect = panel.getBoundingClientRect();
+      const headerRect = document.querySelector(".site-header")?.getBoundingClientRect();
+
+      return {
+        bottom: Math.round(rect.bottom),
+        headerBottom: Math.round(headerRect?.bottom ?? 0),
+        height: Math.round(rect.height),
+        top: Math.round(rect.top),
+        viewportHeight: window.innerHeight,
+      };
+    });
+
+    expect(drawerMetrics.top).toBe(drawerMetrics.headerBottom);
+    expect(drawerMetrics.bottom).toBe(drawerMetrics.viewportHeight);
+    expect(drawerMetrics.height).toBe(drawerMetrics.viewportHeight - drawerMetrics.headerBottom);
+
+    await page.getByLabel("Open navigation").click();
+    await expect(page.locator(".site-header")).not.toHaveAttribute("data-mobile-nav-open", "");
+    await expect(page.locator(".mobile-nav__panel")).toBeHidden();
   });
 });
 

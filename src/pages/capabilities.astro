@@ -1,5 +1,6 @@
 ---
 import ButtonLink from "../components/ButtonLink.astro";
+import HeroScrollButton from "../components/HeroScrollButton.astro";
 import PageHero from "../components/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { capabilities, site } from "../content/site";
@@ -44,7 +45,11 @@ const tailoredPrinciples = [
       Capabilities are starting points. eCongruity combines strategy, people, process, and technology around the organization's needs, constraints, and situation.
     </span>
     <div class="capabilities-hero__orbit" aria-hidden="true"></div>
-    <div class="capabilities-hero__scroll" aria-hidden="true">Scroll</div>
+    <HeroScrollButton
+      slot="after"
+      href="#recognize-heading"
+      label="Scroll to Where This Fits"
+    />
     <div class="button-row">
       <ButtonLink href="/approach/" variant="secondary">See the Approach</ButtonLink>
       <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>

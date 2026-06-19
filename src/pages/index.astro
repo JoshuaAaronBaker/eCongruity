@@ -1,5 +1,6 @@
 ---
 import ButtonLink from "../components/ButtonLink.astro";
+import HeroScrollButton from "../components/HeroScrollButton.astro";
 import ProofCarousel from "../components/ProofCarousel.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
@@ -89,8 +90,9 @@ const processSteps = [
       data-mountain-webgl
       aria-hidden="true"
     ></canvas>
+    <div class="home-hero__stars" aria-hidden="true"></div>
     <div class="home-hero__orbit" aria-hidden="true"></div>
-    <div class="home-hero__scroll" aria-hidden="true">Scroll</div>
+    <HeroScrollButton href="#work-heading" label="Scroll to What We Do" />
     <div class="site-container home-hero__grid">
       <div class="home-hero__content">
         <p class="hero-kicker">Strategic Innovation Studio</p>
@@ -114,6 +116,7 @@ const processSteps = [
         <p>
           eCongruity helps organizations align the gap between big ideas and real-world execution. We blend strategy, clarity, and the right technologies to turn complexity into momentum.
         </p>
+        <p class="what-section__cue">Tap a card for details</p>
       </div>
       <div class="what-card-grid" role="list">
         {
@@ -129,7 +132,6 @@ const processSteps = [
                   <div class="what-card__face what-card__face--front" aria-hidden="true">
                     <span>{card.number}</span>
                     <h3>{card.title}</h3>
-                    <span class="what-card__cue">Tap for details</span>
                   </div>
                   <div class="what-card__face what-card__face--back" aria-hidden="true">
                     <span>{card.number}</span>

@@ -2,14 +2,17 @@ import * as THREE from "three";
 
 const MOBILE_QUERY = "(max-width: 767px)";
 const SAMPLE_WIDTH = 520;
-const MAX_PARTICLES = 76000;
-const TOUCH_SIZE = 128;
+const MAX_PARTICLES = 52000;
+const TOUCH_SIZE = 96;
 const IMAGE_THRESHOLD = 22;
-const PARTICLE_FIELD_DENSITY = 0.68;
+const PARTICLE_FIELD_DENSITY = 0.46;
 const MIN_MOUNTAIN_START = 0.34;
 const RIDGE_NEIGHBOR_THRESHOLD = 3;
 const SCREEN_HIT_CELL_SIZE = 6;
-const SCREEN_HIT_RADIUS = 6;
+const SCREEN_HIT_RADIUS = 2;
+const INTRO_DURATION = 4400;
+const INTRO_STAGGER = 0.78;
+const INTRO_DROP_DISTANCE = 430;
 
 type ParticleSource = {
   brightness: number;
@@ -52,6 +55,7 @@ const vertexShader = `
   attribute vec2 touchUv;
 
   uniform float uDepth;
+  uniform float uDropDistance;
   uniform float uOpacity;
   uniform float uReveal;
   uniform float uScatter;
@@ -71,24 +75,39 @@ const vertexShader = `
     return 1.0 - pow(1.0 - x, 4.0);
   }
 
+  float easeOutCubic(float value) {
+    float x = clamp(value, 0.0, 1.0);
+    return 1.0 - pow(1.0 - x, 3.0);
+  }
+
+  float easeInOutCubic(float value) {
+    float x = clamp(value, 0.0, 1.0);
+
+    if (x < 0.5) {
+      return 4.0 * x * x * x;
+    }
+
+    return 1.0 - pow(-2.0 * x + 2.0, 3.0) / 2.0;
+  }
+
   void main() {
-    float reveal = easeOutQuart(uReveal - randomSeed * 0.42);
+    float arrival = easeInOutCubic(uReveal - randomSeed * ${INTRO_STAGGER.toFixed(2)});
+    float reveal = easeOutCubic(uReveal - randomSeed * ${(INTRO_STAGGER * 0.58).toFixed(2)});
     float touch = max(
       texture2D(uTouch, touchUv).r,
       texture2D(uTouch, vec2(touchUv.x, 1.0 - touchUv.y)).r
     );
-    float pulse = sin(uTime * 0.0023 + pindex * 0.019) * 0.5 + 0.5;
     vec3 displaced = offset;
 
-    displaced.xy += vec2(cos(angle), sin(angle)) * (1.0 - reveal) * uScatter * (0.4 + randomSeed);
-    displaced.xy += vec2(cos(angle), sin(angle)) * touch * uTouchStrength * (0.75 + randomSeed);
-    displaced.z += sin(uTime * 0.0014 + pindex * 0.017) * uDepth * (0.2 + brightness);
-    displaced.z += touch * uTouchStrength * (0.8 + randomSeed);
+    displaced.x += cos(angle) * (1.0 - arrival) * uScatter * (0.14 + randomSeed * 0.24);
+    displaced.y += (1.0 - arrival) * uDropDistance * (0.82 + randomSeed * 0.42);
+    displaced.xy += vec2(cos(angle), sin(angle)) * touch * uTouchStrength * (0.3 + randomSeed * 0.32);
+    displaced.z += touch * uTouchStrength * (0.22 + randomSeed * 0.24);
 
-    float particleSize = uSize * (0.55 + brightness * 1.9 + pulse * 0.2 + touch * 3.0) * reveal;
+    float particleSize = uSize * (0.58 + brightness * 1.82 + touch * 0.62) * mix(0.18, 1.0, arrival);
     vec2 local = position.xy * particleSize;
 
-    vAlpha = uOpacity * reveal * (0.35 + brightness * 0.9 + touch * 1.05);
+    vAlpha = uOpacity * reveal * (0.35 + brightness * 0.9 + touch * 0.42);
     vBrightness = brightness;
     vColor = instanceColor;
     vTouch = touch;
@@ -557,13 +576,13 @@ export const initMountainParticles = () => {
         const point = trail[index];
         point.age += 1;
 
-        if (point.age > 34) {
+        if (point.age > 14) {
           trail.splice(index, 1);
           continue;
         }
 
-        const life = 1 - point.age / 34;
-        const radius = (10 + point.force * 18) * life;
+        const life = 1 - point.age / 14;
+        const radius = (2.5 + point.force * 4.5) * life;
         const gradient = touchContext.createRadialGradient(
           point.u * TOUCH_SIZE,
           point.v * TOUCH_SIZE,
@@ -573,7 +592,7 @@ export const initMountainParticles = () => {
           radius,
         );
 
-        gradient.addColorStop(0, `rgba(255, 255, 255, ${0.78 * life})`);
+        gradient.addColorStop(0, `rgba(255, 255, 255, ${0.48 * life})`);
         gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
         touchContext.globalCompositeOperation = "lighter";
         touchContext.fillStyle = gradient;
@@ -613,12 +632,12 @@ export const initMountainParticles = () => {
 
       trail.push({
         age: 0,
-        force: event.pointerType === "touch" ? 1.2 : 0.9,
+        force: event.pointerType === "touch" ? 0.9 : 0.7,
         u: uv.u,
         v: uv.v,
       });
 
-      if (trail.length > 28) {
+      if (trail.length > 8) {
         trail.shift();
       }
     };
@@ -626,7 +645,7 @@ export const initMountainParticles = () => {
     const render = (time: number) => {
       clearTouch();
       material.uniforms.uTime.value = time;
-      material.uniforms.uReveal.value = Math.min(1.45, (time - startedAt) / 1500);
+      material.uniforms.uReveal.value = Math.min(1 + INTRO_STAGGER, (time - startedAt) / INTRO_DURATION);
       renderer.render(scene, camera);
 
       if (!disposed) {
@@ -684,14 +703,15 @@ export const initMountainParticles = () => {
         fragmentShader,
         transparent: true,
         uniforms: {
-          uDepth: { value: 44 },
-          uOpacity: { value: 0.92 },
+          uDepth: { value: 0 },
+          uDropDistance: { value: INTRO_DROP_DISTANCE },
+          uOpacity: { value: 0.84 },
           uReveal: { value: 0 },
-          uScatter: { value: 180 },
-          uSize: { value: 3.1 },
+          uScatter: { value: 96 },
+          uSize: { value: 2.85 },
           uTime: { value: 0 },
           uTouch: { value: touchTexture },
-          uTouchStrength: { value: 54 },
+          uTouchStrength: { value: 14 },
         },
         vertexShader,
       });

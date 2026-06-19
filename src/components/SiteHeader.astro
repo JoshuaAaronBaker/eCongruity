@@ -1,11 +1,16 @@
 ---
-import { Menu } from "@lucide/astro";
+import { Menu, X } from "@lucide/astro";
 import ButtonLink from "./ButtonLink.astro";
 
 const headerNavItems = [
   { label: "Approach", href: "/approach/" },
   { label: "About", href: "/about/" },
   { label: "Contact", href: "/contact/" },
+];
+
+const mobileNavItems = [
+  { label: "Home", href: "/" },
+  ...headerNavItems,
 ];
 
 const normalizePath = (path: string) =>
@@ -56,11 +61,13 @@ const isActive = (href: string) => {
 
     <details class="mobile-nav">
       <summary aria-label="Open navigation">
-        <Menu size={34} stroke-width={2.8} aria-hidden="true" />
+        <Menu class="mobile-nav__icon mobile-nav__icon--menu" size={28} stroke-width={2.8} aria-hidden="true" />
+        <X class="mobile-nav__icon mobile-nav__icon--close" size={27} stroke-width={2.6} aria-hidden="true" />
       </summary>
-      <nav class="mobile-nav__panel" aria-label="Mobile navigation">
+      <span class="mobile-nav__backdrop" hidden aria-hidden="true"></span>
+      <nav class="mobile-nav__panel" hidden aria-label="Mobile navigation">
         {
-          headerNavItems.map((item) => (
+          mobileNavItems.map((item) => (
             <a
               href={item.href}
               class:list={["mobile-nav__link", isActive(item.href) && "mobile-nav__link--active"]}
@@ -88,5 +95,82 @@ const isActive = (href: string) => {
 
     updateHeaderState();
     window.addEventListener("scroll", updateHeaderState, { passive: true });
+  }
+
+  const mobileNav = document.querySelector<HTMLDetailsElement>(".mobile-nav");
+  const mobileNavSummary = mobileNav?.querySelector<HTMLElement>("summary");
+  const mobileNavBackdrop = mobileNav?.querySelector<HTMLElement>(".mobile-nav__backdrop");
+  const mobileNavPanel = mobileNav?.querySelector<HTMLElement>(".mobile-nav__panel");
+
+  if (mobileNav && mobileNavSummary && mobileNavBackdrop && mobileNavPanel) {
+    let closeTimer: number | undefined;
+    document.body.append(mobileNavBackdrop, mobileNavPanel);
+
+    const openMobileNav = () => {
+      window.clearTimeout(closeTimer);
+      mobileNav.open = true;
+      mobileNav.removeAttribute("data-closing");
+      mobileNavBackdrop.removeAttribute("data-closing");
+      mobileNavPanel.removeAttribute("data-closing");
+      mobileNavBackdrop.hidden = false;
+      mobileNavPanel.hidden = false;
+      siteHeader?.setAttribute("data-mobile-nav-open", "");
+
+      window.requestAnimationFrame(() => {
+        mobileNavBackdrop.setAttribute("data-open", "");
+        mobileNavPanel.setAttribute("data-open", "");
+      });
+    };
+
+    const closeMobileNav = (animate = true) => {
+      window.clearTimeout(closeTimer);
+      mobileNav.setAttribute("data-closing", "");
+      mobileNavBackdrop.removeAttribute("data-open");
+      mobileNavPanel.removeAttribute("data-open");
+      mobileNavBackdrop.setAttribute("data-closing", "");
+      mobileNavPanel.setAttribute("data-closing", "");
+
+      const finishClose = () => {
+        mobileNav.open = false;
+        mobileNav.removeAttribute("data-closing");
+        mobileNavBackdrop.removeAttribute("data-closing");
+        mobileNavPanel.removeAttribute("data-closing");
+        mobileNavBackdrop.hidden = true;
+        mobileNavPanel.hidden = true;
+        siteHeader?.removeAttribute("data-mobile-nav-open");
+      };
+
+      if (!animate) {
+        finishClose();
+        return;
+      }
+
+      closeTimer = window.setTimeout(finishClose, 320);
+    };
+
+    mobileNavSummary.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      if (mobileNav.open) {
+        closeMobileNav();
+        return;
+      }
+
+      openMobileNav();
+    });
+
+    mobileNavPanel.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        closeMobileNav(false);
+      });
+    });
+
+    mobileNavBackdrop.addEventListener("click", () => closeMobileNav());
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && mobileNav.open) {
+        closeMobileNav();
+      }
+    });
   }
 </script>

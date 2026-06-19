@@ -1,5 +1,6 @@
 ---
 import ButtonLink from "../components/ButtonLink.astro";
+import HeroScrollButton from "../components/HeroScrollButton.astro";
 import PageHero from "../components/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { aboutStats, aboutTimeline, founders, site } from "../content/site";
@@ -53,7 +54,11 @@ const values = [
       We are a strategic innovation studio connecting people, process, and technology — with intention, clarity, and a deep respect for the environments we operate in.
     </span>
     <div class="about-hero__orbit" aria-hidden="true"></div>
-    <div class="about-hero__scroll" aria-hidden="true">Scroll</div>
+    <HeroScrollButton
+      slot="after"
+      href="#mission-heading"
+      label="Scroll to Our Mission"
+    />
   </PageHero>
 
   <section class="section-band section-band--linen about-mission-section" aria-labelledby="mission-heading">

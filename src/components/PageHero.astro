@@ -10,10 +10,13 @@ const { eyebrow, title, summary, class: className = "" } = Astro.props;
 ---
 
 <section class:list={["page-hero", className]}>
-  <div class="site-container page-hero__inner">
-    <p class="eyebrow">{eyebrow}</p>
-    <h1><slot name="title">{title}</slot></h1>
-    <p><slot name="summary">{summary}</slot></p>
-    <slot />
+  <div class="site-container home-hero__grid page-hero__grid">
+    <div class="home-hero__content page-hero__inner">
+      <p class="hero-kicker eyebrow">{eyebrow}</p>
+      <h1><slot name="title">{title}</slot></h1>
+      <p class="home-hero__lead"><slot name="summary">{summary}</slot></p>
+      <slot />
+    </div>
   </div>
+  <slot name="after" />
 </section>

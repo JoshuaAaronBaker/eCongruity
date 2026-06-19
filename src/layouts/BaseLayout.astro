@@ -38,11 +38,17 @@ const pageTitle = title === site.name ? site.name : `${title} | ${site.name}`;
       <slot />
     </main>
     <SiteFooter />
+    <div class="site-cursor" data-site-cursor aria-hidden="true">
+      <span class="site-cursor__ring"></span>
+      <span class="site-cursor__dot"></span>
+    </div>
   </body>
 </html>
 
 <script>
   import { initScrollReveals } from "../scripts/scrollReveals";
+  import { initSiteCursor } from "../scripts/siteCursor";
 
   initScrollReveals();
+  initSiteCursor();
 </script>

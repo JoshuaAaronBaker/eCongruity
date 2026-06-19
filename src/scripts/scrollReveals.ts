@@ -1,5 +1,7 @@
 const REVEAL_SCOPE_SELECTOR = ".section-band > .site-container, .contact-panel > .site-container";
+const ITEM_REVEAL_SELECTOR = ".story-timeline";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+const SCROLL_REVEAL_WAIT = 130;
 
 const getRevealDirection = (element: HTMLElement, index: number) => {
   const rect = element.getBoundingClientRect();
@@ -28,15 +30,34 @@ export const initScrollReveals = () => {
 
   const scopes = Array.from(document.querySelectorAll<HTMLElement>(REVEAL_SCOPE_SELECTOR));
   const targets = scopes.flatMap((scope) =>
-    Array.from(scope.children).filter((child): child is HTMLElement => child instanceof HTMLElement),
+    Array.from(scope.children).flatMap((child) => {
+      if (!(child instanceof HTMLElement)) {
+        return [];
+      }
+
+      if (child.matches(ITEM_REVEAL_SELECTOR)) {
+        return Array.from(child.children).filter((item): item is HTMLElement => item instanceof HTMLElement);
+      }
+
+      return [child];
+    }),
   );
 
   if (targets.length === 0) {
     return;
   }
 
-  const reveal = (element: HTMLElement) => {
-    element.setAttribute("data-scroll-reveal-visible", "");
+  const revealTimers = new WeakSet<HTMLElement>();
+
+  const reveal = (element: HTMLElement, wait = SCROLL_REVEAL_WAIT) => {
+    if (revealTimers.has(element) || element.hasAttribute("data-scroll-reveal-visible")) {
+      return;
+    }
+
+    revealTimers.add(element);
+    window.setTimeout(() => {
+      element.setAttribute("data-scroll-reveal-visible", "");
+    }, wait);
   };
 
   const observer = new IntersectionObserver(
@@ -58,10 +79,15 @@ export const initScrollReveals = () => {
 
   targets.forEach((target, index) => {
     target.dataset.scrollReveal = getRevealDirection(target, index);
-    target.style.setProperty("--scroll-reveal-delay", `${Math.min(index % 3, 2) * 70}ms`);
+    const siblingIndex = target.parentElement
+      ? Array.from(target.parentElement.children).indexOf(target)
+      : index;
+    const staggerIndex = target.parentElement?.matches(ITEM_REVEAL_SELECTOR) ? siblingIndex : index % 3;
+
+    target.style.setProperty("--scroll-reveal-delay", `${Math.min(staggerIndex, 5) * 80}ms`);
 
     if (isInitiallyVisible(target)) {
-      reveal(target);
+      reveal(target, 0);
       return;
     }
 
