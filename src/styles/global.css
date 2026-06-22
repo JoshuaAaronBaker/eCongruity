@@ -330,8 +330,8 @@ textarea {
     --button-bg: transparent;
     --button-fg: currentColor;
     --button-border: transparent;
-    --button-hover-bg: rgb(200 165 90 / 0.16);
-    --button-hover-fg: var(--color-white-linen);
+    --button-hover-bg: var(--color-sundance);
+    --button-hover-fg: var(--color-hunter-green);
     --button-highlight: var(--color-sundance);
     @apply relative isolate inline-flex min-h-9 cursor-pointer items-center justify-center overflow-hidden rounded-none border px-5 py-2.5 text-[0.68rem] font-bold uppercase leading-none tracking-[0.12em];
     background:
@@ -358,16 +358,20 @@ textarea {
   .button-link:hover,
   .button-link:focus-visible {
     background-size: 100% 100%, auto;
-    border-color: var(--button-highlight);
-    color: var(--button-hover-fg);
+    border-color: rgb(229 194 104 / 0.92);
+    color: var(--button-hover-fg) !important;
     transform: translateY(-2px) scale(1.015);
-    box-shadow: 0 7px 14px rgb(15 27 16 / 0.12);
+    box-shadow:
+      0 0 0 1px rgb(202 166 79 / 0.4),
+      0 10px 24px rgb(202 166 79 / 0.26),
+      0 7px 14px rgb(15 27 16 / 0.12);
     outline: none !important;
   }
 
   .button-link:focus-visible {
     box-shadow:
       0 0 0 2px rgb(202 166 79 / 0.42),
+      0 10px 24px rgb(202 166 79 / 0.26),
       0 7px 14px rgb(15 27 16 / 0.12);
   }
 
@@ -386,13 +390,11 @@ textarea {
     --button-bg: var(--color-oxley);
     --button-fg: var(--color-hunter-green);
     --button-border: rgb(141 172 152 / 0.68);
-    --button-hover-bg: var(--color-pale-leaf);
-    --button-hover-fg: var(--color-hunter-green);
-    --button-highlight: var(--color-sundance);
     color: var(--color-hunter-green) !important;
   }
 
-  .button-link--primary:hover {
+  .button-link--primary:hover,
+  .button-link--primary:focus-visible {
     color: var(--color-hunter-green) !important;
   }
 
@@ -400,14 +402,12 @@ textarea {
     --button-bg: transparent;
     --button-fg: inherit;
     --button-border: currentColor;
-    --button-hover-bg: rgb(200 165 90 / 0.14);
-    --button-hover-fg: var(--color-white-linen);
-    --button-highlight: var(--color-sundance);
     color: inherit;
   }
 
-  .button-link--secondary:hover {
-    color: var(--color-white-linen);
+  .button-link--secondary:hover,
+  .button-link--secondary:focus-visible {
+    color: var(--color-hunter-green) !important;
   }
 
   .button-row {
@@ -544,22 +544,49 @@ textarea {
   @keyframes home-stars-breathe {
     0% {
       opacity: 0.68;
-      filter: drop-shadow(0 0 0.24rem rgb(251 247 240 / 0.18));
+      filter: drop-shadow(0 0 0.24rem rgb(251 247 240 / 0.14));
     }
 
     38% {
       opacity: 1;
-      filter: drop-shadow(0 0 0.72rem rgb(251 247 240 / 0.42));
+      filter: drop-shadow(0 0 0.82rem rgb(251 247 240 / 0.36));
     }
 
     63% {
       opacity: 0.78;
-      filter: drop-shadow(0 0 0.34rem rgb(251 247 240 / 0.24));
+      filter: drop-shadow(0 0 0.32rem rgb(251 247 240 / 0.2));
     }
 
     100% {
       opacity: 0.94;
-      filter: drop-shadow(0 0 0.58rem rgb(251 247 240 / 0.34));
+      filter: drop-shadow(0 0 0.64rem rgb(251 247 240 / 0.3));
+    }
+  }
+
+  @keyframes home-star-twinkle {
+    0%,
+    100% {
+      opacity: 0.34;
+      transform: translate3d(0, 0, 0) rotate(var(--star-rotate, 0deg)) scale(0.74);
+      filter: drop-shadow(0 0 0.1rem rgb(251 247 240 / 0.16));
+    }
+
+    24% {
+      opacity: 0.9;
+      transform: translate3d(0, 0, 0) rotate(calc(var(--star-rotate, 0deg) + 8deg)) scale(1.14);
+      filter: drop-shadow(0 0 0.52rem rgb(251 247 240 / 0.56));
+    }
+
+    48% {
+      opacity: 0.48;
+      transform: translate3d(0, 0, 0) rotate(calc(var(--star-rotate, 0deg) - 5deg)) scale(0.86);
+      filter: drop-shadow(0 0 0.18rem rgb(202 166 79 / 0.24));
+    }
+
+    72% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotate(calc(var(--star-rotate, 0deg) + 12deg)) scale(1.22);
+      filter: drop-shadow(0 0 0.7rem rgb(251 247 240 / 0.68));
     }
   }
 
@@ -639,23 +666,173 @@ textarea {
   }
 
   .home-hero__stars {
-    @apply pointer-events-none absolute inset-x-0 top-0 h-[68%] opacity-90;
+    @apply pointer-events-none absolute inset-x-0 top-0 h-[68%] opacity-95;
     z-index: -2;
-    background:
-      radial-gradient(circle at 69% 18%, rgb(251 247 240 / 0.96) 0 1.2px, transparent 2.1px),
-      radial-gradient(circle at 78% 27%, rgb(202 166 79 / 0.84) 0 1.1px, transparent 2px),
-      radial-gradient(circle at 87% 14%, rgb(189 207 189 / 0.84) 0 1.35px, transparent 2.2px),
-      radial-gradient(circle at 58% 34%, rgb(251 247 240 / 0.74) 0 1px, transparent 1.9px),
-      radial-gradient(circle at 73% 42%, rgb(189 207 189 / 0.7) 0 1px, transparent 1.9px),
-      radial-gradient(circle at 91% 36%, rgb(251 247 240 / 0.9) 0 1.1px, transparent 2px),
-      radial-gradient(circle at 44% 19%, rgb(251 247 240 / 0.62) 0 0.9px, transparent 1.8px),
-      radial-gradient(circle at 34% 38%, rgb(189 207 189 / 0.56) 0 0.9px, transparent 1.8px),
-      radial-gradient(circle at 63% 55%, rgb(202 166 79 / 0.62) 0 1px, transparent 1.9px),
-      radial-gradient(circle at 82% 52%, rgb(251 247 240 / 0.56) 0 0.85px, transparent 1.7px),
-      radial-gradient(circle at 51% 48%, rgb(189 207 189 / 0.54) 0 0.85px, transparent 1.7px),
-      radial-gradient(circle at 95% 21%, rgb(202 166 79 / 0.62) 0 0.9px, transparent 1.8px);
-    filter: drop-shadow(0 0 0.48rem rgb(251 247 240 / 0.3));
     animation: home-stars-breathe 4.8s ease-in-out infinite alternate;
+  }
+
+  .home-hero__star {
+    --star-color: rgb(251 247 240);
+    --star-size: 0.46rem;
+    --star-rotate: 0deg;
+    @apply absolute block;
+    left: var(--star-x);
+    top: var(--star-y);
+    width: var(--star-size);
+    height: var(--star-size);
+    color: var(--star-color);
+    opacity: 0.4;
+    transform: rotate(var(--star-rotate));
+    transform-origin: center;
+    animation: home-star-twinkle var(--star-speed, 4.9s) ease-in-out var(--star-delay, 0s) infinite;
+    will-change: opacity, filter, transform;
+  }
+
+  .home-hero__star::before,
+  .home-hero__star::after {
+    content: "";
+    @apply absolute left-1/2 top-1/2;
+    background: currentColor;
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+  }
+
+  .home-hero__star::before {
+    width: 100%;
+    height: 18%;
+    box-shadow: 0 0 0.42rem currentColor;
+  }
+
+  .home-hero__star::after {
+    width: 18%;
+    height: 100%;
+    box-shadow: 0 0 0.42rem currentColor;
+  }
+
+  .home-hero__star[data-star="1"] {
+    --star-x: 34%;
+    --star-y: 17%;
+    --star-size: 0.5rem;
+    --star-speed: 4.4s;
+    --star-delay: -1.2s;
+  }
+
+  .home-hero__star[data-star="2"] {
+    --star-color: rgb(202 166 79);
+    --star-x: 45%;
+    --star-y: 36%;
+    --star-size: 0.38rem;
+    --star-speed: 3.7s;
+    --star-delay: -2.5s;
+    --star-rotate: 16deg;
+  }
+
+  .home-hero__star[data-star="3"] {
+    --star-color: rgb(189 207 189);
+    --star-x: 52%;
+    --star-y: 22%;
+    --star-size: 0.42rem;
+    --star-speed: 5.3s;
+    --star-delay: -0.8s;
+    --star-rotate: 28deg;
+  }
+
+  .home-hero__star[data-star="4"] {
+    --star-x: 59%;
+    --star-y: 47%;
+    --star-size: 0.34rem;
+    --star-speed: 4.1s;
+    --star-delay: -3.1s;
+  }
+
+  .home-hero__star[data-star="5"] {
+    --star-x: 66%;
+    --star-y: 16%;
+    --star-size: 0.62rem;
+    --star-speed: 5.9s;
+    --star-delay: -2s;
+    --star-rotate: 12deg;
+  }
+
+  .home-hero__star[data-star="6"] {
+    --star-color: rgb(202 166 79);
+    --star-x: 73%;
+    --star-y: 38%;
+    --star-size: 0.44rem;
+    --star-speed: 3.9s;
+    --star-delay: -1.5s;
+    --star-rotate: -18deg;
+  }
+
+  .home-hero__star[data-star="7"] {
+    --star-color: rgb(189 207 189);
+    --star-x: 79%;
+    --star-y: 24%;
+    --star-size: 0.54rem;
+    --star-speed: 5.6s;
+    --star-delay: -3.7s;
+    --star-rotate: 34deg;
+  }
+
+  .home-hero__star[data-star="8"] {
+    --star-x: 86%;
+    --star-y: 13%;
+    --star-size: 0.4rem;
+    --star-speed: 4.7s;
+    --star-delay: -2.8s;
+  }
+
+  .home-hero__star[data-star="9"] {
+    --star-x: 91%;
+    --star-y: 34%;
+    --star-size: 0.48rem;
+    --star-speed: 4.2s;
+    --star-delay: -0.4s;
+    --star-rotate: 22deg;
+  }
+
+  .home-hero__star[data-star="10"] {
+    --star-color: rgb(202 166 79);
+    --star-x: 63%;
+    --star-y: 57%;
+    --star-size: 0.3rem;
+    --star-speed: 3.5s;
+    --star-delay: -1.9s;
+  }
+
+  .home-hero__star[data-star="11"] {
+    --star-x: 81%;
+    --star-y: 54%;
+    --star-size: 0.34rem;
+    --star-speed: 5.1s;
+    --star-delay: -4s;
+    --star-rotate: -12deg;
+  }
+
+  .home-hero__star[data-star="12"] {
+    --star-color: rgb(189 207 189);
+    --star-x: 94%;
+    --star-y: 20%;
+    --star-size: 0.36rem;
+    --star-speed: 4.6s;
+    --star-delay: -3.4s;
+  }
+
+  .home-hero__star[data-star="13"] {
+    --star-x: 70%;
+    --star-y: 28%;
+    --star-size: 0.28rem;
+    --star-speed: 3.3s;
+    --star-delay: -0.9s;
+    --star-rotate: 45deg;
+  }
+
+  .home-hero__star[data-star="14"] {
+    --star-x: 55%;
+    --star-y: 10%;
+    --star-size: 0.32rem;
+    --star-speed: 4s;
+    --star-delay: -2.2s;
   }
 
   .home-hero__stars::before,
@@ -689,14 +866,39 @@ textarea {
 
     .home-hero__stars {
       @apply h-[52%] opacity-78;
-      background:
-        radial-gradient(circle at 77% 19%, rgb(251 247 240 / 0.7) 0 1px, transparent 1.8px),
-        radial-gradient(circle at 86% 32%, rgb(202 166 79 / 0.55) 0 1px, transparent 1.8px),
-        radial-gradient(circle at 57% 27%, rgb(189 207 189 / 0.52) 0 0.9px, transparent 1.7px),
-        radial-gradient(circle at 39% 43%, rgb(251 247 240 / 0.46) 0 0.8px, transparent 1.6px),
-        radial-gradient(circle at 71% 45%, rgb(251 247 240 / 0.52) 0 0.8px, transparent 1.6px),
-        radial-gradient(circle at 92% 22%, rgb(189 207 189 / 0.48) 0 0.8px, transparent 1.6px),
-        radial-gradient(circle at 49% 16%, rgb(202 166 79 / 0.42) 0 0.75px, transparent 1.5px);
+    }
+
+    .home-hero__star {
+      --star-size: 0.34rem;
+    }
+
+    .home-hero__star[data-star="1"] {
+      --star-x: 37%;
+      --star-y: 18%;
+    }
+
+    .home-hero__star[data-star="2"] {
+      --star-x: 53%;
+      --star-y: 31%;
+    }
+
+    .home-hero__star[data-star="3"] {
+      --star-x: 66%;
+      --star-y: 19%;
+    }
+
+    .home-hero__star[data-star="4"] {
+      --star-x: 78%;
+      --star-y: 39%;
+    }
+
+    .home-hero__star[data-star="5"] {
+      --star-x: 88%;
+      --star-y: 23%;
+    }
+
+    .home-hero__star:nth-child(n + 9) {
+      display: none;
     }
   }
 
@@ -709,6 +911,14 @@ textarea {
     .home-hero__stars::before,
     .home-hero__stars::after {
       display: none;
+    }
+
+    .home-hero__star {
+      animation: none !important;
+      opacity: 0.72;
+      transform: rotate(var(--star-rotate, 0deg)) scale(1);
+      filter: drop-shadow(0 0 0.24rem rgb(251 247 240 / 0.22));
+      will-change: auto;
     }
   }
 
@@ -1912,8 +2122,8 @@ textarea {
   }
 
   .approach-complexity {
-    @apply mx-auto grid justify-items-center gap-9 text-center;
-    max-width: 900px;
+    @apply grid items-start gap-12 text-left md:grid-cols-[minmax(20rem,0.92fr)_minmax(24rem,1.08fr)] md:gap-16 lg:gap-24;
+    max-width: 1120px;
   }
 
   .capability-fit__intro {
@@ -1921,7 +2131,7 @@ textarea {
   }
 
   .approach-complexity__intro {
-    @apply mx-auto max-w-[44rem];
+    @apply max-w-[31rem];
   }
 
   .approach-complexity .eyebrow,
@@ -1947,7 +2157,7 @@ textarea {
   }
 
   .approach-complexity h2 {
-    @apply mx-auto max-w-[16ch] text-[length:var(--type-section-compact)] text-[var(--color-green-kelp)];
+    @apply max-w-[12ch] text-[length:var(--type-section-compact)] text-[var(--color-green-kelp)];
   }
 
   .capability-signal-list {
@@ -1955,11 +2165,11 @@ textarea {
   }
 
   .approach-complexity__copy {
-    @apply mx-auto grid max-w-[48rem] justify-items-center gap-5;
+    @apply grid max-w-[640px] gap-5 pt-0 md:pt-[3.35rem];
   }
 
   .approach-complexity__copy p {
-    @apply m-0 max-w-[43rem] text-center text-[length:var(--type-lead)] leading-8 text-[var(--color-hunter-green)];
+    @apply m-0 text-left text-[length:var(--type-lead)] leading-8 text-[var(--color-hunter-green)];
     text-wrap: pretty;
   }
 
@@ -2715,16 +2925,6 @@ textarea {
 
   .about-closing__home-link {
     @apply border-0 border-b border-[rgb(200_165_90_/_0.45)] px-0 text-[var(--color-pale-leaf)];
-    --button-hover-bg: transparent;
-    --button-hover-fg: var(--color-sundance);
-    --button-highlight: var(--color-sundance);
-    box-shadow: none;
-  }
-
-  .about-closing__home-link:hover,
-  .about-closing__home-link:focus-visible {
-    box-shadow: none;
-    transform: translateY(-1px);
   }
 
   .contact-form {
@@ -2784,9 +2984,6 @@ textarea {
   .contact-form button {
     @apply mt-1 justify-self-start px-9 text-[var(--color-sundance)] md:col-span-2;
     --button-border: var(--color-sundance);
-    --button-hover-bg: rgb(200 165 90 / 0.16);
-    --button-hover-fg: var(--color-white-linen);
-    --button-highlight: var(--color-sundance);
   }
 
   .contact-form__continue span {

@@ -90,7 +90,9 @@ const processSteps = [
       data-mountain-webgl
       aria-hidden="true"
     ></canvas>
-    <div class="home-hero__stars" aria-hidden="true"></div>
+    <div class="home-hero__stars" aria-hidden="true">
+      {Array.from({ length: 14 }, (_, index) => <span class="home-hero__star" data-star={index + 1}></span>)}
+    </div>
     <div class="home-hero__orbit" aria-hidden="true"></div>
     <HeroScrollButton href="#work-heading" label="Scroll to What We Do" />
     <div class="site-container home-hero__grid">
