@@ -1042,8 +1042,7 @@ textarea {
   .page-hero p,
   .section-header p,
   .split-section p,
-  .contact-grid p,
-  .closing-cta p {
+  .contact-grid p {
     @apply max-w-[690px] text-[1.05rem] leading-7 text-inherit;
   }
 
@@ -1320,8 +1319,7 @@ textarea {
 
   .section-header h2,
   .split-section h2,
-  .contact-grid h2,
-  .closing-cta h2 {
+  .contact-grid h2 {
     @apply m-0 max-w-[780px] text-[length:var(--type-section)] font-normal leading-[1.04];
     font-family: var(--font-serif);
     text-wrap: balance;
@@ -1329,8 +1327,7 @@ textarea {
 
   .section-header p,
   .split-section p,
-  .contact-grid p,
-  .closing-cta p {
+  .contact-grid p {
     @apply text-[var(--color-cement)];
   }
 
@@ -2704,36 +2701,14 @@ textarea {
     @apply text-sm font-bold uppercase text-[var(--color-killarney)];
   }
 
-  .closing-cta {
-    @apply mx-auto max-w-[42rem] grid items-center justify-items-center gap-6 text-center;
-  }
-
-  .closing-cta h2 {
-    @apply mx-auto max-w-[18ch] text-[length:var(--type-section)] text-[var(--color-linen)];
-  }
-
-  .closing-cta p:not(.section-label) {
-    @apply mx-auto max-w-[34rem] text-[length:var(--type-lead)] leading-8 text-[var(--color-pale-leaf)];
-  }
-
   @media (max-width: 767px) {
-    .closing-cta .button-row,
     .about-closing .button-row {
       @apply w-full justify-center;
     }
 
-    .closing-cta .button-link,
     .about-closing .button-link {
       @apply w-full max-w-[17rem];
     }
-  }
-
-  .closing-section {
-    @apply py-18 md:py-24;
-  }
-
-  .closing-section .section-label {
-    @apply text-[var(--color-sundance)];
   }
 
   .about-team-section {
@@ -3039,10 +3014,6 @@ textarea {
 
   .about-closing .button-row {
     @apply justify-center gap-5;
-  }
-
-  .about-closing__home-link {
-    @apply border-0 border-b border-[rgb(200_165_90_/_0.45)] px-0 text-[var(--color-pale-leaf)];
   }
 
   .contact-form {
