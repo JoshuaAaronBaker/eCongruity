@@ -43,13 +43,13 @@ import {
     <div class="site-container approach-complexity">
       <div class="approach-complexity__intro">
         <p class="eyebrow">Operational and Growth Complexity</p>
-        <h2 id="complexity-heading">Make the messy parts specific enough to work on.</h2>
+        <h2 id="complexity-heading" class="theme-heading theme-heading--compact theme-heading--light">Make the messy parts specific enough to work on.</h2>
       </div>
       <div class="approach-complexity__copy">
-        <p>
+        <p class="theme-lead theme-lead--light">
           eCongruity starts by naming the real conditions slowing progress: unclear processes, disconnected systems, underused technology, stalled ideas, and cross-functional misalignment.
         </p>
-        <p>
+        <p class="theme-lead theme-lead--light">
           That operating context becomes the starting point for the Challenge Map: a shared picture of what is happening now, who needs to be involved, and what can move first.
         </p>
       </div>
@@ -60,8 +60,8 @@ import {
     <div class="site-container approach-signals">
       <div class="approach-signals__header">
         <p class="eyebrow">What It Can Look Like</p>
-        <h2 id="signals-heading">Recognizable signals inside complex work.</h2>
-        <p>
+        <h2 id="signals-heading" class="theme-heading theme-heading--section theme-heading--dark">Recognizable signals inside complex work.</h2>
+        <p class="theme-lead theme-lead--dark">
           These are the moments when the work needs a clearer operating picture before another platform, initiative, or process decision gets added.
         </p>
       </div>
@@ -69,9 +69,9 @@ import {
         {
           approachComplexitySignals.map((signal, index) => (
             <article>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <h3>{signal.title}</h3>
-              <p>{signal.summary}</p>
+              <span class="theme-number theme-number--dark">{String(index + 1).padStart(2, "0")}</span>
+              <h3 class="theme-card-title theme-card-title--dark">{signal.title}</h3>
+              <p class="theme-card-body theme-card-body--dark">{signal.summary}</p>
             </article>
           ))
         }
@@ -83,8 +83,8 @@ import {
     <div class="site-container approach-map">
       <div class="approach-map__header">
         <p class="eyebrow">Strategy-to-Implementation Engagement</p>
-        <h2 id="engagement-heading">The Challenge Map keeps strategy and execution connected.</h2>
-        <p>
+        <h2 id="engagement-heading" class="theme-heading theme-heading--compact theme-heading--light">The Challenge Map keeps strategy and execution connected.</h2>
+        <p class="theme-lead theme-lead--muted">
           eCongruity does not hand off an abstract plan and disappear. The Challenge Map becomes the shared reference for where to focus, who to involve, and which first executable slice can move the work through launch.
         </p>
       </div>
@@ -93,9 +93,9 @@ import {
           {
             engagementModel.map((item, index) => (
               <li>
-                <span>{String(index + 1)}</span>
-                <h3>{item.title}</h3>
-                <p>{item.summary}</p>
+                <span class="theme-number theme-number--light">{String(index + 1)}</span>
+                <h3 class="theme-card-title theme-card-title--light">{item.title}</h3>
+                <p class="theme-copy theme-copy--muted">{item.summary}</p>
               </li>
             ))
           }
@@ -106,8 +106,8 @@ import {
             {
               challengeMapOutputs.map((item) => (
                 <article>
-                  <h3>{item.title}</h3>
-                  <p>{item.summary}</p>
+                  <h3 class="theme-card-title theme-card-title--light">{item.title}</h3>
+                  <p class="theme-card-body theme-card-body--muted">{item.summary}</p>
                 </article>
               ))
             }
@@ -121,8 +121,8 @@ import {
     <div class="site-container approach-process">
       <div class="approach-process__header">
         <p class="eyebrow">How the Map Moves</p>
-        <h2 id="process-heading">Agile Innovation gives the work a flexible cadence.</h2>
-        <p>
+        <h2 id="process-heading" class="theme-heading theme-heading--section theme-heading--dark">Agile Innovation gives the work a flexible cadence.</h2>
+        <p class="theme-lead theme-lead--dark">
           The model is repeatable without becoming rigid. It keeps the Working Group moving through problem definition, reframing, collaboration, delivery, learning, and growth while the Challenge Map stays current.
         </p>
       </div>
@@ -130,9 +130,9 @@ import {
         {
           agileInnovationSteps.map((step, index) => (
             <li>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <h3>{step.title}</h3>
-              <p>{step.summary}</p>
+              <span class="theme-number theme-number--dark">{String(index + 1).padStart(2, "0")}</span>
+              <h3 class="theme-card-title theme-card-title--dark">{step.title}</h3>
+              <p class="theme-card-body theme-card-body--dark">{step.summary}</p>
             </li>
           ))
         }
@@ -145,9 +145,9 @@ import {
       <div class="approach-working__header">
         <div>
           <p class="eyebrow">Working Group</p>
-          <h2 id="working-group-heading">The right people around the challenge.</h2>
+          <h2 id="working-group-heading" class="theme-heading theme-heading--section theme-heading--light">The right people around the challenge.</h2>
         </div>
-        <p>
+        <p class="theme-lead theme-lead--muted">
           A Tailored Solution needs more than one viewpoint. eCongruity helps assemble the mix of decision authority, lived process knowledge, strategic guidance, implementation capacity, and outside expertise the map calls for.
         </p>
       </div>
@@ -155,8 +155,8 @@ import {
         {
           workingGroupMembers.map((member) => (
             <article>
-              <h3>{member.title}</h3>
-              <p>{member.summary}</p>
+              <h3 class="theme-card-title theme-card-title--light">{member.title}</h3>
+              <p class="theme-copy theme-copy--muted">{member.summary}</p>
             </article>
           ))
         }
