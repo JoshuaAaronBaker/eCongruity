@@ -42,6 +42,7 @@ const fields = [
 
 <form
   class="contact-form"
+  data-contact-form
   name="start-the-conversation"
   method="post"
   action="/contact/"
@@ -83,6 +84,84 @@ const fields = [
   </div>
 
   <button class="button-link button-link--secondary contact-form__continue" type="submit">
-    Continue <span aria-hidden="true">→</span>
+    <span data-submit-label>Continue</span> <span aria-hidden="true">→</span>
   </button>
 </form>
+
+<div class="site-toast" data-site-toast role="status" aria-live="polite" aria-atomic="true" hidden>
+  <span class="site-toast__mark" aria-hidden="true"></span>
+  <span data-site-toast-message></span>
+</div>
+
+<script>
+  const contactForm = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  const toast = document.querySelector<HTMLElement>("[data-site-toast]");
+  const toastMessage = toast?.querySelector<HTMLElement>("[data-site-toast-message]");
+  const submitButton = contactForm?.querySelector<HTMLButtonElement>("[type='submit']");
+  const submitLabel = contactForm?.querySelector<HTMLElement>("[data-submit-label]");
+
+  if (contactForm && toast && toastMessage && submitButton && submitLabel) {
+    let toastTimer: number | undefined;
+
+    const showToast = (message: string, tone: "success" | "error" = "success") => {
+      window.clearTimeout(toastTimer);
+      toastMessage.textContent = message;
+      toast.dataset.tone = tone;
+      toast.hidden = false;
+
+      window.requestAnimationFrame(() => {
+        toast.setAttribute("data-visible", "");
+      });
+
+      toastTimer = window.setTimeout(() => {
+        toast.removeAttribute("data-visible");
+        window.setTimeout(() => {
+          toast.hidden = true;
+        }, 280);
+      }, 5200);
+    };
+
+    contactForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        return;
+      }
+
+      const formData = new FormData(contactForm);
+      const encodedData = new URLSearchParams();
+
+      formData.forEach((value, key) => {
+        if (typeof value === "string") {
+          encodedData.append(key, value);
+        }
+      });
+
+      submitButton.disabled = true;
+      submitLabel.textContent = "Sending";
+
+      try {
+        const response = await fetch(contactForm.action, {
+          body: encodedData,
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          method: "POST",
+        });
+
+        if (!response.ok) {
+          throw new Error("The form could not be submitted.");
+        }
+
+        contactForm.reset();
+        showToast("Message sent. We'll follow up soon.");
+      } catch {
+        showToast("Something went wrong. Please try again.", "error");
+      } finally {
+        submitButton.disabled = false;
+        submitLabel.textContent = "Continue";
+      }
+    });
+  }
+</script>
