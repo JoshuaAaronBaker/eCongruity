@@ -632,6 +632,11 @@ textarea {
     min-height: calc(100svh - var(--site-header-height));
   }
 
+  .home-hero {
+    --mountain-object-x: 50%;
+    --mountain-object-y: 100%;
+  }
+
   .home-hero::before,
   .page-hero::before {
     content: "";
@@ -654,9 +659,10 @@ textarea {
   }
 
   .home-hero__mountain-image {
-    @apply pointer-events-none absolute inset-0 block h-full w-full object-cover object-bottom opacity-55 grayscale;
+    @apply pointer-events-none absolute inset-0 block h-full w-full object-cover opacity-55 grayscale;
     z-index: -3;
     filter: grayscale(1) contrast(1.08) brightness(0.72);
+    object-position: var(--mountain-object-x) var(--mountain-object-y);
   }
 
   .home-hero__mountains {
@@ -860,6 +866,18 @@ textarea {
   }
 
   @media (max-width: 767px) {
+    .home-hero {
+      min-height: min(760px, calc(100svh - var(--site-header-height)));
+      --mountain-object-x: 58%;
+      --mountain-object-y: 100%;
+    }
+
+    .home-hero__mountain-image {
+      height: 118%;
+      top: -18%;
+      filter: grayscale(1) contrast(1.12) brightness(0.76);
+    }
+
     .home-hero__mountains {
       display: none;
     }
@@ -899,6 +917,24 @@ textarea {
 
     .home-hero__star:nth-child(n + 9) {
       display: none;
+    }
+  }
+
+  @media (min-width: 1800px) {
+    .home-hero {
+      --mountain-object-y: 106%;
+    }
+  }
+
+  @media (min-width: 2400px) {
+    .home-hero {
+      --mountain-object-y: 114%;
+    }
+  }
+
+  @media (min-width: 3000px) {
+    .home-hero {
+      --mountain-object-y: 124%;
     }
   }
 

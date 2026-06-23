@@ -36,6 +36,11 @@ type CoverFrame = {
   top: number;
 };
 
+type CoverPosition = {
+  x: number;
+  y: number;
+};
+
 type ScreenHitMap = {
   bottomByColumn: Int32Array;
   cellSize: number;
@@ -157,7 +162,37 @@ const loadImage = (src: string) =>
     image.src = src;
   });
 
-const getCoverFrame = (width: number, height: number, imageAspect: number): CoverFrame => {
+const parsePositionValue = (value: string, fallback: number) => {
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return fallback;
+  }
+
+  if (trimmed.endsWith("%")) {
+    const parsed = Number.parseFloat(trimmed);
+    return Number.isFinite(parsed) ? parsed / 100 : fallback;
+  }
+
+  const parsed = Number.parseFloat(trimmed);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
+
+const getMountainPosition = (hero: HTMLElement): CoverPosition => {
+  const styles = window.getComputedStyle(hero);
+
+  return {
+    x: parsePositionValue(styles.getPropertyValue("--mountain-object-x"), 0.5),
+    y: parsePositionValue(styles.getPropertyValue("--mountain-object-y"), 1),
+  };
+};
+
+const getCoverFrame = (
+  width: number,
+  height: number,
+  imageAspect: number,
+  position: CoverPosition,
+): CoverFrame => {
   const viewAspect = width / height;
 
   if (viewAspect > imageAspect) {
@@ -168,7 +203,7 @@ const getCoverFrame = (width: number, height: number, imageAspect: number): Cove
       displayHeight,
       displayWidth,
       left: 0,
-      top: height - displayHeight,
+      top: (height - displayHeight) * position.y,
     };
   }
 
@@ -178,7 +213,7 @@ const getCoverFrame = (width: number, height: number, imageAspect: number): Cove
   return {
     displayHeight,
     displayWidth,
-    left: (width - displayWidth) / 2,
+    left: (width - displayWidth) * position.x,
     top: 0,
   };
 };
@@ -487,7 +522,7 @@ export const initMountainParticles = () => {
       disposeMesh();
 
       const imageAspect = sourceImage.naturalWidth / sourceImage.naturalHeight;
-      frame = getCoverFrame(width, height, imageAspect);
+      frame = getCoverFrame(width, height, imageAspect, getMountainPosition(hero));
       const nextScreenHitMap = createScreenHitMap(width, height);
       screenHitMap = nextScreenHitMap;
       markTerrainBand(nextScreenHitMap, frame, particleSample, height);
