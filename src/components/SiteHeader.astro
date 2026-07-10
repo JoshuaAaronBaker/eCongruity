@@ -3,7 +3,7 @@ import { Menu, X } from "@lucide/astro";
 import ButtonLink from "./ButtonLink.astro";
 
 const headerNavItems = [
-  { label: "Approach", href: "/approach/" },
+  { label: "What We Do", href: "/#work-heading" },
   { label: "About", href: "/about/" },
   { label: "Contact", href: "/contact/" },
 ];
@@ -28,15 +28,19 @@ const isActive = (href: string) => {
 };
 ---
 
-<header class="site-header">
+<header class:list={[
+  "site-header",
+  currentPath === "/about" && "site-header--about",
+  currentPath === "/contact" && "site-header--contact",
+]}>
   <div class="site-container site-header__inner">
     <a class="brand-link" href="/" aria-label="eCongruity home">
       <img
         class="brand-link__logo"
-        src="/images/brand/econgruity-logo.png"
+        src="/images/brand/econgruity-logo-figma.png"
         alt=""
-        width="627"
-        height="193"
+        width="1657"
+        height="390"
         decoding="async"
       />
     </a>
@@ -89,12 +93,37 @@ const isActive = (href: string) => {
   const siteHeader = document.querySelector<HTMLElement>(".site-header");
 
   if (siteHeader) {
+    let lastScrollY = Math.max(window.scrollY, 0);
+    let scrollFrame: number | undefined;
+
     const updateHeaderState = () => {
-      siteHeader.toggleAttribute("data-scrolled", window.scrollY > 12);
+      const currentScrollY = Math.max(window.scrollY, 0);
+      const isScrollingDown = currentScrollY > lastScrollY;
+      const isScrollingUp = currentScrollY < lastScrollY;
+      const mobileNavIsOpen = siteHeader.hasAttribute("data-mobile-nav-open");
+
+      siteHeader.toggleAttribute("data-scrolled", currentScrollY > 12);
+
+      if (mobileNavIsOpen || currentScrollY <= 12 || isScrollingUp) {
+        siteHeader.removeAttribute("data-hidden");
+      } else if (isScrollingDown && currentScrollY > siteHeader.offsetHeight) {
+        siteHeader.setAttribute("data-hidden", "");
+      }
+
+      lastScrollY = currentScrollY;
+      scrollFrame = undefined;
+    };
+
+    const requestHeaderUpdate = () => {
+      if (scrollFrame !== undefined) {
+        return;
+      }
+
+      scrollFrame = window.requestAnimationFrame(updateHeaderState);
     };
 
     updateHeaderState();
-    window.addEventListener("scroll", updateHeaderState, { passive: true });
+    window.addEventListener("scroll", requestHeaderUpdate, { passive: true });
   }
 
   const mobileNav = document.querySelector<HTMLDetailsElement>(".mobile-nav");
@@ -115,6 +144,7 @@ const isActive = (href: string) => {
       mobileNavBackdrop.hidden = false;
       mobileNavPanel.hidden = false;
       siteHeader?.setAttribute("data-mobile-nav-open", "");
+      siteHeader?.removeAttribute("data-hidden");
 
       window.requestAnimationFrame(() => {
         mobileNavBackdrop.setAttribute("data-open", "");

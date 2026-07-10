@@ -1,6 +1,5 @@
 ---
 import ButtonLink from "../components/ButtonLink.astro";
-import HeroScrollButton from "../components/HeroScrollButton.astro";
 import PageHero from "../components/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { aboutStats, aboutTimeline, founders, site } from "../content/site";
@@ -29,7 +28,7 @@ const values = [
   {
     title: "Continuous learning",
     summary:
-      "The landscape changes constantly. We stay curious, stay humble, and build feedback loops into everything - including ourselves.",
+      "The landscape changes constantly. We stay curious, stay humble, and build feedback loops into everything — including ourselves.",
   },
   {
     title: "Responsible growth",
@@ -42,6 +41,7 @@ const values = [
 <BaseLayout
   title="About"
   description="Founder-led credibility for eCongruity strategy-to-implementation engagements."
+  footerVariant="about"
 >
   <PageHero
     class="about-hero"
@@ -49,33 +49,110 @@ const values = [
     title="Founder-led judgment for strategy and implementation."
     summary="eCongruity is guided by people who keep business judgment, Working Group alignment, and hands-on implementation connected through complex client work."
   >
-    <span slot="title">Built on purpose. <em>Driven by people.</em></span>
+    <span slot="title" class="about-hero__title-line">Built on purpose.</span>
+    <em slot="title" class="about-hero__title-line">Driven by people.</em>
     <span slot="summary">
-      We are a strategic innovation studio connecting people, process, and technology — with intention, clarity, and a deep respect for the environments we operate in.
+      <span class="about-hero__summary-lines about-hero__summary-lines--desktop">
+        <span>We are a strategic innovation studio connecting people, process,</span>
+        <span>and technology — with intention, clarity, and a deep respect for the</span>
+        <span>environments we operate in.</span>
+      </span>
+      <span class="about-hero__summary-lines about-hero__summary-lines--tablet">
+        <span>We are a strategic innovation studio connecting people,</span>
+        <span>process, and technology — with intention, clarity, and a deep</span>
+        <span>respect for the environments we operate in.</span>
+      </span>
+      <span class="about-hero__summary-lines about-hero__summary-lines--mobile">
+        <span>We are a strategic innovation studio</span>
+        <span>connecting people, process, and technology</span>
+        <span>— with intention, clarity, and a deep respect</span>
+        <span>for the environments we operate in.</span>
+      </span>
     </span>
-    <div class="about-hero__orbit" aria-hidden="true"></div>
-    <HeroScrollButton
-      slot="after"
-      href="#mission-heading"
-      label="Scroll to Our Mission"
-    />
+    <div slot="after" class="about-hero__decorations">
+      <div class="about-hero__orbit" aria-hidden="true"></div>
+      <div class="about-hero__rail" aria-hidden="true"></div>
+      <a class="about-hero__scroll-hint" href="#mission-heading" aria-label="Scroll to Our Mission">
+        <span class="about-hero__scroll-line"></span>
+        <span class="about-hero__scroll-label">Scroll</span>
+      </a>
+    </div>
   </PageHero>
 
   <section class="section-band section-band--linen about-mission-section" aria-labelledby="mission-heading">
     <div class="site-container about-mission">
-      <div>
+      <div class="about-mission__intro">
         <p class="eyebrow">Our Mission</p>
-        <h2 id="mission-heading">Simplifying the complex. Amplifying what matters.</h2>
-        <p>
-          eCongruity was founded on a simple belief: the right technology, applied with the right strategy, can transform how organizations operate and grow.
+        <h2 id="mission-heading">
+          <span class="about-mission__lines about-mission__lines--wide">
+            <span>Simplifying the</span>
+            <span>complex.</span>
+            <span>Amplifying what</span>
+            <span>matters.</span>
+          </span>
+          <span class="about-mission__lines about-mission__lines--tablet">
+            <span>Simplifying the</span>
+            <span>complex. Amplifying</span>
+            <span>what matters.</span>
+          </span>
+          <span class="about-mission__lines about-mission__lines--mobile">
+            <span>Simplifying the</span>
+            <span>complex.</span>
+            <span>Amplifying what</span>
+            <span>matters.</span>
+          </span>
+        </h2>
+        <p class="about-mission__body about-mission__body--primary">
+          <span class="about-mission__lines about-mission__lines--wide">
+            <span>eCongruity was founded on a simple belief — that the</span>
+            <span>right technology, applied with the right strategy, can</span>
+            <span>transform how organizations operate and grow.</span>
+          </span>
+          <span class="about-mission__lines about-mission__lines--tablet">
+            <span>eCongruity was founded on a simple belief — that the right technology, applied</span>
+            <span>with the right strategy, can transform how organizations operate and grow.</span>
+          </span>
+          <span class="about-mission__lines about-mission__lines--mobile">
+            <span>eCongruity was founded on a simple belief</span>
+            <span>— that the right technology, applied with the</span>
+            <span>right strategy, can transform how</span>
+            <span>organizations operate and grow.</span>
+          </span>
         </p>
-        <p>
-          We partner with leaders who are ready to think differently, move decisively, and build something that lasts. Our work sits at the intersection of strategy, technology, and human potential.
+        <p class="about-mission__body about-mission__body--secondary">
+          <span class="about-mission__lines about-mission__lines--wide">
+            <span>We partner with leaders who are ready to think</span>
+            <span>differently, move decisively, and build something that</span>
+            <span>lasts. Our work sits at the intersection of strategy,</span>
+            <span>technology, and human potential.</span>
+          </span>
+          <span class="about-mission__lines about-mission__lines--tablet">
+            <span>We partner with leaders who are ready to think differently, move decisively, and</span>
+            <span>build something that lasts.</span>
+          </span>
+          <span class="about-mission__lines about-mission__lines--mobile">
+            <span>We partner with leaders who are ready to</span>
+            <span>think differently, move decisively, and build</span>
+            <span>something that lasts.</span>
+          </span>
         </p>
       </div>
       <div class="mission-proof" aria-label="eCongruity mission proof">
         <blockquote>
-          "Innovation isn't about technology. It's about people who refuse to accept that things can't be done better."
+          <span class="about-mission__lines about-mission__lines--wide">
+            <span>"Innovation isn't about technology.</span>
+            <span>It's about people who refuse to accept</span>
+            <span>that things can't be done better."</span>
+          </span>
+          <span class="about-mission__lines about-mission__lines--tablet">
+            <span>"Innovation isn't about technology. It's about people who refuse to accept that</span>
+            <span>things can't be done better."</span>
+          </span>
+          <span class="about-mission__lines about-mission__lines--mobile">
+            <span>"Innovation isn't about technology. It's about</span>
+            <span>people who refuse to accept that things can't be</span>
+            <span>done better."</span>
+          </span>
         </blockquote>
         <dl class="stat-grid">
           {
@@ -93,26 +170,41 @@ const values = [
 
   <section class="section-band section-band--forest about-story-section" aria-labelledby="story-heading">
     <div class="site-container about-story">
-      <div>
-        <p class="eyebrow">Our Story</p>
-        <h2 id="story-heading">Where we come from.</h2>
-        <p>
-          eCongruity was born out of a frustration with how organizations approached change: reactively, in silos, and without a clear path forward.
-        </p>
-        <p>
-          Founded in Livingston, Montana, we brought together strategists, technologists, and process designers with one goal: to help organizations find their clearest path forward, faster.
-        </p>
-        <p>
-          Today we work with clients across the US, from enterprise organizations to nimble startups, bringing the same rigor and creativity to every engagement.
-        </p>
+      <div class="about-story__narrative">
+        <div class="about-story__heading">
+          <p class="eyebrow">Our Story</p>
+          <h2 id="story-heading">Where we come from.</h2>
+        </div>
+        <div class="about-story__copy">
+          <p>
+            eCongruity was born out of a frustration with how organizations approached change — reactively, in silos, and without a clear path forward.
+          </p>
+          <p>
+            Founded in Livingston, Montana, we brought together strategists, technologists, and process designers with one goal: to help organizations find their clearest path forward, faster.
+          </p>
+          <p>
+            Today we work with clients across the US — from enterprise organizations to nimble startups — bringing the same rigor and creativity to every engagement.
+          </p>
+        </div>
       </div>
       <ol class="story-timeline">
         {
-          aboutTimeline.map((item) => (
+          aboutTimeline.map((item, index) => (
             <li>
-              <p class="story-timeline__year">{item.year}</p>
+              <p class="story-timeline__year">
+                {
+                  index === 0 ? (
+                    <>
+                      <span class="story-timeline__year--wide">{item.year}</span>
+                      <span class="story-timeline__year--compact">2013</span>
+                    </>
+                  ) : (
+                    item.year
+                  )
+                }
+              </p>
               <h3>{item.title}</h3>
-              <p>{item.summary}</p>
+              <p class="story-timeline__body">{item.summary}</p>
             </li>
           ))
         }
@@ -122,13 +214,22 @@ const values = [
 
   <section class="section-band section-band--linen about-team-section" aria-labelledby="founders-heading">
     <div class="site-container about-team">
-      <div class="section-header section-header--with-action">
-        <div>
+      <div class="section-header section-header--with-action about-team__header">
+        <div class="about-team__heading">
           <p class="eyebrow">Our Team</p>
-          <h2 id="founders-heading">The people behind the work.</h2>
+          <h2 id="founders-heading">
+            <span class="about-team__title-lines about-team__title-lines--wide">
+              <span>The people</span>
+              <span>behind the work.</span>
+            </span>
+            <span class="about-team__title-lines about-team__title-lines--compact">
+              <span>The people behind</span>
+              <span>the work.</span>
+            </span>
+          </h2>
         </div>
-        <p>
-          Small by design, intentional by nature. We bring together strategists, technologists, and creative thinkers united by one belief: the best solutions grow at the intersection of people and purpose.
+        <p class="about-team__lead">
+          Small by design, intentional by nature. We bring together strategists, technologists, and creative thinkers united by one belief — the best solutions grow at the intersection of people and purpose.
         </p>
       </div>
       <div class="team-grid">
@@ -159,7 +260,12 @@ const values = [
                     }
                     <span class="founder-card__caption">
                       <span class="founder-card__name">{founder.name}</span>
-                      <span class="content-card__meta">{founder.role}</span>
+                      <span class="content-card__meta">
+                        <span class="founder-card__role founder-card__role--wide">{founder.role}</span>
+                        <span class="founder-card__role founder-card__role--compact">
+                          {founder.role.replace("/", " / ")}
+                        </span>
+                      </span>
                     </span>
                   </span>
                   <span class="founder-card__face founder-card__face--back" aria-hidden="true">
@@ -182,9 +288,17 @@ const values = [
     <div class="site-container about-values">
       <div class="about-values__header">
         <p class="eyebrow">Our Values</p>
-        <h2 id="values-heading">What guides every decision we make.</h2>
-        <p>
-          Our values aren't a poster on the wall. They are the operating principles that shape how we work, how we think, and how we show up for our clients.
+        <h2 id="values-heading">
+          What guides every <br class="about-values__break about-values__break--compact" />decision we make.
+        </h2>
+        <p class="about-values__lead">
+          Our values aren't a poster on the wall. They <br
+            class="about-values__break about-values__break--mobile"
+          />are the operating <br class="about-values__break about-values__break--nonmobile" />principles that shape how <br
+            class="about-values__break about-values__break--mobile"
+          />we work, how we think, and how <br class="about-values__break about-values__break--desktop" />we <br
+            class="about-values__break about-values__break--tablet"
+          />show up <br class="about-values__break about-values__break--mobile" />for our clients.
         </p>
       </div>
       <ol class="values-grid">
@@ -201,13 +315,36 @@ const values = [
     </div>
   </section>
 
-  <section class="section-band section-band--green about-closing-section" aria-labelledby="about-cta-heading">
+  <section class="section-band section-band--green about-closing-section about-closing-section--about" aria-labelledby="about-cta-heading">
+    <div class="about-closing__rings" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
     <div class="site-container about-closing">
-      <div>
+      <div class="about-closing__content">
         <p class="eyebrow">Work With Us</p>
-        <h2 id="about-cta-heading">Ready to build something that lasts?</h2>
-        <p>
-          Whether you're navigating a strategic challenge or launching something entirely new - we're ready to build with you.
+        <h2 id="about-cta-heading">
+          <span class="copy-lines copy-lines--wide">
+            <span>Ready to build</span>
+            <span>something that lasts?</span>
+          </span>
+          <span class="copy-lines copy-lines--mobile">
+            <span>Ready to build</span>
+            <span>something that</span>
+            <span>lasts?</span>
+          </span>
+        </h2>
+        <p class="about-closing__body">
+          <span class="copy-lines copy-lines--wide">
+            <span>Whether you're navigating a strategic challenge or launching</span>
+            <span>something entirely new — we're ready to build with you.</span>
+          </span>
+          <span class="copy-lines copy-lines--mobile">
+            <span>Whether you're navigating a strategic</span>
+            <span>challenge or launching something entirely</span>
+            <span>new — we're ready to build with you.</span>
+          </span>
         </p>
       </div>
       <div class="button-row button-row--compact">
@@ -228,10 +365,25 @@ const values = [
     };
 
     card.setAttribute("aria-pressed", "false");
-    card.addEventListener("pointerenter", () => setFlipped(true));
-    card.addEventListener("pointerleave", () => setFlipped(false));
-    card.addEventListener("focus", () => setFlipped(true));
+    card.addEventListener("pointerenter", (event) => {
+      if (event.pointerType !== "touch") setFlipped(true);
+    });
+    card.addEventListener("pointerleave", (event) => {
+      if (event.pointerType !== "touch") setFlipped(false);
+    });
+    card.addEventListener("focus", () => {
+      if (card.matches(":focus-visible")) setFlipped(true);
+    });
     card.addEventListener("blur", () => setFlipped(false));
-    card.addEventListener("click", () => setFlipped(!card.hasAttribute("data-flipped")));
+    card.addEventListener("click", () => {
+      const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+      if (canHover || card.matches(":focus-visible")) {
+        setFlipped(true);
+        return;
+      }
+
+      setFlipped(!card.hasAttribute("data-flipped"));
+    });
   });
 </script>

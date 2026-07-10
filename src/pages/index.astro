@@ -1,6 +1,5 @@
 ---
 import ButtonLink from "../components/ButtonLink.astro";
-import HeroScrollButton from "../components/HeroScrollButton.astro";
 import ProofCarousel from "../components/ProofCarousel.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
@@ -28,7 +27,7 @@ const whatCards = [
     number: "02",
     title: "Reframe",
     summary:
-      "We turn the problem on its head - exploring fresh angles to unlock solutions tailored to your context.",
+      "We turn the problem on its head — exploring fresh angles to unlock solutions tailored to your context.",
   },
   {
     number: "03",
@@ -94,31 +93,65 @@ const processSteps = [
       {Array.from({ length: 14 }, (_, index) => <span class="home-hero__star" data-star={index + 1}></span>)}
     </div>
     <div class="home-hero__orbit" aria-hidden="true"></div>
-    <HeroScrollButton href="#work-heading" label="Scroll to What We Do" />
+    <a class="home-hero__scroll-hint" href="#work-heading" aria-label="Scroll to What We Do">
+      <span class="home-hero__scroll-line" aria-hidden="true"></span>
+      <span class="home-hero__scroll-label" aria-hidden="true">Scroll</span>
+    </a>
     <div class="site-container home-hero__grid">
       <div class="home-hero__content">
         <p class="hero-kicker">Strategic Innovation Studio</p>
-        <h1>Where <span>Nature</span> Meets Innovation</h1>
+        <h1>
+          <span class="home-hero__title-line">Where <em>Nature</em></span>
+          <span class="home-hero__title-line">Meets Innovation</span>
+        </h1>
         <p class="home-hero__lead">
-          Connecting people, process, and technology for real-time business - naturally, strategically, and with purpose.
+          <span class="copy-lines copy-lines--wide">
+            <span>Connecting people, process, and technology for real-time</span>
+            <span>business — sustainably, strategically, and with purpose.</span>
+          </span>
+          <span class="copy-lines copy-lines--mobile">
+            <span>Connecting people, process, and technology</span>
+            <span>for real-time business — sustainably,</span>
+            <span>strategically, and with purpose.</span>
+          </span>
         </p>
         <div class="button-row">
-          <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
-          <ButtonLink href="/approach/" variant="secondary">See Our Approach</ButtonLink>
+          <ButtonLink href="/approach/">Explore Our Approach</ButtonLink>
+          <ButtonLink href="#proof-heading" variant="secondary">See Client Stories →</ButtonLink>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section-band section-band--linen" aria-labelledby="work-heading">
+  <section class="section-band section-band--linen what-section-band" aria-labelledby="work-heading">
     <div class="site-container what-section">
       <div class="what-section__copy">
         <p class="section-label">What We Do</p>
-        <h2 id="work-heading">We simplify the complex & create a clear path forward.</h2>
-        <p>
-          eCongruity helps organizations align the gap between big ideas and real-world execution. We blend strategy, clarity, and the right technologies to turn complexity into momentum.
+        <h2 id="work-heading">
+          We simplify<br class="copy-break--wide" /> the<br class="copy-break--mobile" /> complex<br
+            class="copy-break--wide"
+          /> &amp; create a<br class="copy-break--mobile" /> clear<br class="copy-break--wide" /> path forward.
+        </h2>
+        <p class="what-section__body">
+          <span class="copy-lines copy-lines--wide">
+            <span>eCongruity bridges the gap between big ideas and</span>
+            <span>real-world execution. We blend strategic thinking</span>
+            <span>with the right technologies to help</span>
+            <span>organizations move faster, work smarter,</span>
+            <span>and grow with intention.</span>
+          </span>
+          <span class="copy-lines copy-lines--mobile">
+            <span>eCongruity bridges the gap between big</span>
+            <span>ideas and real-world execution. We blend</span>
+            <span>strategic thinking with the right technologies</span>
+            <span>to help organizations move faster, work</span>
+            <span>smarter, and grow with intention.</span>
+          </span>
         </p>
-        <p class="what-section__cue">Tap a card for details</p>
+        <p class="what-section__cue">
+          <span class="copy-lines copy-lines--wide">Tap a card for details</span>
+          <span class="copy-lines copy-lines--mobile">Tap the cards</span>
+        </p>
       </div>
       <div class="what-card-grid" role="list">
         {
@@ -151,11 +184,23 @@ const processSteps = [
 
   <section class="section-band section-band--green expertise-section" aria-labelledby="capability-preview-heading">
     <div class="site-container expertise-section__grid">
-      <div>
+      <div class="expertise-intro">
         <p class="section-label section-label--dark">Our Expertise</p>
-        <h2 id="capability-preview-heading">The right tools. The right time. The right team.</h2>
-        <p>
-          We bring together best-in-class technologies and methodologies to take your solution from concept to completion.
+        <h2 id="capability-preview-heading">
+          <span>The right tools.</span>
+          <span>The right time.</span>
+          <span>The right team.</span>
+        </h2>
+        <p class="expertise-sub">
+          <span class="copy-lines copy-lines--wide">
+            <span>We bring together best-in-class technologies and methodologies to take your solutions</span>
+            <span>from concept to marketplace.</span>
+          </span>
+          <span class="copy-lines copy-lines--mobile">
+            <span>We bring together best-in-class</span>
+            <span>technologies and methodologies to take your</span>
+            <span>solutions from concept to marketplace.</span>
+          </span>
         </p>
       </div>
       <div class="expertise-focus" data-capability-carousel aria-label="Selected capabilities">
@@ -194,9 +239,22 @@ const processSteps = [
     <div class="site-container process-section__inner">
       <div class="section-header section-header--narrow process-section__header">
         <p class="section-label section-label--dark">Our Process</p>
-        <h2 id="innovation-heading">Agile Innovation <span>from challenge to change.</span></h2>
-        <p>
-          You have big ideas. We have a proven process to get you there quickly, collaboratively, and with built-in learning at every step.
+        <h2 id="innovation-heading">
+          <span>Agile Innovation —</span>
+          <span>from challenge to</span>
+          <span>change.</span>
+        </h2>
+        <p class="process-section__intro">
+          <span class="copy-lines copy-lines--wide">
+            <span>You have big ideas. We have a proven process to get you there</span>
+            <span>quickly, collaboratively, and with built-in learning at every step.</span>
+          </span>
+          <span class="copy-lines copy-lines--mobile">
+            <span>You have big ideas. We have a proven</span>
+            <span>process to get you there quickly,</span>
+            <span>collaboratively, and with built-in learning at</span>
+            <span>every step.</span>
+          </span>
         </p>
       </div>
       <ol class="innovation-list">
@@ -215,18 +273,41 @@ const processSteps = [
 
   <ProofCarousel testimonials={testimonials} />
 
-  <section class="section-band section-band--green about-closing-section" aria-labelledby="cta-heading">
+  <section class="section-band section-band--green about-closing-section about-closing-section--about" aria-labelledby="cta-heading">
+    <div class="about-closing__rings" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
     <div class="site-container about-closing">
-      <div>
+      <div class="about-closing__content">
         <p class="eyebrow">Work With Us</p>
-        <h2 id="cta-heading">Ready to build something that lasts?</h2>
-        <p>
-          Whether you're navigating a challenge, a change, or building something entirely new, we're ready to begin with you.
+        <h2 id="cta-heading">
+          <span class="copy-lines copy-lines--wide">
+            <span>Ready to build</span>
+            <span>something that lasts?</span>
+          </span>
+          <span class="copy-lines copy-lines--mobile">
+            <span>Ready to build</span>
+            <span>something that</span>
+            <span>lasts?</span>
+          </span>
+        </h2>
+        <p class="about-closing__body">
+          <span class="copy-lines copy-lines--wide">
+            <span>Whether you're navigating a strategic challenge or launching</span>
+            <span>something entirely new — we're ready to build with you.</span>
+          </span>
+          <span class="copy-lines copy-lines--mobile">
+            <span>Whether you're navigating a strategic</span>
+            <span>challenge or launching something entirely</span>
+            <span>new — we're ready to build with you.</span>
+          </span>
         </p>
       </div>
       <div class="button-row button-row--compact">
         <ButtonLink href="/contact/">{site.contactCta}</ButtonLink>
-        <ButtonLink href="/about/" variant="secondary">Back to Roots</ButtonLink>
+        <ButtonLink href="/" variant="secondary">Back to Home</ButtonLink>
       </div>
     </div>
   </section>

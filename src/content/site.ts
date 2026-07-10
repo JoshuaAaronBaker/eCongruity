@@ -300,7 +300,7 @@ export const homePaths: HomePath[] = [
 export const testimonials: Testimonial[] = [
   {
     quote:
-      "Working with eCongruity as a strategic partner created a path forward to new markets.",
+      "I have a passion for finding innovative ways to use technology. Working with eCongruity as a strategic partner has created a path forward to new markets.",
     name: "Paul Nutting",
     initials: "PN",
     role: "Founder",
@@ -366,25 +366,25 @@ export const aboutTimeline: AboutTimelineItem[] = [
     year: "2015",
     title: "First Enterprise CMS",
     summary:
-      "Delivered the first large-scale learning management system, setting the foundation for the LMS practice.",
+      "Delivered our first large-scale learning management system, setting the foundation for our LMS practice.",
   },
   {
     year: "2018",
     title: "Agile Innovation Framework",
     summary:
-      "Codified a flexible innovation process that keeps strategy, collaboration, implementation, and learning connected across engagements.",
+      "Codified our proprietary 5-step agile innovation process, now used across all engagements.",
   },
   {
     year: "2022",
     title: "US Expansion",
     summary:
-      "Expanded the client base nationally, partnering with organizations from enterprise teams to nimble startups.",
+      "Expanded our client base nationally, partnering with organizations from UCLA to Tap Cloud.",
   },
   {
     year: "Today",
-    title: "Nature + Technology",
+    title: "Nature × Technology",
     summary:
-      "Doubling down on the mission: connecting people, process, and technology with purpose and durable business change.",
+      "Doubling down on our mission — connecting people, process and technology with purpose and sustainability.",
   },
 ];
 
@@ -394,14 +394,14 @@ export const founders: Founder[] = [
     role: "CEO/Founder",
     quote:
       "You cannot discover new oceans unless you have the courage to lose sight of the shore. (Anonymous)",
-    imageSrc: "/images/team/team-member-06.png",
+    imageSrc: "/images/team/team-member-06.jpg",
     imageAlt: "Portrait of D. Scott Martell, CEO and founder.",
   },
   {
     name: "Angie Martell",
     role: "COO/Co-Founder",
     quote: "A well designed process makes the right thing the easy thing.",
-    imageSrc: "/images/team/team-member-05.png",
+    imageSrc: "/images/team/team-member-05.jpg",
     imageAlt: "Portrait of Angie Martell, COO and co-founder.",
   },
   {

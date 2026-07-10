@@ -1,8 +1,14 @@
 ---
 import { site } from "../content/site";
+
+type Props = {
+  variant?: "default" | "about";
+};
+
+const { variant = "default" } = Astro.props;
 ---
 
-<footer class="site-footer">
+<footer class:list={["site-footer", variant === "about" && "site-footer--about"]}>
   <nav class="site-container site-footer__grid" aria-label="Footer navigation">
     <a class="site-footer__brand" href="/" aria-label="eCongruity home">
       <img

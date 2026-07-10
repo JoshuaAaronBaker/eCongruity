@@ -1,5 +1,4 @@
 ---
-import { ChevronLeft, ChevronRight } from "@lucide/astro";
 import type { Testimonial } from "../content/site";
 
 type Props = {
@@ -12,10 +11,10 @@ const { testimonials } = Astro.props;
 <section class="section-band section-band--linen proof-section" aria-labelledby="proof-heading">
   <div class="site-container">
     <div class="section-header">
-      <div>
-        <p class="eyebrow">Client Voices</p>
-        <h2 id="proof-heading">Trusted by leaders who think differently.</h2>
-      </div>
+      <p class="eyebrow">Client Voices</p>
+      <h2 id="proof-heading">
+        Trusted by leaders <br />who think <br class="copy-break--mobile" />differently.
+      </h2>
     </div>
 
     <div
@@ -39,10 +38,24 @@ const { testimonials } = Astro.props;
               >
                 <span class="proof-slide__mark" aria-hidden="true">"</span>
                 <blockquote>
-                  <p>"{testimonial.quote}"</p>
+                  <p>
+                    <span class="copy-lines copy-lines--wide">{testimonial.quote}</span>
+                    {
+                      index === 0 ? (
+                        <span class="copy-lines copy-lines--mobile proof-slide__mobile-quote">
+                          <span>I have a passion for finding innovative</span>
+                          <span>ways to use technology. Working with</span>
+                          <span>eCongruity as a strategic partner has</span>
+                          <span>created a path forward to new markets.</span>
+                        </span>
+                      ) : (
+                        <span class="copy-lines copy-lines--mobile">{testimonial.quote}</span>
+                      )
+                    }
+                  </p>
                 </blockquote>
+                <span class="proof-slide__divider" aria-hidden="true"></span>
                 <footer>
-                  <span class="proof-slide__divider" aria-hidden="true"></span>
                   <span class="proof-slide__initials" aria-hidden="true">{testimonial.initials}</span>
                   <div>
                     <p class="proof-slide__name">{testimonial.name}</p>
@@ -59,7 +72,7 @@ const { testimonials } = Astro.props;
 
       <div class="proof-carousel__controls" aria-label="Client story controls">
         <button class="proof-carousel__button" type="button" data-proof-prev aria-label="Previous client story">
-          <ChevronLeft size={16} aria-hidden="true" />
+          <span aria-hidden="true">←</span>
         </button>
         <div class="proof-carousel__dots" aria-label="Select a client story">
           {
@@ -75,7 +88,7 @@ const { testimonials } = Astro.props;
           }
         </div>
         <button class="proof-carousel__button" type="button" data-proof-next aria-label="Next client story">
-          <ChevronRight size={16} aria-hidden="true" />
+          <span aria-hidden="true">→</span>
         </button>
       </div>
     </div>
