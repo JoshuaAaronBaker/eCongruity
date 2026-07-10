@@ -113,6 +113,46 @@ test.describe("top-level page verification", () => {
 });
 
 test.describe("mobile horizontal gutters", () => {
+  test("prevents horizontal scrolling while mobile reveal animations are pending", async ({ browser }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop", "Runs its own mobile viewport matrix.");
+
+    for (const width of [320, 390]) {
+      const context = await browser.newContext({
+        deviceScaleFactor: 1,
+        viewport: { width, height: 844 },
+      });
+      const page = await context.newPage();
+      await page.goto("/");
+      await expect(page.locator("body")).toHaveAttribute("data-scroll-reveal-ready", "");
+
+      const metrics = await page.evaluate(() => {
+        const section = document.querySelector<HTMLElement>(".what-section");
+        if (!section) throw new Error("Missing What We Do section");
+        const rect = section.getBoundingClientRect();
+
+        return {
+          documentWidth: document.documentElement.scrollWidth,
+          viewportWidth: document.documentElement.clientWidth,
+          htmlOverflow: getComputedStyle(document.documentElement).overflowX,
+          bodyOverflow: getComputedStyle(document.body).overflowX,
+          sectionClientWidth: section.clientWidth,
+          sectionScrollWidth: section.scrollWidth,
+          leftGutter: rect.left,
+          rightGutter: document.documentElement.clientWidth - rect.right,
+        };
+      });
+
+      expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth);
+      expect(["hidden", "clip"]).toContain(metrics.htmlOverflow);
+      expect(["hidden", "clip"]).toContain(metrics.bodyOverflow);
+      expect(metrics.sectionScrollWidth).toBeLessThanOrEqual(metrics.sectionClientWidth);
+      expect(metrics.leftGutter).toBeCloseTo(40, 0);
+      expect(metrics.rightGutter).toBeCloseTo(40, 0);
+
+      await context.close();
+    }
+  });
+
   test("uses the shared content column across every page at common phone widths", async ({ browser }, testInfo) => {
     test.skip(testInfo.project.name !== "desktop", "Runs its own mobile viewport matrix.");
 
@@ -228,8 +268,8 @@ test.describe("mobile horizontal gutters", () => {
   });
 });
 
-test.describe("homepage mobile Figma typography", () => {
-  test("preserves the exact 390px line composition and type metrics", async ({ browser }, testInfo) => {
+test.describe("homepage mobile typography", () => {
+  test("preserves the approved 390px line composition and type metrics", async ({ browser }, testInfo) => {
     test.skip(testInfo.project.name !== "desktop", "Runs in its own Figma-sized viewport.");
 
     const context = await browser.newContext({
@@ -250,16 +290,12 @@ test.describe("homepage mobile Figma typography", () => {
         "We simplify the\ncomplex & create a\nclear path forward.",
       ],
       [
-        ".what-section__body .copy-lines--mobile",
-        "eCongruity bridges the gap between big\nideas and real-world execution. We blend\nstrategic thinking with the right technologies\nto help organizations move faster, work\nsmarter, and grow with intention.",
-      ],
-      [
         ".expertise-sub .copy-lines--mobile",
-        "We bring together best-in-class\ntechnologies and methodologies to take your\nsolutions from concept to marketplace.",
+        "We bring together best-in-class\ntechnologies and methodologies\nto take your solutions from concept to\nmarketplace.",
       ],
       [
         ".process-section__intro .copy-lines--mobile",
-        "You have big ideas. We have a proven\nprocess to get you there quickly,\ncollaboratively, and with built-in learning at\nevery step.",
+        "You have big ideas. We have a proven\nprocess to get you there quickly,\ncollaboratively, and with built-in learning\nat every step.",
       ],
       [
         ".proof-section h2",
@@ -289,9 +325,11 @@ test.describe("homepage mobile Figma typography", () => {
         [".hero-kicker", "13px", "13px"],
         [".home-hero h1", "44px", "50px"],
         [".what-section h2", "40px", "46px"],
-        [".what-section__body", "15px", "23.25px"],
+        [".what-section__body", "16px", "26.4px"],
         [".expertise-section h2", "40px", "46px"],
+        [".expertise-sub", "16px", "26.4px"],
         [".process-section h2", "40px", "46px"],
+        [".process-section__intro", "16px", "26.4px"],
         [".proof-section h2", "40px", "46px"],
         [".proof-slide[data-proof-active] blockquote p", "22px", "32px"],
         [".about-closing h2", "40px", "46px"],
@@ -323,6 +361,191 @@ test.describe("homepage mobile Figma typography", () => {
   });
 });
 
+test.describe("homepage section supporting copy", () => {
+  test("uses one readable desktop role without overflowing its columns", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/");
+
+    const metrics = await page
+      .locator(".expertise-sub, .process-section__intro")
+      .evaluateAll((nodes) =>
+        nodes.map((node) => {
+          const element = node as HTMLElement;
+          const style = getComputedStyle(element);
+          return {
+            fontSize: style.fontSize,
+            lineHeight: style.lineHeight,
+            fontWeight: style.fontWeight,
+            fits: element.scrollWidth <= element.clientWidth + 1,
+          };
+        }),
+      );
+
+    expect(metrics).toHaveLength(2);
+    for (const metric of metrics) {
+      expect(metric.fontSize).toBe("18px");
+      expect(metric.lineHeight).toBe("30.6px");
+      expect(metric.fontWeight).toBe("400");
+      expect(metric.fits).toBe(true);
+    }
+  });
+
+  test("keeps What We Do copy resilient across responsive layouts", async ({ page }) => {
+    for (const viewport of [
+      { width: 390, height: 844, size: "16px", lineHeight: "26.4px" },
+      { width: 1024, height: 875, size: "18px", lineHeight: "30.6px" },
+      { width: 1280, height: 900, size: "18px", lineHeight: "30.6px" },
+      { width: 1920, height: 1080, size: "18px", lineHeight: "30.6px" },
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto("/");
+
+      const metric = await page.locator(".what-section-band").evaluate((section) => {
+        const body = section.querySelector<HTMLElement>(".what-section__body");
+        const cards = section.querySelector<HTMLElement>(".what-card-grid");
+        if (!body || !cards) throw new Error("What We Do section is incomplete");
+
+        const style = getComputedStyle(body);
+        return {
+          fontSize: style.fontSize,
+          lineHeight: style.lineHeight,
+          fontFamily: style.fontFamily,
+          forcedLineWrappers: body.querySelectorAll(".copy-lines").length,
+          bodyFits: body.scrollWidth <= body.clientWidth + 1,
+          cardsContained: cards.scrollWidth <= cards.clientWidth + 1,
+        };
+      });
+
+      expect(metric.fontSize).toBe(viewport.size);
+      expect(metric.lineHeight).toBe(viewport.lineHeight);
+      expect(metric.fontFamily).toContain("DM Sans");
+      expect(metric.forcedLineWrappers).toBe(0);
+      expect(metric.bodyFits).toBe(true);
+      expect(metric.cardsContained).toBe(true);
+    }
+  });
+
+  test("uses responsive gutters and uniform card geometry", async ({ page }) => {
+    for (const viewport of [
+      { width: 320, height: 844, left: 40, right: 40, fixedCard: { width: 240, height: 280 } },
+      { width: 390, height: 844, left: 40, right: 40, fixedCard: { width: 310, height: 245 } },
+      { width: 768, height: 900, left: 32, right: 32, fixedCard: { width: 277, height: 350 } },
+      { width: 1024, height: 900, left: 32, right: 32, fixedCard: { width: 277, height: 350 } },
+      { width: 1280, height: 720, left: 64, right: 64 },
+      {
+        width: 1536,
+        height: 864,
+        left: 219.2,
+        right: 172.8,
+        fixedCard: { width: 221.6, height: 280 },
+        cardGap: 16,
+        backCopySize: 12.8,
+      },
+      {
+        width: 1920,
+        height: 1080,
+        left: 274,
+        right: 216,
+        fixedCard: { width: 277, height: 350 },
+        cardGap: 20,
+        backCopySize: 16,
+      },
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto("/");
+
+      const metric = await page.locator(".what-section-band").evaluate((section) => {
+        const grid = section.querySelector<HTMLElement>(".what-section");
+        const cards = Array.from(section.querySelectorAll<HTMLElement>(".what-card-item"));
+        const visibleFaces = Array.from(
+          section.querySelectorAll<HTMLElement>(".what-card__face--front"),
+        );
+        const backCopy = Array.from(
+          section.querySelectorAll<HTMLElement>(".what-card__face--back p"),
+        );
+        if (!grid || cards.length !== 3) throw new Error("What We Do card grid is incomplete");
+
+        const gridRect = grid.getBoundingClientRect();
+        const cardRects = cards.map((card) => card.getBoundingClientRect());
+        const faceRects = visibleFaces.map((face) => face.getBoundingClientRect());
+        return {
+          leftGutter: gridRect.left,
+          rightGutter: document.documentElement.clientWidth - gridRect.right,
+          cardWidths: cardRects.map((rect) => rect.width),
+          cardHeights: cardRects.map((rect) => rect.height),
+          faceWidths: faceRects.map((rect) => rect.width),
+          faceHeights: faceRects.map((rect) => rect.height),
+          faceGaps: faceRects.slice(1).map((rect, index) => rect.left - faceRects[index].right),
+          backCopySizes: backCopy.map((copy) => Number.parseFloat(getComputedStyle(copy).fontSize)),
+          facesFit: cards.every((card) =>
+            Array.from(card.querySelectorAll<HTMLElement>(".what-card__face")).every(
+              (face) => face.scrollHeight <= face.clientHeight,
+            ),
+          ),
+        };
+      });
+
+      expect(metric.leftGutter).toBeCloseTo(viewport.left, 0);
+      expect(metric.rightGutter).toBeCloseTo(viewport.right, 0);
+      expect(Math.max(...metric.cardWidths) - Math.min(...metric.cardWidths)).toBeLessThan(1);
+      expect(Math.max(...metric.cardHeights) - Math.min(...metric.cardHeights)).toBeLessThan(1);
+      expect(Math.max(...metric.faceWidths) - Math.min(...metric.faceWidths)).toBeLessThan(1);
+      expect(Math.max(...metric.faceHeights) - Math.min(...metric.faceHeights)).toBeLessThan(1);
+      expect(Math.max(...metric.faceGaps) - Math.min(...metric.faceGaps)).toBeLessThan(1);
+      expect(metric.facesFit).toBe(true);
+
+      if (viewport.cardGap) {
+        for (const gap of metric.faceGaps) expect(gap).toBeCloseTo(viewport.cardGap, 0);
+      }
+
+      if (viewport.backCopySize) {
+        for (const size of metric.backCopySizes) expect(size).toBeCloseTo(viewport.backCopySize, 1);
+      }
+
+      if (viewport.fixedCard) {
+        for (const width of metric.cardWidths) expect(width).toBeCloseTo(viewport.fixedCard.width, 0);
+        for (const height of metric.cardHeights) expect(height).toBeCloseTo(viewport.fixedCard.height, 0);
+        for (const width of metric.faceWidths) expect(width).toBeCloseTo(viewport.fixedCard.width, 0);
+        for (const height of metric.faceHeights) expect(height).toBeCloseTo(viewport.fixedCard.height, 0);
+      }
+    }
+  });
+
+  test("keeps the What We Do desktop composition compact at the reported viewport", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await page.goto("/");
+
+    const metric = await page.locator(".what-section-band").evaluate((section) => {
+      const layout = section.querySelector<HTMLElement>(".what-section");
+      const copy = section.querySelector<HTMLElement>(".what-section__copy");
+      const cards = section.querySelector<HTMLElement>(".what-card-grid");
+      if (!layout || !copy || !cards) throw new Error("What We Do section is incomplete");
+
+      const sectionRect = section.getBoundingClientRect();
+      const layoutRect = layout.getBoundingClientRect();
+      const copyRect = copy.getBoundingClientRect();
+      const cardsRect = cards.getBoundingClientRect();
+
+      return {
+        sectionHeight: sectionRect.height,
+        layoutHeight: layoutRect.height,
+        columns: getComputedStyle(layout).gridTemplateColumns.split(" ").length,
+        copyLeftOfCards: copyRect.right < cardsRect.left,
+        verticallyCentered: Math.abs(
+          copyRect.top + copyRect.height / 2 - (cardsRect.top + cardsRect.height / 2),
+        ),
+      };
+    });
+
+    expect(metric.columns).toBe(2);
+    expect(metric.copyLeftOfCards).toBe(true);
+    expect(metric.sectionHeight).toBeLessThan(800);
+    expect(metric.layoutHeight).toBeLessThan(600);
+    expect(metric.verticallyCentered).toBeLessThan(2);
+  });
+
+});
+
 test.describe("navigation", () => {
   test("desktop navigation reaches every top-level page", async ({ page, isMobile }) => {
     test.skip(isMobile, "Covered by the mobile navigation test.");
@@ -347,6 +570,22 @@ test.describe("navigation", () => {
       await expect(page).toHaveURL(item.path);
       await expect(page.getByRole("heading", { name: item.heading })).toBeVisible();
     }
+  });
+
+  test("marks only Home active in the homepage mobile menu", async ({ page, isMobile }) => {
+    test.skip(!isMobile, "Mobile drawer behavior.");
+
+    await page.goto("/");
+    await page.getByLabel("Open navigation").click();
+
+    const nav = primaryNav(page);
+    const home = nav.getByRole("link", { name: "Home" });
+    const whatWeDo = nav.getByRole("link", { name: "What We Do" });
+
+    await expect(nav.locator(".mobile-nav__link--active")).toHaveCount(1);
+    await expect(home).toHaveAttribute("aria-current", "page");
+    await expect(whatWeDo).not.toHaveAttribute("aria-current", "page");
+    await expect(whatWeDo).not.toHaveClass(/mobile-nav__link--active/);
   });
 
   test("mobile navigation drawer remains usable after scrolling", async ({ page, isMobile }) => {
@@ -436,6 +675,8 @@ test.describe("home hero mountain background", () => {
     const hero = page.locator(".home-hero");
     await expect(hero).toBeVisible();
     await expect(page.getByRole("heading", { level: 1, name: "Where Nature Meets Innovation" })).toBeVisible();
+    await expect(hero.locator(".home-hero__orbit")).toHaveCount(0);
+    await expect(hero.locator(".home-hero__star")).toHaveCount(14);
 
     const image = hero.locator(".home-hero__mountain-image");
     await expect(image).toHaveAttribute("alt", "");
@@ -466,6 +707,32 @@ test.describe("home hero mountain background", () => {
     expect(canvasState.width).toBeGreaterThan(0);
     expect(canvasState.height).toBeGreaterThan(0);
     expect(canvasState.role).toBeNull();
+  });
+
+  test("uses the Figma Client Stories link treatment", async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop", "Desktop pointer behavior.");
+
+    await page.setViewportSize({ width: 1536, height: 864 });
+    await page.goto("/");
+
+    const stories = page.locator(".home-hero .button-link--secondary");
+    await expect(stories).toHaveText("See Client Stories");
+
+    const spacing = await stories.evaluate((link) => {
+      const style = getComputedStyle(link);
+      return {
+        paddingTop: style.paddingTop,
+        paddingBottom: style.paddingBottom,
+      };
+    });
+
+    expect(spacing.paddingTop).toBe("22px");
+    expect(spacing.paddingBottom).toBe("5px");
+
+    await stories.hover();
+    await expect(stories).toHaveCSS("color", "rgb(200, 165, 90)");
+    await expect(stories).toHaveCSS("border-bottom-color", "rgb(200, 165, 90)");
+    await expect(stories).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
   });
 });
 
@@ -1507,6 +1774,71 @@ test.describe("about closing CTA and footer", () => {
   });
 });
 
+test.describe("home mobile detail cards", () => {
+  test("keeps tap-for-details cards compact with both faces contained", async ({ browser }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop", "Runs its own mobile viewport matrix.");
+
+    for (const width of [320, 390]) {
+      const context = await browser.newContext({
+        deviceScaleFactor: 1,
+        hasTouch: true,
+        isMobile: true,
+        reducedMotion: "reduce",
+        viewport: { width, height: 844 },
+      });
+      const page = await context.newPage();
+      await page.goto("/");
+
+      const cards = page.locator(".what-card");
+      await expect(cards).toHaveCount(3);
+
+      const metrics = await cards.evaluateAll((nodes) =>
+        nodes.map((card) => {
+          const inner = card.querySelector<HTMLElement>(".what-card__inner");
+          const front = card.querySelector<HTMLElement>(".what-card__face--front");
+          const back = card.querySelector<HTMLElement>(".what-card__face--back");
+          const frontNumber = front?.querySelector<HTMLElement>("span");
+          const frontTitle = front?.querySelector<HTMLElement>("h3");
+          if (!inner || !front || !back || !frontNumber || !frontTitle) {
+            throw new Error("Incomplete mobile detail card");
+          }
+
+          const numberRect = frontNumber.getBoundingClientRect();
+          const titleRect = frontTitle.getBoundingClientRect();
+
+          return {
+            cardHeight: card.getBoundingClientRect().height,
+            innerHeight: inner.getBoundingClientRect().height,
+            frontHeight: front.getBoundingClientRect().height,
+            backHeight: back.getBoundingClientRect().height,
+            frontFits: front.scrollHeight <= front.clientHeight,
+            backFits: back.scrollHeight <= back.clientHeight,
+            frontCenterDelta: Math.abs(
+              numberRect.top + numberRect.height / 2 - (titleRect.top + titleRect.height / 2),
+            ),
+          };
+        }),
+      );
+
+      for (const metric of metrics) {
+        expect(metric.cardHeight).toBeLessThanOrEqual(280);
+        expect(metric.cardHeight).toBeGreaterThanOrEqual(230);
+        expect(metric.innerHeight).toBeCloseTo(metric.cardHeight, 0);
+        expect(metric.frontHeight).toBeCloseTo(metric.cardHeight, 0);
+        expect(metric.backHeight).toBeCloseTo(metric.cardHeight, 0);
+        expect(metric.frontFits).toBe(true);
+        expect(metric.backFits).toBe(true);
+        expect(metric.frontCenterDelta).toBeLessThanOrEqual(2);
+      }
+
+      await cards.first().tap();
+      await expect(cards.first()).toHaveAttribute("data-flipped", "");
+
+      await context.close();
+    }
+  });
+});
+
 test.describe("home proof carousel", () => {
   test("appears after the process section and supports keyboard controls", async ({ page }) => {
     await page.goto("/");
@@ -1630,6 +1962,25 @@ test.describe("contact form", () => {
     await expect(page.getByLabel(/budget/i)).toHaveCount(0);
     await expect(page.getByLabel(/timeline/i)).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Continue" })).toBeVisible();
+  });
+
+  test("matches the navbar CTA fill interaction", async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop", "Desktop pointer behavior.");
+
+    await page.goto("/contact/");
+    const submit = page.getByRole("button", { name: "Continue" });
+
+    await expect(submit).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    await expect(submit).toHaveCSS("border-color", "rgb(200, 165, 90)");
+    await expect(submit).toHaveCSS("color", "rgb(200, 165, 90)");
+
+    await submit.hover();
+    await expect(submit).toHaveCSS("background-color", "rgb(200, 165, 90)");
+    await expect(submit).toHaveCSS("border-color", "rgb(200, 165, 90)");
+    await expect(submit).toHaveCSS("color", "rgb(253, 250, 245)");
+    await expect(submit).toHaveCSS("box-shadow", "none");
+    await expect(submit).toHaveCSS("transform", "none");
+    expect(await submit.evaluate((button) => getComputedStyle(button, "::after").display)).toBe("none");
   });
 
   test("matches the approved desktop Contact geometry and type scale", async ({ browser }, testInfo) => {

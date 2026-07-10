@@ -26,6 +26,8 @@ const isActive = (href: string) => {
     ? currentPath === "/"
     : currentPath === normalizedHref;
 };
+
+const isMobileActive = (href: string) => !href.includes("#") && isActive(href);
 ---
 
 <header class:list={[
@@ -37,7 +39,7 @@ const isActive = (href: string) => {
     <a class="brand-link" href="/" aria-label="eCongruity home">
       <img
         class="brand-link__logo"
-        src="/images/brand/econgruity-logo-figma.png"
+        src="/images/brand/econgruity-logo-navbar.png"
         alt=""
         width="1657"
         height="390"
@@ -74,8 +76,8 @@ const isActive = (href: string) => {
           mobileNavItems.map((item) => (
             <a
               href={item.href}
-              class:list={["mobile-nav__link", isActive(item.href) && "mobile-nav__link--active"]}
-              aria-current={isActive(item.href) ? "page" : undefined}
+              class:list={["mobile-nav__link", isMobileActive(item.href) && "mobile-nav__link--active"]}
+              aria-current={isMobileActive(item.href) ? "page" : undefined}
             >
               {item.label}
             </a>

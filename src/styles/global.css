@@ -331,13 +331,9 @@
   .what-section-band .what-card__face--back p {
     margin-top: min(0.8333vw, 1rem);
     max-width: min(12.5vw, 15rem);
-    font-size: min(0.7292vw, 0.875rem);
+    font-size: min(0.8333vw, 1rem);
   }
 
-  .what-section-band .what-card-item:not(:first-child) .what-card__face {
-    right: auto;
-    width: min(14.4271vw, 17.3125rem);
-  }
 }
 
 @media (max-width: 767px) {
@@ -1833,6 +1829,9 @@
   --button-bg: transparent;
   --button-border: rgb(184 206 184 / 0.3);
   --button-fg: #b8ceb8;
+  --button-hover-bg: transparent;
+  --button-hover-fg: #c8a55a;
+  --button-highlight: #c8a55a;
   min-height: auto;
   border: 0;
   border-bottom: 2px solid rgb(184 206 184 / 0.3);
@@ -1840,13 +1839,20 @@
   background: transparent;
   color: #b8ceb8;
   overflow: visible;
+  -webkit-tap-highlight-color: rgb(200 165 90 / 0.35);
 }
 
 .home-hero .button-link--secondary:hover,
-.home-hero .button-link--secondary:focus-visible {
+.home-hero .button-link--secondary:focus-visible,
+.home-hero .button-link--secondary:active {
   border-bottom-color: #c8a55a;
   background: transparent;
   color: #c8a55a !important;
+}
+
+.home-hero .button-link--secondary::selection {
+  background: #c8a55a;
+  color: #1e3a1e;
 }
 
 @media (min-width: 768px) {
@@ -1983,33 +1989,8 @@
   }
 
   .home-hero .button-link--secondary {
-    padding: 25px 0 2px;
+    padding: 22px 0 5px;
     line-height: 13.12px;
-  }
-
-  .home-hero__orbit {
-    top: 120px;
-    right: 96px;
-    width: 500px;
-    border-color: rgb(123 160 138 / 0.12);
-    opacity: 1;
-  }
-
-  .home-hero__orbit::before,
-  .home-hero__orbit::after {
-    inset: auto;
-    top: -240px;
-    left: -0.41px;
-    width: 750px;
-    height: 750px;
-    border-color: rgb(123 160 138 / 0.12);
-  }
-
-  .home-hero__orbit::after {
-    top: -420px;
-    left: -20px;
-    width: 1000px;
-    height: 1000px;
   }
 
   .home-hero__scroll-hint {
@@ -2149,12 +2130,7 @@
   }
 
   .home-hero .button-link--secondary {
-    padding: 10px 0 2px;
-  }
-
-  .home-hero__orbit {
-    right: -18rem;
-    top: 7rem;
+    padding: 7px 0 5px;
   }
 
   .home-hero__scroll-hint {
@@ -4082,6 +4058,19 @@ body {
   font-weight: 400;
 }
 
+@media (max-width: 767px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
+
+  body {
+    min-width: 0;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -4416,7 +4405,7 @@ textarea {
 
   .button-link--secondary:hover,
   .button-link--secondary:focus-visible {
-    color: var(--color-hunter-green) !important;
+    color: var(--button-hover-fg) !important;
   }
 
   .desktop-cta .button-link:hover,
@@ -4972,21 +4961,6 @@ textarea {
     }
   }
 
-  .home-hero__orbit {
-    @apply pointer-events-none absolute -right-20 top-12 aspect-square w-[min(42rem,68vw)] rounded-full border border-[rgb(123_160_138_/_0.07)] opacity-55;
-    z-index: -2;
-  }
-
-  .home-hero__orbit::before,
-  .home-hero__orbit::after {
-    content: "";
-    @apply absolute inset-8 rounded-full border border-[rgb(123_160_138_/_0.07)];
-  }
-
-  .home-hero__orbit::after {
-    @apply inset-16 border-[rgb(200_165_90_/_0.05)];
-  }
-
   .hero-scroll-button {
     @apply absolute bottom-7 left-1/2 z-20 grid h-11 w-11 place-items-center rounded-full border border-[rgb(189_207_189_/_0.28)] text-[var(--color-sundance)] transition-[background-color,border-color,transform] duration-300 md:bottom-10;
     translate: -50% 0;
@@ -5222,11 +5196,11 @@ textarea {
 
   @media (max-width: 767px) {
     body[data-scroll-reveal-ready] [data-scroll-reveal="left"] {
-      --scroll-reveal-x: -1.35rem;
+      --scroll-reveal-x: 0;
     }
 
     body[data-scroll-reveal-ready] [data-scroll-reveal="right"] {
-      --scroll-reveal-x: 1.35rem;
+      --scroll-reveal-x: 0;
     }
   }
 
@@ -7348,7 +7322,7 @@ textarea {
   .home-hero .button-row { width: 310px; max-width: 100%; margin-top: 29.75px; align-items: center; gap: 14px; }
   .home-hero .button-link { font-size: 13.1px; line-height: 13.1px; letter-spacing: 1.968px; }
   .home-hero .button-link--primary { width: 100%; height: 49.1px; padding: 18px 20px; }
-  .home-hero .button-link--secondary { width: auto; padding: 3px 0 2px; }
+  .home-hero .button-link--secondary { width: auto; padding: 0 0 5px; }
 
   .what-section-band .what-section .section-label,
   .expertise-section .expertise-intro .section-label,
@@ -8803,4 +8777,233 @@ textarea {
 .contact-intro h1 .contact-headline__line--accent small {
   color: #7ba08a;
   font-style: italic;
+}
+
+/* Match the contact submit interaction to the navbar CTA. */
+.contact-panel .contact-form .contact-form__continue {
+  --button-bg: transparent;
+  --button-border: #c8a55a;
+  --button-fg: #c8a55a;
+  --button-hover-bg: #c8a55a;
+  --button-hover-fg: #fdfaf5;
+  --button-highlight: transparent;
+  border-color: #c8a55a;
+  background: transparent;
+  box-shadow: none;
+  color: #c8a55a;
+  transform: none;
+}
+
+.contact-panel .contact-form .contact-form__continue:hover,
+.contact-panel .contact-form .contact-form__continue:focus-visible,
+.contact-panel .contact-form .contact-form__continue:active {
+  border-color: #c8a55a;
+  background: #c8a55a;
+  box-shadow: none;
+  transform: none;
+}
+
+.contact-panel .contact-form .contact-form__continue::after {
+  display: none;
+}
+
+/* Compact mobile flip cards: retain both faces without the desktop portrait ratio. */
+@media (max-width: 599px) {
+  .what-section-band .what-card-grid {
+    gap: 14px;
+  }
+
+  .what-section-band .what-card-item,
+  .what-section-band .what-card,
+  .what-section-band .what-card__inner {
+    height: 245px;
+    min-height: 245px;
+    aspect-ratio: auto;
+  }
+
+  .what-section-band .what-card__face {
+    height: 100%;
+    padding: 20px;
+  }
+
+  .what-section-band .what-card__face--front {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: 1fr;
+    align-content: center;
+    align-items: center;
+    column-gap: 20px;
+  }
+
+  .what-section-band .what-card__face--front h3 {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    justify-self: start;
+    text-align: left;
+  }
+
+  .what-section-band .what-card__face--front span {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+  }
+}
+
+@media (max-width: 359px) {
+  .what-section-band .what-card-item,
+  .what-section-band .what-card,
+  .what-section-band .what-card__inner {
+    height: 280px;
+    min-height: 280px;
+  }
+}
+
+/* Typography role 01 — Home section supporting copy. */
+.expertise-section .expertise-intro > .expertise-sub,
+.process-section .process-section__header > .process-section__intro {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0;
+}
+
+@media (max-width: 599px) {
+  .expertise-section .expertise-intro > .expertise-sub,
+  .process-section .process-section__header > .process-section__intro {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+}
+
+/* Rebuilt What We Do section: natural copy flow and resilient grid geometry. */
+.what-section-band .what-section {
+  display: grid;
+  width: min(calc(100% - 4rem), 68rem);
+  max-width: 68rem;
+  margin-inline: auto;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(3.75rem, 6vw, 5rem);
+}
+
+.what-section-band .what-section__copy {
+  min-width: 0;
+}
+
+.what-section-band .what-section__copy > .what-section__body {
+  width: 100%;
+  max-width: 36rem;
+  color: var(--color-cement);
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0;
+  text-wrap: pretty;
+}
+
+.what-section-band .what-card-grid {
+  display: grid;
+  min-width: 0;
+  width: 100%;
+  grid-template-columns: 17.3125rem;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+@media (min-width: 600px) {
+  .what-section-band .what-card-item,
+  .what-section-band .what-card,
+  .what-section-band .what-card__inner {
+    width: 17.3125rem;
+    height: 21.875rem;
+    min-height: 21.875rem;
+    aspect-ratio: auto;
+  }
+}
+
+@media (min-width: 960px) {
+  .what-section-band .what-card-grid {
+    grid-template-columns: repeat(3, 17.3125rem);
+  }
+}
+
+@media (min-width: 1200px) {
+  .what-section-band .what-section {
+    width: min(calc(100% - 8rem), 89.375rem);
+    max-width: 89.375rem;
+    grid-template-columns: minmax(0, 25rem) minmax(0, 1fr);
+    column-gap: 2.5rem;
+    row-gap: 0;
+  }
+
+  .what-section-band .what-section__copy > .what-section__body {
+    max-width: 28.75rem;
+  }
+
+  .what-section-band .what-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-content: stretch;
+  }
+
+  .what-section-band .what-card-item,
+  .what-section-band .what-card,
+  .what-section-band .what-card__inner {
+    width: 100%;
+  }
+}
+
+/* Figma desktop composition (node 4:12): 1430px grid at 1920px,
+   offset 274px from the left and scaled proportionally below that size. */
+@media (min-width: 1440px) {
+  .what-section-band .what-section {
+    width: min(74.4792vw, 89.375rem);
+    max-width: none;
+    margin-left: max(14.2708vw, calc((100vw - 85.75rem) / 2));
+    margin-right: 0;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
+    grid-template-rows: min(27.3958vw, 32.875rem);
+    gap: min(2.6042vw, 3.125rem);
+  }
+
+  .what-section-band .what-card-grid {
+    --what-card-width: min(14.4271vw, 17.3125rem);
+    grid-template-columns: repeat(3, var(--what-card-width));
+    justify-content: center;
+    gap: min(1.0417vw, 1.25rem);
+  }
+
+  .what-section-band .what-card-item,
+  .what-section-band .what-card,
+  .what-section-band .what-card__inner {
+    width: var(--what-card-width);
+    height: min(18.2292vw, 21.875rem);
+    min-height: min(18.2292vw, 21.875rem);
+  }
+
+  .what-section-band .what-card__face {
+    width: 100%;
+    height: min(18.2292vw, 21.875rem);
+    min-height: min(18.2292vw, 21.875rem);
+  }
+}
+
+@media (max-width: 599px) {
+  .what-section-band .what-section {
+    width: var(--mobile-content-width, min(calc(100% - 5rem), 19.375rem));
+    max-width: none;
+    margin-inline: auto;
+    gap: 3.75rem;
+  }
+
+  .what-section-band .what-section__copy > .what-section__body {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .what-section-band .what-card-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.875rem;
+  }
 }
