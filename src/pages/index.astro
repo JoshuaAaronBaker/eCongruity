@@ -148,6 +148,7 @@ const processSteps = [
                 class="what-card"
                 type="button"
                 data-flip-card
+                aria-pressed="false"
                 aria-label={`${card.number}. ${card.title}. ${card.summary}`}
               >
                 <div class="what-card__inner">
@@ -180,14 +181,14 @@ const processSteps = [
         </h2>
         <p class="expertise-sub">
           <span class="copy-lines copy-lines--wide">
-            <span>We bring together best-in-class technologies and methodologies</span>
-            <span>to take your solutions from concept to marketplace.</span>
+            <span>We bring together best-in-class technologies and</span>
+            <span>methodologies to take your solutions</span>
+            <span>from concept to marketplace.</span>
           </span>
           <span class="copy-lines copy-lines--mobile">
             <span>We bring together best-in-class</span>
-            <span>technologies and methodologies</span>
-            <span>to take your solutions from concept to</span>
-            <span>marketplace.</span>
+            <span>technologies and methodologies to take your</span>
+            <span>solutions from concept to marketplace.</span>
           </span>
         </p>
       </div>
@@ -302,23 +303,11 @@ const processSteps = [
 </BaseLayout>
 
 <script>
+  import { initExclusiveFlipCards } from "../scripts/exclusiveFlipCards";
   import { initMountainParticles } from "../scripts/mountainParticles";
 
   initMountainParticles();
-
-  const flipCards = document.querySelectorAll<HTMLButtonElement>("[data-flip-card]");
-
-  flipCards.forEach((card) => {
-    const setFlipped = (isFlipped: boolean) => {
-      card.toggleAttribute("data-flipped", isFlipped);
-    };
-
-    card.addEventListener("pointerenter", () => setFlipped(true));
-    card.addEventListener("pointerleave", () => setFlipped(false));
-    card.addEventListener("focus", () => setFlipped(true));
-    card.addEventListener("blur", () => setFlipped(false));
-    card.addEventListener("click", () => setFlipped(true));
-  });
+  initExclusiveFlipCards("[data-flip-card]");
 
   const capabilityCarousels = document.querySelectorAll<HTMLElement>("[data-capability-carousel]");
 

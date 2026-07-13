@@ -240,6 +240,7 @@ const values = [
                 class="founder-card__button"
                 type="button"
                 aria-label={`Read ${founder.name}'s quote`}
+                aria-pressed="false"
                 data-team-card
               >
                 <span class="founder-card__inner">
@@ -356,34 +357,7 @@ const values = [
 </BaseLayout>
 
 <script>
-  const teamCards = document.querySelectorAll<HTMLButtonElement>("[data-team-card]");
+  import { initExclusiveFlipCards } from "../scripts/exclusiveFlipCards";
 
-  teamCards.forEach((card) => {
-    const setFlipped = (flipped: boolean) => {
-      card.toggleAttribute("data-flipped", flipped);
-      card.setAttribute("aria-pressed", String(flipped));
-    };
-
-    card.setAttribute("aria-pressed", "false");
-    card.addEventListener("pointerenter", (event) => {
-      if (event.pointerType !== "touch") setFlipped(true);
-    });
-    card.addEventListener("pointerleave", (event) => {
-      if (event.pointerType !== "touch") setFlipped(false);
-    });
-    card.addEventListener("focus", () => {
-      if (card.matches(":focus-visible")) setFlipped(true);
-    });
-    card.addEventListener("blur", () => setFlipped(false));
-    card.addEventListener("click", () => {
-      const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-
-      if (canHover || card.matches(":focus-visible")) {
-        setFlipped(true);
-        return;
-      }
-
-      setFlipped(!card.hasAttribute("data-flipped"));
-    });
-  });
+  initExclusiveFlipCards("[data-team-card]");
 </script>

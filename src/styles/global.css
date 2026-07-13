@@ -8858,8 +8858,22 @@ textarea {
   }
 }
 
-/* Typography role 01 — Home section supporting copy. */
-.expertise-section .expertise-intro > .expertise-sub,
+/* Figma node 4:100 — Expertise supporting copy. */
+.expertise-section .expertise-intro > .expertise-sub {
+  font-family: var(--font-sans);
+  max-width: 32.25rem;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.expertise-section .expertise-sub .copy-lines--wide > span {
+  display: block;
+  white-space: nowrap;
+}
+
+/* Typography role 01 — Process supporting copy. */
 .process-section .process-section__header > .process-section__intro {
   font-family: var(--font-sans);
   font-size: 1.125rem;
@@ -8868,8 +8882,21 @@ textarea {
   letter-spacing: 0;
 }
 
+@media (min-width: 1440px) {
+  .expertise-section .expertise-intro > .expertise-sub {
+    font-size: min(1.0417vw, 1.25rem);
+    line-height: min(1.4583vw, 1.75rem);
+  }
+}
+
 @media (max-width: 599px) {
-  .expertise-section .expertise-intro > .expertise-sub,
+  .expertise-section .expertise-intro > .expertise-sub {
+    color: rgb(184 206 184 / 0.65);
+    font-size: 0.9375rem;
+    font-weight: 300;
+    line-height: 1.55;
+  }
+
   .process-section .process-section__header > .process-section__intro {
     font-size: 1rem;
     line-height: 1.65;

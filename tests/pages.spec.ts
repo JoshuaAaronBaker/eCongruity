@@ -291,7 +291,7 @@ test.describe("homepage mobile typography", () => {
       ],
       [
         ".expertise-sub .copy-lines--mobile",
-        "We bring together best-in-class\ntechnologies and methodologies\nto take your solutions from concept to\nmarketplace.",
+        "We bring together best-in-class\ntechnologies and methodologies to take your\nsolutions from concept to marketplace.",
       ],
       [
         ".process-section__intro .copy-lines--mobile",
@@ -327,7 +327,7 @@ test.describe("homepage mobile typography", () => {
         [".what-section h2", "40px", "46px"],
         [".what-section__body", "16px", "26.4px"],
         [".expertise-section h2", "40px", "46px"],
-        [".expertise-sub", "16px", "26.4px"],
+        [".expertise-sub", "15px", "23.25px"],
         [".process-section h2", "40px", "46px"],
         [".process-section__intro", "16px", "26.4px"],
         [".proof-section h2", "40px", "46px"],
@@ -362,7 +362,7 @@ test.describe("homepage mobile typography", () => {
 });
 
 test.describe("homepage section supporting copy", () => {
-  test("uses one readable desktop role without overflowing its columns", async ({ page }) => {
+  test("matches the Figma desktop roles without overflowing their columns", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto("/");
 
@@ -381,13 +381,37 @@ test.describe("homepage section supporting copy", () => {
         }),
       );
 
-    expect(metrics).toHaveLength(2);
-    for (const metric of metrics) {
-      expect(metric.fontSize).toBe("18px");
-      expect(metric.lineHeight).toBe("30.6px");
-      expect(metric.fontWeight).toBe("400");
-      expect(metric.fits).toBe(true);
-    }
+    expect(metrics).toEqual([
+      {
+        fontSize: "20px",
+        lineHeight: "28px",
+        fontWeight: "400",
+        fits: true,
+      },
+      {
+        fontSize: "18px",
+        lineHeight: "30.6px",
+        fontWeight: "400",
+        fits: true,
+      },
+    ]);
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+
+    const expertiseCopy = await page.locator(".expertise-sub .copy-lines--wide").evaluate((node) => {
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      return {
+        lines: new Set(Array.from(range.getClientRects(), (rect) => Math.round(rect.top))).size,
+        text: (node as HTMLElement).innerText,
+      };
+    });
+
+    expect(expertiseCopy.lines).toBe(3);
+    expect(expertiseCopy.text).toBe(
+      "We bring together best-in-class technologies and\nmethodologies to take your solutions\nfrom concept to marketplace.",
+    );
   });
 
   test("keeps What We Do copy resilient across responsive layouts", async ({ page }) => {
@@ -1364,9 +1388,18 @@ test.describe("about team", () => {
     await cards.first().tap();
     await expect(cards.first()).toHaveAttribute("data-flipped", "");
     await expect(cards.first()).toHaveAttribute("aria-pressed", "true");
-    await cards.first().tap();
+    await cards.nth(1).evaluate((button: HTMLButtonElement) => button.click());
     await expect(cards.first()).not.toHaveAttribute("data-flipped", "");
     await expect(cards.first()).toHaveAttribute("aria-pressed", "false");
+    await expect(cards.nth(1)).toHaveAttribute("data-flipped", "");
+    await expect(cards.nth(1)).toHaveAttribute("aria-pressed", "true");
+    await cards.nth(1).evaluate((button: HTMLButtonElement) => button.click());
+    await expect(cards.nth(1)).not.toHaveAttribute("data-flipped", "");
+    await expect(cards.nth(1)).toHaveAttribute("aria-pressed", "false");
+
+    await cards.first().tap();
+    await expect(cards.first()).toHaveAttribute("data-flipped", "");
+    await expect(cards.first()).toHaveAttribute("aria-pressed", "true");
 
     await cards.evaluateAll((buttons) => {
       for (const button of buttons) button.setAttribute("data-flipped", "");
@@ -1833,6 +1866,12 @@ test.describe("home mobile detail cards", () => {
 
       await cards.first().tap();
       await expect(cards.first()).toHaveAttribute("data-flipped", "");
+      await expect(cards.first()).toHaveAttribute("aria-pressed", "true");
+      await cards.nth(1).evaluate((button: HTMLButtonElement) => button.click());
+      await expect(cards.first()).not.toHaveAttribute("data-flipped", "");
+      await expect(cards.first()).toHaveAttribute("aria-pressed", "false");
+      await expect(cards.nth(1)).toHaveAttribute("data-flipped", "");
+      await expect(cards.nth(1)).toHaveAttribute("aria-pressed", "true");
 
       await context.close();
     }
