@@ -16,14 +16,16 @@ import {
 <BaseLayout
   title="Approach"
   description="The eCongruity approach moves from problem definition through hands-on implementation."
+  footerVariant="about"
 >
   <PageHero
-    class="approach-hero"
+    class="home-hero approach-hero"
     eyebrow="Approach"
     title="From complex challenge to implemented solution."
     summary="A Strategy-to-Implementation Engagement gives Organizational Leaders a guided way to make the challenge visible, align the right people, and carry a practical path into execution."
   >
-    <span slot="title">From challenge <span class="text-nowrap">to <em>clear change.</em></span></span>
+    <span slot="title" class="home-hero__title-line">From challenge</span>
+    <span slot="title" class="home-hero__title-line">to <em>clear change.</em></span>
     <span slot="summary">
       A Strategy-to-Implementation Engagement gives leaders a guided way to make the challenge visible, align the right people, and carry a practical path into execution.
     </span>
@@ -117,12 +119,16 @@ import {
     </div>
   </section>
 
-  <section class="section-band section-band--forest approach-process-section" aria-labelledby="process-heading">
-    <div class="site-container approach-process">
-      <div class="approach-process__header">
-        <p class="eyebrow">How the Map Moves</p>
-        <h2 id="process-heading" class="theme-heading theme-heading--section theme-heading--dark">Agile Innovation gives the work a flexible cadence.</h2>
-        <p class="theme-lead theme-lead--dark">
+  <section class="section-band section-band--forest process-section approach-process-section" aria-labelledby="process-heading">
+    <div class="site-container process-section__inner approach-process">
+      <div class="section-header section-header--narrow process-section__header approach-process__header">
+        <p class="section-label section-label--dark">How the Map Moves</p>
+        <h2 id="process-heading">
+          <span>Agile Innovation gives</span>
+          <span>the work a flexible</span>
+          <span>cadence.</span>
+        </h2>
+        <p class="process-section__intro">
           The model is repeatable without becoming rigid. It keeps the Working Group moving through problem definition, reframing, collaboration, delivery, learning, and growth while the Challenge Map stays current.
         </p>
       </div>
@@ -164,13 +170,36 @@ import {
     </div>
   </section>
 
-  <section class="section-band section-band--green about-closing-section" aria-labelledby="outcome-heading">
+  <section class="section-band section-band--green about-closing-section about-closing-section--about approach-closing-section" aria-labelledby="outcome-heading">
+    <div class="about-closing__rings" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
     <div class="site-container about-closing">
-      <div>
+      <div class="about-closing__content">
         <p class="eyebrow">Work With Us</p>
-        <h2 id="outcome-heading">Ready to build something that lasts?</h2>
-        <p>
-          Bring the challenge, the change, or the idea ready to grow. We will help shape the first questions, the right people, and the path worth mapping.
+        <h2 id="outcome-heading">
+          <span class="copy-lines copy-lines--wide">
+            <span>Ready to build</span>
+            <span>something that lasts?</span>
+          </span>
+          <span class="copy-lines copy-lines--mobile">
+            <span>Ready to build</span>
+            <span>something that</span>
+            <span>lasts?</span>
+          </span>
+        </h2>
+        <p class="about-closing__body">
+          <span class="copy-lines copy-lines--wide">
+            <span>Whether you're navigating a strategic challenge or launching</span>
+            <span>something entirely new — we're ready to build with you.</span>
+          </span>
+          <span class="copy-lines copy-lines--mobile">
+            <span>Whether you're navigating a strategic</span>
+            <span>challenge or launching something entirely</span>
+            <span>new — we're ready to build with you.</span>
+          </span>
         </p>
       </div>
       <div class="button-row button-row--compact">

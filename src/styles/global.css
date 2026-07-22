@@ -735,6 +735,7 @@
   margin: 0;
   padding: 0;
   grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: 1fr;
   gap: 1rem;
   list-style: none;
 }
@@ -4058,7 +4059,7 @@ body {
   font-weight: 400;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   html,
   body {
     max-width: 100%;
@@ -6257,6 +6258,13 @@ textarea {
     max-width: 1120px;
   }
 
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .approach-complexity {
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 3rem;
+    }
+  }
+
   .capability-fit__intro {
     @apply max-w-[38rem];
   }
@@ -6436,20 +6444,6 @@ textarea {
 
   .approach-map__outputs p {
     @apply mt-2;
-  }
-
-  .approach-process .innovation-list li {
-    @apply min-h-72 gap-6 bg-[var(--color-green-kelp)] p-8;
-  }
-
-  .approach-process .innovation-list h3 {
-    @apply text-[length:var(--type-card-title)] font-normal normal-case leading-tight tracking-normal text-[var(--color-linen)];
-    font-family: var(--font-serif);
-    text-wrap: pretty;
-  }
-
-  .approach-process .innovation-list p {
-    @apply max-w-[23rem] text-[length:var(--type-small-copy)] leading-7 text-[var(--color-pale-leaf)];
   }
 
   .approach-working-section {
@@ -8415,6 +8409,17 @@ textarea {
     font-size: 35px;
     line-height: 40px;
   }
+}
+
+/* Approach reuses the Home hero geometry while allowing its longer summary to wrap. */
+.page-hero.approach-hero .home-hero__lead > span {
+  display: inline;
+  white-space: normal;
+}
+
+.about-closing-section--about.approach-closing-section .about-closing .button-link--secondary {
+  flex-basis: 180px;
+  width: 180px;
 }
 
 /* Contact desktop: measured from Figma nodes 4:832, 4:833, and 4:875. */

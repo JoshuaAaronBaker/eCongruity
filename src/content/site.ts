@@ -394,14 +394,14 @@ export const founders: Founder[] = [
     role: "CEO/Founder",
     quote:
       "You cannot discover new oceans unless you have the courage to lose sight of the shore. (Anonymous)",
-    imageSrc: "/images/team/team-member-06.jpg",
+    imageSrc: "/images/team/team-member-06.png",
     imageAlt: "Portrait of D. Scott Martell, CEO and founder.",
   },
   {
     name: "Angie Martell",
     role: "COO/Co-Founder",
     quote: "A well designed process makes the right thing the easy thing.",
-    imageSrc: "/images/team/team-member-05.jpg",
+    imageSrc: "/images/team/team-member-05.png",
     imageAlt: "Portrait of Angie Martell, COO and co-founder.",
   },
   {
