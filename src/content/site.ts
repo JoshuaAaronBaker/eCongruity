@@ -358,9 +358,9 @@ export const aboutStats: AboutStat[] = [
 export const aboutTimeline: AboutTimelineItem[] = [
   {
     year: "2012",
-    title: "Founded in Montana",
+    title: "Strategy Studio Begins",
     summary:
-      "eCongruity opens its doors with a focus on strategic process design and mobile innovation.",
+      "eCongruity begins with a focus on strategic process design and mobile innovation.",
   },
   {
     year: "2015",
@@ -376,9 +376,9 @@ export const aboutTimeline: AboutTimelineItem[] = [
   },
   {
     year: "2022",
-    title: "US Expansion",
+    title: "Scaling the Business",
     summary:
-      "Expanded our client base nationally, partnering with organizations from UCLA to Tap Cloud.",
+      "Grew the client base nationally, partnering with organizations from UCLA to Tap Cloud.",
   },
   {
     year: "Today",

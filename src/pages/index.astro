@@ -127,9 +127,11 @@ const processSteps = [
       <div class="what-section__copy">
         <p class="section-label">What We Do</p>
         <h2 id="work-heading">
-          We simplify<br class="copy-break--wide" /> the<br class="copy-break--mobile" /> complex<br
-            class="copy-break--wide"
-          /> &amp; create a<br class="copy-break--mobile" /> clear<br class="copy-break--wide" /> path forward.
+          <span class="copy-lines">
+            <span>We simplify the</span>
+            <span>complex &amp; create a</span>
+            <span>clear path forward.</span>
+          </span>
         </h2>
         <p class="what-section__body">
           eCongruity bridges the gap between big ideas and real-world execution. We blend strategic thinking with
@@ -230,8 +232,7 @@ const processSteps = [
         <p class="section-label section-label--dark">Our Process</p>
         <h2 id="innovation-heading">
           <span>Agile Innovation —</span>
-          <span>from challenge to</span>
-          <span>change.</span>
+          <span>from challenge to change.</span>
         </h2>
         <p class="process-section__intro">
           <span class="copy-lines copy-lines--wide">
@@ -246,7 +247,7 @@ const processSteps = [
           </span>
         </p>
       </div>
-      <ol class="innovation-list">
+      <ol class="innovation-list innovation-list--text-hover">
         {
           processSteps.map((step, index) => (
             <li>
