@@ -1,0 +1,56 @@
+--- PAGE 1 ---
+how it’s supposed to be
+too white
+ font in white 
+hover bg gold
+text color : white
+
+--- PAGE 2 ---
+Placement of the block text
+CTA color and where they lead
+
+--- PAGE 3 ---
+
+
+--- PAGE 4 ---
+spacing + colors + 
+font size wrong
+
+--- PAGE 5 ---
+
+
+--- PAGE 6 ---
+
+
+--- PAGE 7 ---
+
+
+--- PAGE 8 ---
+
+
+--- PAGE 9 ---
+
+
+--- PAGE 10 ---
+Problem with Sub title, title, cta, spacing and  block needs to horizontally 
+centered like the about 
+
+--- PAGE 11 ---
+it’s not balanced 
+
+
+--- PAGE 12 ---
+cards are too long they should the same everywhere + font size
+
+--- PAGE 13 ---
+Balance problem + too much lines
+
+--- PAGE 14 ---
+too much lines, they should be the same all over site 
+for reference =>
+
+
+--- PAGE 15 ---
+when you go down the nav bar disappear but if you scroll up it appear directly
+in the hero, the nav bar is with bg transparent and then only with a “beige” color
+hover only the color change there is no line  
