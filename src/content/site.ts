@@ -350,8 +350,8 @@ export const testimonials: Testimonial[] = [
 
 export const aboutStats: AboutStat[] = [
   { value: "12+", label: "Years of Experience" },
-  { value: "50+", label: "Projects Delivered" },
-  { value: "3", label: "Markets Served" },
+  { value: "50+", label: "Markets Served" },
+  { value: "5", label: "Markets Served" },
   { value: "100%", label: "Client Focus" },
 ];
 

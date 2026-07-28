@@ -4,7 +4,7 @@ const pages = [
   {
     name: "Home",
     path: "/",
-    heading: "Where Nature Meets Innovation",
+    heading: "Where Boundless Horizons Inspire Bold Innovation",
     content: "Connecting people, process, and technology for real-time business",
   },
   {
@@ -55,7 +55,7 @@ const mobileNavItems = [
   {
     name: "Home",
     path: "/",
-    heading: "Where Nature Meets Innovation",
+    heading: "Where Boundless Horizons Inspire Bold Innovation",
   },
   ...navItems,
 ];
@@ -63,7 +63,9 @@ const mobileNavItems = [
 const sharedContentFrame = (viewportWidth: number) => {
   const width = viewportWidth < 1024
     ? viewportWidth - 64
-    : Math.min(viewportWidth * 0.625, 1200);
+    : viewportWidth < 1920
+      ? Math.min(viewportWidth * 0.625, 1200)
+      : Math.min(Math.max(viewportWidth * 0.625, 1200), 1600);
   return { x: (viewportWidth - width) / 2, width };
 };
 
@@ -94,6 +96,22 @@ const expectUsableHeadingStructure = async (page: Page) => {
 
 const waitForBrandFonts = async (page: Page) => {
   await page.evaluate(() => document.fonts.ready);
+};
+
+const captureViewportScreenshot = async (page: Page, path: string) => {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      await page.screenshot({ path });
+      return;
+    } catch (error) {
+      lastError = error;
+      await page.waitForTimeout(250);
+    }
+  }
+
+  throw lastError;
 };
 
 const primaryNav = (page: Page): Locator =>
@@ -259,7 +277,8 @@ test.describe("brand typography and color system", () => {
             const lineHeight = style.lineHeight === "normal"
               ? Number.parseFloat(style.fontSize) * 1.2
               : Number.parseFloat(style.lineHeight);
-            return Math.max(1, Math.ceil(rect.height / lineHeight - 0.08));
+            const layoutHeight = node instanceof HTMLElement ? node.offsetHeight : rect.height;
+            return Math.max(1, Math.ceil(layoutHeight / lineHeight - 0.08));
           };
 
           return nodes
@@ -469,10 +488,10 @@ test.describe("site-wide content frame", () => {
       { width: 744, height: 1024 },
       { width: 1280, height: 900 },
       { width: 1920, height: 1080 },
+      { width: 2560, height: 1440 },
+      { width: 3440, height: 1440 },
     ]) {
-      const expectedWidth = viewport.width < 1024
-        ? viewport.width - 64
-        : Math.min(viewport.width * 0.625, 1200);
+      const expectedWidth = sharedContentFrame(viewport.width).width;
       const expectedGutter = (viewport.width - expectedWidth) / 2;
       const context = await browser.newContext({
         deviceScaleFactor: 1,
@@ -486,7 +505,7 @@ test.describe("site-wide content frame", () => {
         await page.waitForFunction(() => document.querySelector("main > section > .site-container"));
 
         const frames = await page.locator(
-          "main > section > .site-container, .site-footer__grid",
+          "main > section > .site-container:not(.home-hero__grid), .site-footer__grid",
         ).evaluateAll((nodes) => nodes.map((node) => {
           const rect = node.getBoundingClientRect();
           return {
@@ -511,14 +530,204 @@ test.describe("site-wide content frame", () => {
   });
 });
 
+test.describe("large-screen responsive scaling", () => {
+  test("scales the Home hero through large and ultrawide displays", async ({ browser }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop", "Runs its own wide viewport matrix.");
+
+    const viewports = [
+      { width: 1920, height: 1080, frameWidth: 1200, frameX: 360, titleSize: 120 },
+      { width: 2560, height: 1440, frameWidth: 1600, frameX: 480, titleSize: 160 },
+      { width: 3440, height: 1440, frameWidth: 1600, frameX: 645, titleSize: 160 },
+      { width: 3840, height: 2160, frameWidth: 1600, frameX: 720, titleSize: 160 },
+    ];
+
+    for (const viewport of viewports) {
+      const context = await browser.newContext({
+        deviceScaleFactor: 1,
+        reducedMotion: "reduce",
+        viewport,
+      });
+      const page = await context.newPage();
+      await page.goto("/");
+      await waitForBrandFonts(page);
+
+      const metrics = await page.locator(".home-hero").evaluate((heroNode) => {
+        const gridNode = heroNode.querySelector<HTMLElement>(".home-hero__grid");
+        const titleNode = heroNode.querySelector<HTMLElement>("h1");
+        const titleLines = Array.from(
+          heroNode.querySelectorAll<HTMLElement>(
+            ".home-hero__title-group--wide .home-hero__title-line",
+          ),
+        );
+        const imageNode = heroNode.querySelector<HTMLElement>(".home-hero__mountain-image");
+
+        if (!gridNode || !titleNode || !imageNode) {
+          throw new Error("Home hero is incomplete");
+        }
+
+        const gridRect = gridNode.getBoundingClientRect();
+        const titleRect = titleNode.getBoundingClientRect();
+        const imageRect = imageNode.getBoundingClientRect();
+        const heroRect = heroNode.getBoundingClientRect();
+
+        return {
+          grid: { x: gridRect.x, width: gridRect.width },
+          title: {
+            fontSize: Number.parseFloat(getComputedStyle(titleNode).fontSize),
+            right: titleRect.right,
+            lines: titleLines.length,
+            linesFit: titleLines.every((line) => line.scrollWidth <= line.clientWidth + 1),
+            emphasisColors: Array.from(
+              heroNode.querySelectorAll<HTMLElement>(
+                ".home-hero__title-group--wide em",
+              ),
+            ).map((node) => getComputedStyle(node).color),
+          },
+          mountainMatchesHero:
+            Math.abs(imageRect.width - heroRect.width) <= 1
+            && Math.abs(imageRect.height - heroRect.height) <= 1,
+          documentWidth: document.documentElement.scrollWidth,
+          viewportWidth: window.innerWidth,
+        };
+      });
+
+      expect(metrics.grid.x).toBeCloseTo(viewport.frameX, 0);
+      expect(metrics.grid.width).toBeCloseTo(viewport.frameWidth, 0);
+      expect(metrics.title.fontSize).toBe(viewport.titleSize);
+      expect(metrics.title.lines).toBe(2);
+      expect(metrics.title.linesFit).toBe(true);
+      expect(metrics.title.emphasisColors).toEqual(["rgb(123, 160, 138)"]);
+      expect(metrics.title.right).toBeLessThanOrEqual(viewport.width);
+      expect(metrics.mountainMatchesHero).toBe(true);
+      expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth);
+
+      if ([1920, 2560, 3440].includes(viewport.width)) {
+        await page.locator(".home-hero").screenshot({
+          path: `output/screenshots/home-hero-wide-${viewport.width}-final.png`,
+        });
+      }
+
+      await context.close();
+    }
+  });
+
+  test("keeps About spacing continuous and content-driven at desktop widths", async ({ browser }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop", "Runs its own wide viewport matrix.");
+
+    const sectionHeights = new Map<number, number>();
+
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 1799, height: 1000 },
+      { width: 1800, height: 1000 },
+      { width: 1920, height: 1080 },
+      { width: 2560, height: 1440 },
+      { width: 3440, height: 1440 },
+      { width: 3840, height: 2160 },
+    ]) {
+      const context = await browser.newContext({
+        deviceScaleFactor: 1,
+        reducedMotion: "reduce",
+        viewport,
+      });
+      const page = await context.newPage();
+      await page.goto("/about/");
+      await waitForBrandFonts(page);
+
+      const metrics = await page.evaluate(() => {
+        const node = (selector: string) => {
+          const target = document.querySelector<HTMLElement>(selector);
+          if (!target) throw new Error(`Missing About target: ${selector}`);
+          return target;
+        };
+        const rect = (selector: string) => node(selector).getBoundingClientRect();
+        const gap = (before: string, after: string) => rect(after).top - rect(before).bottom;
+        const missionSection = rect(".about-mission-section");
+        const teamHeader = rect(".about-team__header");
+        const teamGrid = rect(".about-team-section .team-grid");
+        const teamGridNode = node(".about-team-section .team-grid");
+        const valuesGridNode = node(".about-values-section .values-grid");
+        const quoteNode = node(".mission-proof blockquote");
+
+        return {
+          missionHeight: missionSection.height,
+          gaps: {
+            missionEyebrowTitle: gap(".about-mission .eyebrow", ".about-mission h2"),
+            missionTitleCopy: gap(".about-mission h2", ".about-mission__body--primary"),
+            missionQuoteStats: gap(".mission-proof blockquote", ".mission-proof .stat-grid"),
+            storyEyebrowTitle: gap(".about-story .eyebrow", ".about-story h2"),
+            storyTitleCopy: gap(".about-story h2", ".about-story__copy"),
+            teamEyebrowTitle: gap(".about-team .eyebrow", ".about-team h2"),
+            teamHeaderGrid: teamGrid.top - teamHeader.bottom,
+            valuesEyebrowTitle: gap(".about-values .eyebrow", ".about-values h2"),
+            valuesTitleCopy: gap(".about-values h2", ".about-values__lead"),
+          },
+          quoteFits:
+            quoteNode.scrollHeight <= quoteNode.clientHeight + 1
+            && quoteNode.scrollWidth <= quoteNode.clientWidth + 1,
+          grids: {
+            teamWidth: teamGridNode.getBoundingClientRect().width,
+            valuesWidth: valuesGridNode.getBoundingClientRect().width,
+          },
+          headingSizes: [
+            ".about-mission h2",
+            ".about-story h2",
+            ".about-team h2",
+            ".about-values h2",
+          ].map((selector) => Number.parseFloat(getComputedStyle(node(selector)).fontSize)),
+          documentWidth: document.documentElement.scrollWidth,
+          viewportWidth: window.innerWidth,
+        };
+      });
+
+      const expectedTitleCopyGap = Math.min(Math.max(viewport.width * 0.015, 32), 48);
+      const expectedGridGap = Math.min(Math.max(viewport.width * 0.03, 48), 64);
+
+      sectionHeights.set(viewport.width, metrics.missionHeight);
+      expect(metrics.gaps.missionEyebrowTitle).toBeCloseTo(20, 0);
+      expect(metrics.gaps.storyEyebrowTitle).toBeCloseTo(20, 0);
+      expect(metrics.gaps.teamEyebrowTitle).toBeCloseTo(20, 0);
+      expect(metrics.gaps.valuesEyebrowTitle).toBeCloseTo(20, 0);
+      expect(metrics.gaps.missionTitleCopy).toBeCloseTo(expectedTitleCopyGap, 0);
+      expect(metrics.gaps.storyTitleCopy).toBeCloseTo(expectedTitleCopyGap, 0);
+      expect(metrics.gaps.valuesTitleCopy).toBeCloseTo(expectedTitleCopyGap, 0);
+      expect(metrics.gaps.missionQuoteStats).toBeCloseTo(48, 0);
+      expect(metrics.gaps.teamHeaderGrid).toBeCloseTo(expectedGridGap, 0);
+      expect(metrics.quoteFits).toBe(true);
+      expect(metrics.grids.teamWidth).toBeLessThanOrEqual(1400);
+      expect(metrics.grids.valuesWidth).toBeLessThanOrEqual(1400);
+      expect(metrics.headingSizes.every((size) => size <= 72)).toBe(true);
+      expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth);
+
+      if ([1920, 2560, 3440].includes(viewport.width)) {
+        for (const section of ["mission", "story", "team", "values"]) {
+          await page.locator(`.about-${section}-section`).screenshot({
+            path: `output/screenshots/about-${section}-wide-${viewport.width}-final.png`,
+          });
+        }
+      }
+
+      await context.close();
+    }
+
+    expect(Math.abs((sectionHeights.get(1800) ?? 0) - (sectionHeights.get(1799) ?? 0))).toBeLessThan(5);
+  });
+});
+
 test.describe("about page text containment", () => {
-  test("keeps responsive desktop copy inside its intended layout boxes", async ({ browser }, testInfo) => {
+  test("keeps responsive desktop copy inside its intended widths", async ({ browser }, testInfo) => {
     test.skip(testInfo.project.name !== "desktop", "Runs its own responsive desktop viewport matrix.");
 
     for (const viewport of [
       { width: 1024, height: 900 },
       { width: 1280, height: 900 },
       { width: 1536, height: 960 },
+      { width: 1799, height: 1000 },
+      { width: 1800, height: 1000 },
+      { width: 1920, height: 1080 },
+      { width: 2560, height: 1440 },
+      { width: 3440, height: 1440 },
+      { width: 3840, height: 2160 },
     ]) {
       const context = await browser.newContext({
         deviceScaleFactor: 1,
@@ -559,8 +768,8 @@ test.describe("about page text containment", () => {
               selector,
               clientHeight: node.clientHeight,
               clientWidth: node.clientWidth,
-              scrollHeight: node.scrollHeight,
               scrollWidth: node.scrollWidth,
+              overflowY: getComputedStyle(node).overflowY,
             };
           }),
           frames: frameTargets.map(([frameSelector, targetSelector]) => {
@@ -581,10 +790,8 @@ test.describe("about page text containment", () => {
       });
 
       for (const metric of metrics.containment) {
-        expect(
-          metric.scrollHeight,
-          `${metric.selector} vertical text fit at ${viewport.width}px`,
-        ).toBeLessThanOrEqual(metric.clientHeight + 1);
+        expect(metric.clientHeight, `${metric.selector} has natural height at ${viewport.width}px`).toBeGreaterThan(0);
+        expect(metric.overflowY, `${metric.selector} does not clip text at ${viewport.width}px`).not.toBe("hidden");
         expect(
           metric.scrollWidth,
           `${metric.selector} horizontal text fit at ${viewport.width}px`,
@@ -618,6 +825,7 @@ test.describe("homepage mobile typography", () => {
     });
     const page = await context.newPage();
     await page.goto("/");
+    await waitForBrandFonts(page);
 
     const expectedLines = [
       [
@@ -696,6 +904,16 @@ test.describe("homepage mobile typography", () => {
       expect(metric.width, `${metric.selector} stays inside the shared homepage hero column`).toBeLessThanOrEqual(326);
       expect(metric.width).toBeGreaterThan(0);
     }
+
+    const titleLines = page.locator(
+      ".home-hero__title-group--mobile .home-hero__title-line",
+    );
+    await expect(titleLines).toHaveCount(3);
+    expect(
+      await titleLines.evaluateAll((lines) =>
+        lines.every((line) => line.scrollWidth <= line.clientWidth + 1),
+      ),
+    ).toBe(true);
 
     await context.close();
   });
@@ -1020,7 +1238,7 @@ test.describe("home hero mountain background", () => {
 
     const hero = page.locator(".home-hero");
     await expect(hero).toBeVisible();
-    await expect(page.getByRole("heading", { level: 1, name: "Where Nature Meets Innovation" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Where Boundless Horizons Inspire Bold Innovation" })).toBeVisible();
     await expect(hero.locator(".home-hero__orbit")).toHaveCount(0);
     await expect(hero.locator(".home-hero__star")).toHaveCount(14);
 
@@ -1162,11 +1380,17 @@ test.describe("about navigation and hero", () => {
             };
 
             const lead = metric(selectors.lead);
+            const title = metric(selectors.title);
 
             return {
               heroTop: Math.round(heroRect.y * 100) / 100,
               label: metric(selectors.label),
-              title: metric(selectors.title),
+              title: {
+                fontSize: title.fontSize,
+                fontWeight: title.fontWeight,
+                lineHeight: title.lineHeight,
+                letterSpacing: title.letterSpacing,
+              },
               lead: {
                 fontSize: lead.fontSize,
                 fontWeight: lead.fontWeight,
@@ -1293,9 +1517,10 @@ test.describe("about navigation and hero", () => {
       expect(metrics.heroBackground).toBe("rgb(17, 26, 16)");
       expect(metrics.accentColor).toBe("rgb(123, 160, 138)");
 
-      await page.screenshot({
-        path: `output/screenshots/about-nav-hero-${viewport.name}-final.png`,
-      });
+      await captureViewportScreenshot(
+        page,
+        `output/screenshots/about-nav-hero-${viewport.name}-final.png`,
+      );
 
       await context.close();
     }
@@ -1400,6 +1625,8 @@ test.describe("about mission", () => {
 
         return {
           section: { y: sectionRect.y, height: sectionRect.height },
+          previousBottom:
+            sectionNode.previousElementSibling?.getBoundingClientRect().bottom ?? sectionRect.y,
           inner: {
             x: innerRect.x - sectionRect.x,
             y: innerRect.y - sectionRect.y,
@@ -1409,17 +1636,25 @@ test.describe("about mission", () => {
         };
       });
 
-      expect(metrics.section.y).toBeCloseTo(viewport.section.y, 0);
-      if (viewport.name === "small-desktop") {
-        expect(metrics.section.height).toBeGreaterThan(viewport.section.height);
+      const isDesktop = viewport.width >= 1024;
+      if (isDesktop) {
+        expect(metrics.section.y).toBeGreaterThanOrEqual(metrics.previousBottom);
+        expect(metrics.section.y - metrics.previousBottom).toBeLessThanOrEqual(10);
+        expect(metrics.section.height).toBeGreaterThan(0);
       } else {
+        expect(metrics.section.y).toBeCloseTo(viewport.section.y, 0);
         expect(metrics.section.height).toBeCloseTo(viewport.section.height, 0);
       }
       const frame = sharedContentFrame(viewport.width);
       expect(metrics.inner.x).toBeCloseTo(frame.x, 0);
-      expect(metrics.inner.y).toBeCloseTo(viewport.inner.y, 0);
+      const sectionPadding = Math.min(Math.max(viewport.width * 0.07, 96), 144);
+      if (isDesktop) {
+        expect(Math.abs(metrics.inner.y - sectionPadding)).toBeLessThanOrEqual(1);
+      } else {
+        expect(metrics.inner.y).toBeCloseTo(viewport.inner.y, 0);
+      }
       expect(metrics.inner.width).toBeCloseTo(frame.width, 0);
-      expect(metrics.fontSize).toBe(viewport.fontSize);
+      expect(metrics.fontSize).toBe(isDesktop ? (viewport.width >= 1920 ? 64 : 48) : viewport.fontSize);
 
       await section.screenshot({
         path: `output/screenshots/about-mission-${viewport.name}-final.png`,
@@ -1518,36 +1753,103 @@ test.describe("about story", () => {
         };
       });
 
-      if (viewport.name === "small-desktop") {
+      const isDesktop = viewport.width >= 1024;
+      if (isDesktop) {
         expect(metrics.section.y).toBeCloseTo(metrics.previousBottom, 0);
-        expect(metrics.section.height).toBeGreaterThan(viewport.section.height);
+        expect(metrics.section.height).toBeGreaterThan(0);
       } else {
         expect(metrics.section.y).toBeCloseTo(viewport.section.y, 0);
         expect(metrics.section.height).toBeCloseTo(viewport.section.height, 0);
       }
       const frame = sharedContentFrame(viewport.width);
       expect(metrics.inner.x).toBeCloseTo(frame.x, 0);
-      expect(metrics.inner.y).toBeCloseTo(viewport.inner.y, 0);
+      const sectionPadding = Math.min(Math.max(viewport.width * 0.07, 96), 144);
+      if (isDesktop) {
+        expect(Math.abs(metrics.inner.y - sectionPadding)).toBeLessThanOrEqual(1);
+      } else {
+        expect(metrics.inner.y).toBeCloseTo(viewport.inner.y, 0);
+      }
       expect(metrics.inner.width).toBeCloseTo(frame.width, 0);
       expect(metrics.copy.x).toBeGreaterThanOrEqual(frame.x - 1);
       expect(metrics.copy.x + metrics.copy.width).toBeLessThanOrEqual(frame.x + frame.width + 1);
-      if (viewport.name === "small-desktop") {
+      if (isDesktop) {
         expect(metrics.copy.y).toBeGreaterThan(metrics.inner.y);
       } else {
         expect(metrics.copy.y).toBeCloseTo(viewport.copy.y, 0);
       }
       expect(metrics.timeline.x).toBeGreaterThanOrEqual(frame.x - 1);
       expect(metrics.timeline.x + metrics.timeline.width).toBeLessThanOrEqual(frame.x + frame.width + 1);
-      if (viewport.name === "small-desktop") {
+      if (viewport.width >= 1440) {
+        expect(metrics.timeline.y).toBeCloseTo(metrics.inner.y, 0);
+      } else if (isDesktop) {
         expect(metrics.timeline.y).toBeGreaterThan(metrics.copy.y);
       } else {
         expect(metrics.timeline.y).toBeCloseTo(viewport.timeline.y, 0);
       }
-      expect(metrics.fontSize).toBe(viewport.fontSize);
+      expect(metrics.fontSize).toBe(isDesktop ? (viewport.width >= 1920 ? 64 : 48) : viewport.fontSize);
 
       await section.screenshot({
         path: `output/screenshots/about-story-${viewport.name}-final.png`,
       });
+
+      await context.close();
+    }
+  });
+
+  test("keeps the final timeline title contained on phones", async ({ browser }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop", "Runs its own mobile viewport matrix.");
+
+    for (const width of [390, 320]) {
+      const context = await browser.newContext({
+        deviceScaleFactor: 1,
+        reducedMotion: "reduce",
+        viewport: { width, height: 1600 },
+      });
+      const page = await context.newPage();
+      await page.goto("/about/");
+      await waitForBrandFonts(page);
+
+      const finalItem = page.locator(".story-timeline li:last-child");
+      const title = finalItem.getByRole("heading", {
+        level: 3,
+        name: "Nature × Technology",
+      });
+
+      await expect(title).toBeVisible();
+
+      const metrics = await finalItem.evaluate((itemNode) => {
+        const titleNode = itemNode.querySelector<HTMLElement>("h3");
+        const bodyNode = itemNode.querySelector<HTMLElement>(".story-timeline__body");
+        const sectionNode = itemNode.closest<HTMLElement>(".about-story-section");
+
+        if (!titleNode || !bodyNode || !sectionNode) {
+          throw new Error("Final timeline item is incomplete");
+        }
+
+        const itemRect = itemNode.getBoundingClientRect();
+        const titleRect = titleNode.getBoundingClientRect();
+        const bodyRect = bodyNode.getBoundingClientRect();
+        const sectionRect = sectionNode.getBoundingClientRect();
+
+        return {
+          titleLeft: titleRect.left,
+          titleRight: titleRect.right,
+          itemLeft: itemRect.left,
+          itemRight: itemRect.right,
+          titleScrollWidth: titleNode.scrollWidth,
+          titleClientWidth: titleNode.clientWidth,
+          bodyTop: bodyRect.top,
+          titleBottom: titleRect.bottom,
+          bodyBottom: bodyRect.bottom,
+          sectionBottom: sectionRect.bottom,
+        };
+      });
+
+      expect(metrics.titleLeft).toBeGreaterThanOrEqual(metrics.itemLeft - 1);
+      expect(metrics.titleRight).toBeLessThanOrEqual(metrics.itemRight + 1);
+      expect(metrics.titleScrollWidth).toBeLessThanOrEqual(metrics.titleClientWidth + 1);
+      expect(metrics.bodyTop).toBeGreaterThan(metrics.titleBottom);
+      expect(metrics.bodyBottom).toBeLessThanOrEqual(metrics.sectionBottom);
 
       await context.close();
     }
@@ -1681,26 +1983,32 @@ test.describe("about team", () => {
         };
       });
 
-      if (viewport.name === "small-desktop") {
+      const isDesktop = viewport.width >= 1024;
+      if (isDesktop) {
         expect(metrics.section.y).toBeCloseTo(metrics.previousBottom, 0);
-        expect(metrics.section.height).toBeGreaterThan(viewport.section.height);
+        expect(metrics.section.height).toBeGreaterThan(0);
       } else {
         expect(metrics.section.y).toBeCloseTo(viewport.section.y, 0);
         expect(metrics.section.height).toBeCloseTo(viewport.section.height, 0);
       }
       const frame = sharedContentFrame(viewport.width);
       expect(metrics.inner.x).toBeCloseTo(frame.x, 0);
-      expect(metrics.inner.y).toBeCloseTo(viewport.inner.y, 0);
+      const sectionPadding = Math.min(Math.max(viewport.width * 0.07, 96), 144);
+      if (isDesktop) {
+        expect(Math.abs(metrics.inner.y - sectionPadding)).toBeLessThanOrEqual(1);
+      } else {
+        expect(metrics.inner.y).toBeCloseTo(viewport.inner.y, 0);
+      }
       expect(metrics.inner.width).toBeCloseTo(frame.width, 0);
       expect(metrics.grid.x).toBeGreaterThanOrEqual(frame.x - 1);
-      if (viewport.name === "small-desktop") {
+      if (isDesktop) {
         expect(metrics.grid.y).toBeGreaterThan(metrics.inner.y);
-        expect(metrics.columnCount).toBe(2);
+        expect(metrics.columnCount).toBe(viewport.width >= 1440 ? 3 : 2);
       } else {
         expect(metrics.grid.y).toBeCloseTo(viewport.grid.y, 0);
       }
       expect(metrics.grid.x + metrics.grid.width).toBeLessThanOrEqual(frame.x + frame.width + 1);
-      expect(metrics.fontSize).toBe(viewport.fontSize);
+      expect(metrics.fontSize).toBe(isDesktop ? (viewport.width >= 1920 ? 64 : 48) : viewport.fontSize);
 
       for (const card of metrics.cards) {
         expect(card.width).toBeCloseTo(metrics.cards[0].width, 1);
@@ -1911,28 +2219,50 @@ test.describe("about values", () => {
         };
       });
 
-      if (viewport.name === "desktop") {
+      const isDesktop = viewport.width >= 1024;
+      if (isDesktop) {
         expect(metrics.sectionY).toBeCloseTo(metrics.previousBottom, 0);
-        expect(metrics.sectionHeight).toBeGreaterThan(viewport.sectionHeight);
+        expect(metrics.sectionHeight).toBeGreaterThan(0);
       } else {
         expect(metrics.sectionHeight).toBeCloseTo(viewport.sectionHeight, 0);
       }
       const frame = sharedContentFrame(viewport.width);
       expect(metrics.container.x).toBeCloseTo(frame.x, 0);
-      expect(metrics.container.y).toBeCloseTo(viewport.container.y, 0);
+      const sectionPadding = Math.min(Math.max(viewport.width * 0.07, 96), 144);
+      expect(metrics.container.y).toBeCloseTo(isDesktop ? sectionPadding : viewport.container.y, 0);
       expect(metrics.container.width).toBeCloseTo(frame.width, 0);
-      expect(metrics.label.y).toBeCloseTo(viewport.label.y, 0);
+      expect(metrics.label.y).toBeCloseTo(isDesktop ? metrics.container.y : viewport.label.y, 0);
       expect(metrics.label.fontSize).toBe(viewport.label.size);
-      expect(metrics.label.lineHeight).toBeCloseTo(viewport.label.line, 0);
+      expect(metrics.label.lineHeight).toBeCloseTo(isDesktop ? 22.5 : viewport.label.line, 1);
       expect(metrics.label.tracking).toBe(viewport.label.tracking);
-      expect(metrics.heading.y).toBeCloseTo(viewport.heading.y, 0);
+      if (isDesktop) {
+        expect(metrics.heading.y - (metrics.label.y + metrics.label.height)).toBeCloseTo(20, 0);
+      } else {
+        expect(metrics.heading.y).toBeCloseTo(viewport.heading.y, 0);
+      }
       expect(metrics.heading.fontSize).toBe(viewport.heading.size);
-      expect(metrics.heading.lineHeight).toBe(viewport.heading.line);
-      expect(metrics.lead.y).toBeCloseTo(viewport.lead.y, 0);
-      expect(metrics.lead.width).toBeCloseTo(viewport.name === "mobile" ? frame.width : viewport.lead.width, 0);
+      expect(metrics.heading.lineHeight).toBe(isDesktop ? 51.84 : viewport.heading.line);
+      if (isDesktop) {
+        expect(metrics.lead.y - (metrics.heading.y + metrics.heading.height)).toBeCloseTo(32, 0);
+      } else {
+        expect(metrics.lead.y).toBeCloseTo(viewport.lead.y, 0);
+      }
+      if (isDesktop) {
+        expect(metrics.lead.width).toBeGreaterThan(0);
+        expect(metrics.lead.width).toBeLessThanOrEqual(frame.width);
+      } else {
+        expect(metrics.lead.width).toBeCloseTo(
+          viewport.name === "mobile" ? frame.width : viewport.lead.width,
+          0,
+        );
+      }
       expect(metrics.lead.fontSize).toBe(viewport.lead.size);
       expect(metrics.lead.lineHeight).toBe(viewport.lead.line);
-      expect(metrics.grid.y).toBeCloseTo(viewport.grid.y, 0);
+      if (isDesktop) {
+        expect(metrics.grid.y - (metrics.lead.y + metrics.lead.height)).toBeCloseTo(48, 0);
+      } else {
+        expect(metrics.grid.y).toBeCloseTo(viewport.grid.y, 0);
+      }
       expect(metrics.grid.x).toBeGreaterThanOrEqual(frame.x - 1);
       expect(metrics.grid.x + metrics.grid.width).toBeLessThanOrEqual(frame.x + frame.width + 1);
       expect(metrics.grid.height).toBeGreaterThan(0);

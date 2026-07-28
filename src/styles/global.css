@@ -2186,7 +2186,7 @@
 
   .home-hero__content {
     width: 100%;
-    max-width: 57.2917vw;
+    max-width: 62.5vw;
     padding-top: 3.099vw;
   }
 
@@ -2197,7 +2197,7 @@
   }
 
   .home-hero h1 {
-    width: 42.7083vw;
+    width: 100%;
     max-width: none;
     font-size: 6.25vw;
     line-height: 6.5625vw;
@@ -3768,6 +3768,31 @@
   .about-story-section .story-timeline h3,
   .about-story-section .story-timeline__body {
     width: 100%;
+  }
+
+  .about-story-section .story-timeline li:last-child {
+    display: flex;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .about-story-section .story-timeline li:last-child .story-timeline__year,
+  .about-story-section .story-timeline li:last-child h3,
+  .about-story-section .story-timeline li:last-child .story-timeline__body {
+    position: static;
+    height: auto;
+  }
+
+  .about-story-section .story-timeline li:last-child h3 {
+    margin-top: 8px;
+    font-size: clamp(18px, 5.38vw, 21px);
+    line-height: 1.2;
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  .about-story-section .story-timeline li:last-child .story-timeline__body {
+    margin-top: 8px;
   }
 
   .about-team-section .team-grid {
@@ -7406,7 +7431,7 @@ textarea {
 
 @media (max-width: 389px) {
   .home-hero h1 {
-    font-size: clamp(35.2px, calc(12.571vw - 5.027px), 44px);
+    font-size: clamp(34px, calc(8.571vw + 6.571px), 40px);
     line-height: 1.13636;
   }
 }
@@ -8455,10 +8480,14 @@ textarea {
 }
 
 @media (max-width: 359px) {
-  .home-hero h1,
   .about-hero .page-hero__inner > h1 {
     font-size: 30px;
     line-height: 36px;
+  }
+
+  .home-hero h1 {
+    font-size: 26px;
+    line-height: 32px;
   }
 }
 
@@ -9836,5 +9865,467 @@ main > section > .site-container.site-container.site-container {
 
   .about-mission-section .about-mission h2 {
     font-size: clamp(3rem, 3.2vw, 4rem);
+  }
+}
+
+/* Large-screen foundation: preserve the 1920px composition, then grow with
+   wider displays while retaining readable copy and controlled card sizes. */
+@media (min-width: 1920px) {
+  .about-hero .page-hero__inner > h1 {
+    letter-spacing: 0;
+  }
+
+  :root {
+    --site-content-width: clamp(75rem, 62.5vw, 100rem);
+    --wide-grid-max: 87.5rem;
+    --reading-measure: 65ch;
+  }
+
+  main > .home-hero > .home-hero__grid.site-container.site-container.site-container {
+    width: var(--site-content-width);
+    max-width: none;
+    margin-right: 0;
+    margin-left: 18.75vw;
+  }
+
+  .home-hero__content {
+    width: 100%;
+    max-width: 100%;
+    padding-top: clamp(59.5px, 3.1vw, 96px);
+  }
+
+  .home-hero .hero-kicker {
+    margin-bottom: clamp(28px, 1.4583vw, 36px);
+    font-size: clamp(18px, 0.78125vw, 20px);
+    letter-spacing: clamp(5.4px, 0.2344vw, 6px);
+  }
+
+  .home-hero h1 {
+    width: 100%;
+    max-width: none;
+    font-size: clamp(120px, 6.25vw, 160px);
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  .home-hero .home-hero__lead {
+    width: min(36rem, 100%);
+    max-width: min(36rem, 100%);
+    margin-top: clamp(31.3px, 1.6302vw, 42px);
+    font-size: clamp(18px, 0.78125vw, 20px);
+    line-height: clamp(30.6px, 1.35vw, 34px);
+  }
+
+  .home-hero .button-row {
+    margin-top: clamp(52px, 2.7083vw, 64px);
+  }
+
+  .home-hero .button-link {
+    padding: clamp(16px, 0.7031vw, 18px) clamp(38px, 1.6406vw, 42px);
+    font-size: clamp(13.1px, 0.5469vw, 14px);
+  }
+
+  .home-hero .button-link--secondary {
+    padding: clamp(22px, 0.9375vw, 24px) 0 5px;
+  }
+
+  .home-hero__scroll-hint {
+    left: clamp(96px, 5vw, 144px);
+  }
+
+  .about-team-section .team-grid.team-grid,
+  .about-values-section .values-grid,
+  .approach-signal-grid,
+  .approach-working-grid,
+  .capability-index-grid,
+  .capability-tailored-grid {
+    width: min(100%, var(--wide-grid-max));
+    margin-inline: auto;
+  }
+
+  .contact-panel .contact-grid--feature.site-container {
+    width: min(var(--site-content-width), 75rem);
+  }
+}
+
+/* About desktop rhythm: use content-driven flow at every desktop width so the
+   layout does not jump back to fixed Figma boxes at 1800px. */
+@media (min-width: 1024px) {
+  .about-mission-section,
+  .about-story-section,
+  .about-team-section,
+  .about-values-section {
+    --about-eyebrow-title-gap: 20px;
+    --about-title-copy-gap: clamp(2rem, 1.5vw, 3rem);
+    height: auto;
+    min-height: 0;
+    margin-bottom: 0;
+    padding-block: clamp(6rem, 7vw, 9rem);
+  }
+
+  .about-mission-section > .about-mission,
+  .about-story-section > .about-story,
+  .about-team-section > .about-team {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    width: var(--site-content-width);
+    height: auto;
+    margin-inline: auto;
+    padding: 0;
+    transform: none;
+  }
+
+  .about-mission-section > .about-mission,
+  .about-story-section > .about-story {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(3rem, 5vw, 5.5rem);
+  }
+
+  .about-mission-section .about-mission__intro,
+  .about-mission-section .mission-proof {
+    display: flex;
+    width: 100%;
+    height: auto;
+    min-width: 0;
+    flex-direction: column;
+  }
+
+  .about-mission-section .about-mission__intro {
+    gap: 0;
+    transform: none;
+  }
+
+  .about-mission-section .mission-proof {
+    margin-top: 3rem;
+    padding-top: 0;
+    gap: 3rem;
+  }
+
+  .about-mission-section .about-mission .eyebrow,
+  .about-mission-section .about-mission h2,
+  .about-mission-section .mission-proof blockquote,
+  .about-mission-section .about-mission__body,
+  .about-mission-section .stat-grid {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .about-mission-section .about-mission .eyebrow,
+  .about-story-section .about-story .eyebrow,
+  .about-team-section .about-team .eyebrow,
+  .about-values-section .about-values .eyebrow {
+    height: auto;
+    margin: 0;
+    font-size: clamp(18px, 0.625vw, 20px);
+    line-height: 1.25;
+  }
+
+  .about-mission-section .about-mission h2,
+  .about-story-section .about-story h2,
+  .about-team-section .about-team h2,
+  .about-values-section .about-values h2 {
+    width: 100%;
+    height: auto;
+    margin: var(--about-eyebrow-title-gap) 0 0;
+    padding: 0;
+    font-size: clamp(3rem, 3.2vw, 4.5rem);
+    line-height: 1.08;
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  .about-mission-section .about-mission__body {
+    width: 100%;
+    max-width: var(--reading-measure, 65ch);
+    height: auto;
+    padding: 0;
+    font-size: clamp(1rem, 1.25vw, 1.25rem);
+    line-height: 1.55;
+  }
+
+  .about-mission-section .about-mission__body--primary {
+    margin-top: var(--about-title-copy-gap);
+  }
+
+  .about-mission-section .about-mission__body--secondary {
+    margin-top: 1.5rem;
+    padding-top: 0;
+  }
+
+  .about-mission-section .mission-proof blockquote {
+    max-width: 34rem;
+    margin: 0;
+    padding-left: clamp(1.25rem, 1.67vw, 2rem);
+    font-size: clamp(1.75rem, 2.2vw, 2.2rem);
+    line-height: 1.42;
+  }
+
+  .about-mission-section .about-mission__body .about-mission__lines--wide > span,
+  .about-mission-section .mission-proof blockquote .about-mission__lines--wide > span {
+    display: inline;
+  }
+
+  .about-mission-section .about-mission__body .about-mission__lines--wide > span:not(:last-child)::after,
+  .about-mission-section .mission-proof blockquote .about-mission__lines--wide > span:not(:last-child)::after {
+    content: " ";
+  }
+
+  .about-mission-section .stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(8.3125rem, auto));
+  }
+
+  .about-mission-section .stat-grid div {
+    width: 100%;
+    height: auto;
+    min-height: 8.3125rem;
+  }
+
+  .about-story-section .about-story__narrative {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .about-story-section .about-story .eyebrow,
+  .about-story-section .about-story h2,
+  .about-story-section .about-story__copy,
+  .about-story-section .about-story__copy p {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .about-story-section .about-story__copy {
+    margin-top: var(--about-title-copy-gap);
+    gap: 1.5rem;
+  }
+
+  .about-story-section .about-story__copy p {
+    max-width: var(--reading-measure, 65ch);
+    font-size: clamp(1rem, 1.25vw, 1.25rem);
+    line-height: 1.55;
+  }
+
+  .about-story-section .story-timeline {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    display: grid;
+    width: 100%;
+    height: auto;
+    margin-top: 3rem;
+    gap: 1.75rem;
+  }
+
+  .about-story-section .story-timeline::before {
+    top: 0.5rem;
+    bottom: 1.5rem;
+    left: 0;
+    height: auto;
+  }
+
+  .about-story-section .story-timeline li,
+  .about-story-section .story-timeline li:nth-child(n) {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: calc(100% - 2rem);
+    height: auto;
+    min-height: 7.5rem;
+    margin-left: 2rem;
+    padding-bottom: 1rem;
+  }
+
+  .about-story-section .story-timeline__year,
+  .about-story-section .story-timeline h3,
+  .about-story-section .story-timeline__body {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .about-story-section .story-timeline h3,
+  .about-story-section .story-timeline__body {
+    margin-top: 0.5rem;
+    white-space: normal;
+  }
+
+  .about-story-section .story-timeline__body {
+    line-height: 1.54;
+  }
+
+  .about-team-section > .about-team {
+    display: block;
+  }
+
+  .about-team-section .about-team__header {
+    position: static;
+    display: grid;
+    width: 100%;
+    height: auto;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--about-title-copy-gap);
+  }
+
+  .about-team-section .about-team__heading {
+    position: static;
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .about-team-section .about-team .eyebrow,
+  .about-team-section .about-team h2,
+  .about-team-section .about-team__lead {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .about-team-section .about-team__lead {
+    max-width: var(--reading-measure, 65ch);
+    padding: 0;
+    font-size: clamp(1rem, 1.25vw, 1.25rem);
+    line-height: 1.6;
+  }
+
+  .about-team-section .team-grid.team-grid {
+    position: static;
+    width: min(100%, var(--wide-grid-max, 87.5rem));
+    height: auto;
+    margin: clamp(3rem, 3vw, 4rem) auto 0;
+    gap: clamp(1rem, 1.5vw, 1.5rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+  }
+
+  .about-values-section .about-values {
+    width: var(--site-content-width);
+  }
+
+  .about-values-section .about-values__header {
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .about-values-section .about-values__lead {
+    width: min(var(--reading-measure, 65ch), 100%);
+    height: auto;
+    margin-top: var(--about-title-copy-gap);
+    padding: 0;
+    font-size: clamp(1rem, 1.25vw, 1.25rem);
+    line-height: 1.55;
+    white-space: normal;
+  }
+
+  .about-values-section .about-values__break {
+    display: none;
+  }
+
+  .about-values-section .values-grid {
+    width: min(100%, var(--wide-grid-max, 87.5rem));
+    height: auto;
+    margin: clamp(3rem, 3vw, 4rem) auto 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+  }
+
+  .about-values-section .values-grid li {
+    height: auto;
+    min-height: 23rem;
+  }
+
+  .about-values-section .values-grid h3 {
+    height: auto;
+    min-height: 2.5rem;
+    white-space: normal;
+  }
+}
+
+@media (min-width: 1440px) {
+  .about-mission-section > .about-mission {
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.95fr);
+    gap: clamp(4rem, 5.5vw, 5.5rem);
+  }
+
+  .about-story-section > .about-story {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-mission-section .mission-proof {
+    margin-top: 0;
+    padding-top: 3rem;
+  }
+
+  .about-story-section .story-timeline {
+    margin-top: 0;
+  }
+
+  .about-team-section .about-team__header {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(3rem, 4vw, 5.5rem);
+  }
+
+  .about-team-section .about-team__lead {
+    align-self: end;
+  }
+
+  .about-team-section .team-grid.team-grid,
+  .about-values-section .values-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1920px) {
+  .about-mission-section .about-mission h2,
+  .about-story-section .about-story h2,
+  .about-team-section .about-team h2,
+  .about-values-section .about-values h2 {
+    font-size: clamp(4rem, 2.8125vw, 4.5rem);
+  }
+
+  .about-mission-section .mission-proof blockquote {
+    font-size: clamp(2.2rem, 1.833vw, 2.5rem);
+  }
+}
+
+/* The longer Home title uses two authored lines. Give those lines room to
+   breathe on larger screens and scale them to remain fully visible on phones. */
+.home-hero__content {
+  min-width: 0;
+}
+
+.home-hero__title-group {
+  display: block;
+}
+
+.home-hero__title-group--mobile {
+  display: none;
+}
+
+@media (max-width: 599px) {
+  .home-hero__title-group--wide {
+    display: none;
+  }
+
+  .home-hero__title-group--mobile {
+    display: block;
+  }
+}
+
+@media (min-width: 600px) {
+  .home-hero h1 {
+    width: min(calc(100% + 5vw), calc(100vw - 2rem));
+    max-width: none;
   }
 }
