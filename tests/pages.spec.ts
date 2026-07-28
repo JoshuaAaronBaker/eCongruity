@@ -1184,6 +1184,19 @@ test.describe("navigation", () => {
     await expect(page.locator(".mobile-nav__panel")).toBeHidden();
   });
 
+  test("keeps the scrolled header free of divider lines and shadows", async ({ page }) => {
+    await page.goto("/");
+    await page.evaluate(() => {
+      document.documentElement.style.scrollBehavior = "auto";
+      window.scrollTo(0, 720);
+    });
+
+    const header = page.locator(".site-header");
+    await expect(header).toHaveAttribute("data-scrolled", "");
+    await expect(header).toHaveCSS("border-bottom-width", "0px");
+    await expect(header).toHaveCSS("box-shadow", "none");
+  });
+
   test("uses the homepage header dimensions on every top-level page", async ({ browser }, testInfo) => {
     test.skip(testInfo.project.name !== "desktop", "Runs its own exact viewport matrix.");
 
