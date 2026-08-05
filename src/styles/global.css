@@ -3145,6 +3145,12 @@
   display: inline;
 }
 
+@media (max-width: 1023px) {
+  .story-timeline__title-separator {
+    display: none;
+  }
+}
+
 .about-story-section .story-timeline h3 {
   position: absolute;
   top: 19.95px;

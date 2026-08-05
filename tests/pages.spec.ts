@@ -1809,10 +1809,12 @@ test.describe("about story", () => {
     }
   });
 
-  test("keeps the final timeline title contained on phones", async ({ browser }, testInfo) => {
-    test.skip(testInfo.project.name !== "desktop", "Runs its own mobile viewport matrix.");
+  test("hides the final title separator on compact screens and keeps the title contained", async ({
+    browser,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop", "Runs its own responsive viewport matrix.");
 
-    for (const width of [390, 320]) {
+    for (const width of [320, 390, 744, 1280]) {
       const context = await browser.newContext({
         deviceScaleFactor: 1,
         reducedMotion: "reduce",
@@ -1823,19 +1825,19 @@ test.describe("about story", () => {
       await waitForBrandFonts(page);
 
       const finalItem = page.locator(".story-timeline li:last-child");
-      const title = finalItem.getByRole("heading", {
-        level: 3,
-        name: "Nature × Technology",
-      });
+      const title = finalItem.getByRole("heading", { level: 3 });
 
       await expect(title).toBeVisible();
 
       const metrics = await finalItem.evaluate((itemNode) => {
         const titleNode = itemNode.querySelector<HTMLElement>("h3");
+        const separatorNode = itemNode.querySelector<HTMLElement>(
+          ".story-timeline__title-separator",
+        );
         const bodyNode = itemNode.querySelector<HTMLElement>(".story-timeline__body");
         const sectionNode = itemNode.closest<HTMLElement>(".about-story-section");
 
-        if (!titleNode || !bodyNode || !sectionNode) {
+        if (!titleNode || !separatorNode || !bodyNode || !sectionNode) {
           throw new Error("Final timeline item is incomplete");
         }
 
@@ -1851,6 +1853,8 @@ test.describe("about story", () => {
           itemRight: itemRect.right,
           titleScrollWidth: titleNode.scrollWidth,
           titleClientWidth: titleNode.clientWidth,
+          titleText: titleNode.innerText.replace(/\s+/g, " ").trim(),
+          separatorDisplay: getComputedStyle(separatorNode).display,
           bodyTop: bodyRect.top,
           titleBottom: titleRect.bottom,
           bodyBottom: bodyRect.bottom,
@@ -1861,6 +1865,12 @@ test.describe("about story", () => {
       expect(metrics.titleLeft).toBeGreaterThanOrEqual(metrics.itemLeft - 1);
       expect(metrics.titleRight).toBeLessThanOrEqual(metrics.itemRight + 1);
       expect(metrics.titleScrollWidth).toBeLessThanOrEqual(metrics.titleClientWidth + 1);
+      expect(metrics.titleText).toBe(
+        width <= 1023
+          ? "Inspired by the Frontier Driven by Innovation"
+          : "Inspired by the Frontier × Driven by Innovation",
+      );
+      expect(metrics.separatorDisplay).toBe(width <= 1023 ? "none" : "inline");
       expect(metrics.bodyTop).toBeGreaterThan(metrics.titleBottom);
       expect(metrics.bodyBottom).toBeLessThanOrEqual(metrics.sectionBottom);
 
@@ -2304,6 +2314,66 @@ test.describe("about values", () => {
 });
 
 test.describe("about closing CTA and footer", () => {
+  test("keeps the Home and About footers visually identical", async ({ browser }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop", "Runs its own responsive viewport matrix.");
+
+    for (const viewport of [
+      { width: 390, height: 844 },
+      { width: 744, height: 1024 },
+      { width: 1280, height: 900 },
+      { width: 1920, height: 1080 },
+    ]) {
+      const context = await browser.newContext({
+        deviceScaleFactor: 1,
+        reducedMotion: "reduce",
+        viewport,
+      });
+      const page = await context.newPage();
+      const pageMetrics = [];
+
+      for (const path of ["/", "/about/"]) {
+        await page.goto(path);
+        await waitForBrandFonts(page);
+        pageMetrics.push(
+          await page.locator(".site-footer").evaluate((footer) => {
+            const footerRect = footer.getBoundingClientRect();
+            const grid = footer.querySelector<HTMLElement>(".site-footer__grid");
+            if (!grid) throw new Error("Site footer grid is missing");
+
+            const gridRect = grid.getBoundingClientRect();
+            return {
+              height: footerRect.height,
+              grid: {
+                x: gridRect.x,
+                width: gridRect.width,
+                height: gridRect.height,
+              },
+              items: Array.from(grid.children).map((item) => {
+                const rect = item.getBoundingClientRect();
+                const display = getComputedStyle(item).display;
+                const text = item.textContent?.replace(/\s+/g, " ").trim();
+
+                if (display === "none") return { display, text };
+
+                return {
+                  display,
+                  text,
+                  x: rect.x,
+                  y: rect.y - footerRect.y,
+                  width: rect.width,
+                  height: rect.height,
+                };
+              }),
+            };
+          }),
+        );
+      }
+
+      expect(pageMetrics[1]).toEqual(pageMetrics[0]);
+      await context.close();
+    }
+  });
+
   test("keeps the Home and About closing CTAs visually identical", async ({ browser }, testInfo) => {
     test.skip(testInfo.project.name !== "desktop", "Runs its own responsive viewport matrix.");
 
@@ -2389,7 +2459,6 @@ test.describe("about closing CTA and footer", () => {
         body: { x: 400, y: 368.79, width: 480, size: 16, line: 27.2 },
         actionsY: 448.59,
         ring: null,
-        footerHeight: 129,
       },
       {
         name: "tablet",
@@ -2400,7 +2469,6 @@ test.describe("about closing CTA and footer", () => {
         body: { x: 132, y: 361.2, width: 480, size: 16, line: 24 },
         actionsY: 457.2,
         ring: { x: 22, y: -26.86, width: 700 },
-        footerHeight: 193,
       },
       {
         name: "mobile",
@@ -2411,7 +2479,6 @@ test.describe("about closing CTA and footer", () => {
         body: { x: 40, y: 258, width: 310, size: 15, line: 23.25 },
         actionsY: 363.75,
         ring: { x: -45, y: 24.97, width: 480 },
-        footerHeight: 193,
       },
     ] as const;
 
@@ -2445,7 +2512,7 @@ test.describe("about closing CTA and footer", () => {
         const heading = section.querySelector<HTMLElement>("h2");
         const body = section.querySelector<HTMLElement>(".about-closing__body");
         const ring = section.querySelector<HTMLElement>(".about-closing__rings");
-        const footer = document.querySelector<HTMLElement>(".site-footer--about");
+        const footer = document.querySelector<HTMLElement>(".site-footer");
         if (!heading || !body || !ring || !footer) throw new Error("About closing section is incomplete");
 
         return {
@@ -2489,7 +2556,7 @@ test.describe("about closing CTA and footer", () => {
           ? "Whether you're navigating a strategic\nchallenge or launching something entirely\nnew — we're ready to build with you."
           : "Whether you're navigating a strategic challenge or launching\nsomething entirely new — we're ready to build with you.",
       );
-      expect(metrics.footerHeight).toBeCloseTo(viewport.footerHeight, 0);
+      expect(metrics.footerHeight).toBeGreaterThan(0);
       expect(metrics.footerBackground).toBe("rgb(17, 26, 16)");
       expect(metrics.overflow).toBeLessThanOrEqual(0);
 

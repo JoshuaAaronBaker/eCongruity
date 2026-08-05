@@ -382,7 +382,7 @@ export const aboutTimeline: AboutTimelineItem[] = [
   },
   {
     year: "Today",
-    title: "Nature × Technology",
+    title: "Inspired by the Frontier × Driven by Innovation",
     summary:
       "Doubling down on our mission — connecting people, process and technology with purpose and sustainability.",
   },

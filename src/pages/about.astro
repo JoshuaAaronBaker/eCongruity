@@ -50,7 +50,6 @@ const getStatCountParts = (value: string) => {
 <BaseLayout
   title="About"
   description="Founder-led credibility for eCongruity strategy-to-implementation engagements."
-  footerVariant="about"
 >
   <PageHero
     class="about-hero"
@@ -199,7 +198,19 @@ const getStatCountParts = (value: string) => {
                   )
                 }
               </p>
-              <h3>{item.title}</h3>
+              <h3>
+                {
+                  index === aboutTimeline.length - 1 ? (
+                    <>
+                      <span>Inspired by the Frontier</span>{" "}
+                      <span class="story-timeline__title-separator">×</span>{" "}
+                      <span>Driven by Innovation</span>
+                    </>
+                  ) : (
+                    item.title
+                  )
+                }
+              </h3>
               <p class="story-timeline__body">{item.summary}</p>
             </li>
           ))
